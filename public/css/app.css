@@ -1,0 +1,20 @@
+* {
+    font-family: "Ubuntu", serif;
+    font-weight: 700;
+    font-style: normal;
+    box-sizing: border-box;
+}
+
+:root {
+    --body-color: #e4e7e9;
+    --sidebar-color: #fff;
+    --primary-color: #f0a539;
+    --primary-color-light: #f3d8b3;
+    --toggle-color: #ddd;
+    --text-color: #21618c;
+
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.7s ease;
+}

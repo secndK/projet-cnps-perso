@@ -1,0 +1,49 @@
+
+mardi 07/01/25 : implémentation du projet from scratch
+
+
+
+*Aujoud'hui il faudra
+- implémenter la logique du login & du register
+- implémenter le template nice admin
+-implémenter la logique du controller AuthController
+
+
+
+*nouvelle connaissance : dd($request->all());
+
+
+dd (dump and die), sert à déboguer, afficher certains éléments d'un champs
+spécifique
+
+
+* augmenter le temps disponible pour mon composer run dev
+composer config --global process-timeout 12000
+
+
+
+* js pour sidebar retractable
+
+<script>
+     const body = document.querySelector("body"),
+          sidebar = body.querySelector(".sidebar"),
+           toggle = body.querySelector(".toggle");
+
+           toggle.addEventListener("click", () =>{
+             sidebar.classList.toggle("close");
+           });
+</script>
+
+
+
+lundi 13/01/25 réorganisation du projet en format starter kit blade de laravel
+
+* pour utiliser un fichier css et js externe
+
+Tu dois les copier dans le répertoire Public, qui est le seul répertoire accessible par les visiteurs de ton site.
+
+Dans tes vues aux format blade, tu appel tes fichiers de la manière suivante : {{asset('css/moncss.css')}}
+
+
+
+

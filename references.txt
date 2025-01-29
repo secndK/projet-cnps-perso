@@ -1,0 +1,7 @@
+* authentifications
+https://laravel.sillo.org/posts/cours-laravel-5-5-les-donnees-lauthentification
+
+
+*logout form
+https://stackoverflow.com/questions/43087648/logging-out-via-a-link-in-laravel
+
