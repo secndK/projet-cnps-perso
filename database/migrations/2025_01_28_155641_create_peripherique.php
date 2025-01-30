@@ -9,7 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
     public function up(): void
     {
         Schema::disableForeignKeyConstraints();
@@ -22,23 +21,17 @@ return new class extends Migration
             $table->string('type_peripherique')->nullable();
             $table->string('etat_peripherique')->nullable();
             $table->dateTime('date_acq');
-            $table->unsignedBigInteger('poste_travail_id')->nullable();
-            $table->foreign('poste_travail_id')->references('id')->on('poste_travail')->onDelete('set null');
+            $table->foreignId('agent_id')->nullable()
+            ->constrained('agents')
+            ->onDelete('cascade');
             $table->timestamps();
-
         });
     }
-
     /**
      * Reverse the migrations.
      */
-
     public function down()
     {
-        Schema::table('peripherique', function (Blueprint $table) {
-            $table->dropForeign(['poste_travail_id']);
-            $table->dropColumn('poste_travail_id');
-        });
 
         Schema::dropIfExists('peripherique');
     }

@@ -39,7 +39,7 @@ class PeripheriqueController extends Controller
             'type_peripherique' => 'nullable|string|max:255',
             'etat_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-            // 'poste_travail_id' => 'nullable|exists:poste_travail,id',
+
         ]);
 
         Peripherique::create($validated);
@@ -81,7 +81,7 @@ class PeripheriqueController extends Controller
             'type_peripherique' => 'nullable|string|max:255',
             'etat_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-            // 'poste_travail_id' => 'nullable|exists:poste_travail,id',
+            
         ]);
 
         $peripheriques->update($validated);

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 class Peripherique extends Model
@@ -21,15 +22,13 @@ class Peripherique extends Model
         'type_peripherique',
         'etat_peripherique',
         'date_acq',
-        'poste_travail_id',
+
     ];
 
 
-
-    public function posteTravail(): BelongsTo
+    public function postras(): BelongsToMany
     {
-        return $this->belongsTo(PosteTravail::class, 'poste_travail_id');
+        return $this->belongsToMany(PosteTra::class);
     }
-
 
 }

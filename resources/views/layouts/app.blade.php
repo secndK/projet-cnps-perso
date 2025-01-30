@@ -29,6 +29,11 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
 
+
+    {{-- lien select 2 --}}
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -106,6 +111,16 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
+
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -129,8 +144,19 @@
 
   {{-- js pour datatable --}}
 
-
   @yield('scripts')
+
+  {{-- script pour select 2 --}}
+
+    <script>
+     $(document).ready(function() {
+      $('.js-example-basic-multiple').select2({
+        placeholder: "Sélectionnez un ou plusieurs équipements",
+        allowClear: true
+      });
+    });
+    </script>
+
 </body>
 
 </html>
