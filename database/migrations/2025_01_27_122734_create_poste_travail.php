@@ -21,8 +21,6 @@ return new class extends Migration
             $table->string('type_poste_travail');
             $table->string('etat_poste_travail');
             $table->dateTime('date_acq');
-            $table->unsignedBigInteger('agent_id')->nullable();
-            $table->foreign('agent_id')->references('id')->on('agents')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -31,9 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('poste_travail', function (Blueprint $table) {
-            $table->dropForeign(['agent_id']);
-            $table->dropColumn('agent_id');
-        });
+
+        Schema::dropIfExists('poste_travail');
+
+
     }
 };

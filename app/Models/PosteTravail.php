@@ -23,14 +23,5 @@ class PosteTravail extends Model
         'date_acq',
     ];
 
-    public function agent(){
-
-        return $this->belongsTo(Agent::class, 'agent_id');
-    }
-
-
-    public function peripheriques(): HasMany
-    {
-        return $this->hasMany(Peripherique::class, 'poste_travail_id');
-    }
+    
 }

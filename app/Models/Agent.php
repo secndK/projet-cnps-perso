@@ -24,9 +24,16 @@ class Agent extends Model
     ];
 
 
-    public function postetravail(){
-        return $this->hasMany(PosteTravail::class);
+    public function postetras(): HasMany
+    {
+        return $this->hasMany(PosteTra::class);
+    }
 
+
+
+    public function peripheriques(): HasMany
+    {
+        return $this->hasMany(Peripherique::class);
     }
 
 

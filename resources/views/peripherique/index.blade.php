@@ -20,13 +20,13 @@
             <thead class="bg-primary text-white">
                 <tr>
                     {{-- <th>id</th> --}}
-                    <th width="1%">N°série</th>
+                    <th >N°série</th>
                     <th>N°inventaire</th>
                     <th >Nom</th> <!-- Nouvelle colonne pour les peripheriques -->
-                    <th width="25%">Designation</th>
+                    <th >Designation</th>
                     <th>Type</th>
                     <th>État</th>
-                    <th width="30%">Action</th>
+                    <th >Action</th>
                 </tr>
             </thead>
             <tbody>

@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 return new class extends Migration
 {
@@ -12,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agents', function (Blueprint $table) {
+        Schema::create('poste_peripherique', function (Blueprint $table) {
             $table->id();
-            $table->string('matricule_agent');
-            $table->string('nom_agent');
-            $table->string('prenom_agent');
-            $table->string('direction_agent');
-            $table->string('localisation_agent');
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agents');
+        Schema::dropIfExists('poste_peripherique');
     }
 };

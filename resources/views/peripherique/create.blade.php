@@ -49,20 +49,7 @@
                     </div>
                 </div>
 
-                <div class="mt-3 col-6">
 
-                    <div class="">
-                        <label for="TypePeripherique" class="form-label">Type</label>
-                        <select name="type_peripherique" id="TypePeripherique" class="form-select" >
-                            <option value="">Sélectionnez une catégorie</option>
-                            <option value="ecran">Ecran</option>
-                            <option value="clavier">Clavier</option>
-                            <option value="souris">Souris</option>
-                            <option value="telephone ip">Telephone Ip</option>
-                            <option value="imprimante">Imprimante</option>
-                        </select>
-                    </div>
-                </div>
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
@@ -72,9 +59,24 @@
                             <option value="En panne">En panne</option>
                             <option value="En Service">En service</option>
                             <option value="Réformé">Reformé</option>
-                            <option value="En panne">Non attribué</option>
+                            <option value="Non attribué">Non attribué</option>
                         </select>
                      </div>
+                </div>
+
+                <!-- Type de périphérique -->
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="TypePeripherique" class="form-label">Type</label>
+                        <select name="type_peripherique" id="TypePeripherique" class="form-select">
+                            <option value="">-- choisir -- </option>
+                            <option value="ecran">Ecran</option>
+                            <option value="clavier">Clavier</option>
+                            <option value="souris">Souris</option>
+                            <option value="telephone ip">Tel ip</option>
+                            <option value="imprimante">Imprimante</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mt-3 col-6">

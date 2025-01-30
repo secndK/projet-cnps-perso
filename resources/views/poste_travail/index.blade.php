@@ -18,9 +18,9 @@
         <table id="tablepostetravail" class="table datatable">
             <thead class="bg-primary text-white">
                 <tr>
-                    <th width="1%">N° série</th>
+                    <th >N° série</th>
                     <th>N° inventaire</th>
-                    <th width="30%">Périphérique</th>
+                    <th >Périphérique</th>
                     <th>Nom</th>
                     <th>Désignation</th>
                     <th>Type</th>
@@ -44,7 +44,6 @@
                                     @else($peripherique->nom_peripherique == 'Ecran')
                                     <span class="badge bg-warning me-1"><i class="bi bi-tv"></i> {{ $peripherique->designation_peripherique }}</span>
                                     @endif
-                                    <span class="badge bg-warning me-1">{{ $peripherique->designation_peripherique }}</span>
                                 @endforeach
                             @else
                                 <span class="text-muted">Aucun périphérique</span>
@@ -57,11 +56,13 @@
                         <td>
                             <a href="{{ route('poste_travail.show', $pst->id) }}" class="btn btn-info btn-sm">Visualiser</a>
                             <a href="{{ route('poste_travail.edit', $pst->id) }}" class="btn btn-primary btn-sm">Éditer</a>
-                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostTravailModal{{ $pst->id }}">
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePosteTravailModal{{ $pst->id }}">
                                 Supprimer
                             </button>
                         </td>
                     </tr>
+                    @include('poste_travail.modals.delete', ['pst' => $pst])
+
                 @empty
                     <tr>
                         <td colspan="8" class="text-center text-muted">Aucun poste de travail trouvé.</td>
