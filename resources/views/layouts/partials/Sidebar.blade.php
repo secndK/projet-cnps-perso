@@ -37,13 +37,13 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route('poste_travail.index') }}">
+                <a href="{{ route('postes.index') }}">
                   <i class="bi bi-circle"></i><span>Poste de travail</span>
                 </a>
               </li>
 
               <li>
-                <a href="{{ route('peripherique.index') }}">
+                <a href="{{ route('peripheriques.index') }}">
                   <i class="bi bi-circle"></i><span>Peripherique</span>
                 </a>
               </li>

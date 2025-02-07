@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        Schema::create('postetra', function (Blueprint $table) {
+        Schema::create('postes', function (Blueprint $table) {
             $table->id();
-            $table->string('num_serie_postetra')->unique();
-            $table->string('num_inventaire_postetra');
-            $table->string('nom_postetra');
-            $table->string('designation_postetra')->nullable();
-            $table->string('type_postetra');
-            $table->string('etat_postetra');
+            $table->string('num_serie_poste')->unique();
+            $table->string('num_inventaire_poste');
+            $table->string('nom_poste');
+            $table->string('designation_poste')->nullable();
+            $table->string('type_poste');
+            $table->string('etat_poste');
             $table->dateTime('date_acq');
-            $table->foreignId('agent_id')
+            $table->foreignId('agent_id')->nullable()
             ->constrained('agents')
             ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -31,10 +31,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-
-
     public function down(): void
     {
-        Schema::dropIfExists('postetra');
+        Schema::dropIfExists('postes');
     }
 };

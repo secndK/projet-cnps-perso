@@ -148,6 +148,8 @@
 
   {{-- script pour select 2 --}}
 
+  @yield('select')
+
     <script>
      $(document).ready(function() {
       $('.js-example-basic-multiple').select2({
@@ -156,6 +158,24 @@
       });
     });
     </script>
+
+
+                    {{-- SCRIPT POUR LE TOAST --}}
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function(toastEl) {
+                return new bootstrap.Toast(toastEl, { autohide: true, delay: 5000 }) // 5 secondes
+            })
+            toastList.forEach(toast => toast.show());
+        });
+
+    </script>
+
+
+
+
 
 </body>
 

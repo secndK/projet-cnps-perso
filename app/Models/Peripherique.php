@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 
 class Peripherique extends Model
 {
 
     use HasFactory;
-    protected $table = 'peripherique';
+    protected $table = 'peripheriques';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'num_serie_peripherique',
@@ -22,13 +23,20 @@ class Peripherique extends Model
         'type_peripherique',
         'etat_peripherique',
         'date_acq',
+        'agent_id',
+        'poste_id',
 
     ];
 
 
-    public function postras(): BelongsToMany
+    public function postes()
     {
-        return $this->belongsToMany(PosteTra::class);
+        return $this->belongsTo(Poste::class,  'poste_id');
+    }
+
+    public function agents()
+    {
+        return $this->belongsTo(Agent::class, 'agent_id');
     }
 
 }

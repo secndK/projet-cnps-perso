@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('title', 'Gestion des périphériques')
 
 @section('content')
@@ -50,12 +51,11 @@
                 </div>
 
 
-
                 <div class="mt-3 col-6">
                     <div class="form-group">
                         <label for="EtatPeripherique" class="form-label">Etat</label>
                         <select name="etat_peripherique" id="EtatPeripherique" class="js-example-basic-single form-select" >
-                            <option value="">Sélectionnez l'Etat de l'appareil</option>
+                            <option value="">-- choisir -- </option>
                             <option value="En panne">En panne</option>
                             <option value="En Service">En service</option>
                             <option value="Réformé">Reformé</option>
@@ -64,7 +64,7 @@
                      </div>
                 </div>
 
-                <!-- Type de périphérique -->
+                {{-- <!-- Type de périphérique -->
                 <div class="mt-3 col-6">
                     <div class="form-group">
                         <label for="TypePeripherique" class="form-label">Type</label>
@@ -78,20 +78,31 @@
                             <option value="domino wifi">Domino WI-fi</option>
                         </select>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
-                        <label for="agentMatricule" class="form-label">N° d'agent</label>
-                        <input type="text" name="matricule_agent" class="form-control" id="matricule_agent" >
+                        <label for="agent_id" class="form-label">Attribuer à propriétaire </label>
+                        <select name="agent_id" class="js-example-basic-single form-control">
+                            <option value="">-- choisir -- </option>
+                            @foreach($agents as $agent)
+                                <option value="{{ $agent->id }}">{{ $agent->nom_agent }}</option>
+                            @endforeach
+                        </select>
                     </div>
+
                 </div>
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
-                        <label for="postetraNumSerie" class="form-label">N° de poste de travail</label>
-                        <input type="text" name="num_serie_postetra" class="form-control" id="num_serie_postetra" >
+                        <label for="poste_id" class="form-label">Attribuer à poste</label>
+                        <select name="poste_id" class="js-example-basic-single form-control">
+                            <option value="">-- choisir -- </option>
+                            @foreach($postes as $poste)
+                                <option value="{{ $poste->id }}">{{ $poste->nom_poste }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
@@ -118,6 +129,17 @@
 
 
 @endsection
+
+@section('select')
+
+<script>
+    $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+</script>
+
+@endsection
+
 
 
 

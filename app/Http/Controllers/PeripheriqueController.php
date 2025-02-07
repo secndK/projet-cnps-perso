@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Peripherique;
 use Illuminate\Http\Request;
-
+use App\Models\Peripherique;
+use App\Models\Agent;
+use App\Models\Poste;
 class PeripheriqueController extends Controller
 {
     /**
@@ -12,9 +13,10 @@ class PeripheriqueController extends Controller
      */
     public function index()
     {
+        
 
         $peripheriques = Peripherique::all();
-        return view('peripherique.index', compact('peripheriques'));
+        return view ('peripheriques.index', compact('peripheriques',));
 
     }
 
@@ -23,15 +25,21 @@ class PeripheriqueController extends Controller
      */
     public function create()
     {
-        $peripheriques = Peripherique::all();
-        return view('peripherique.create', compact('peripheriques'));
+        $agents = Agent::all();
+        $postes = Poste::all();
+
+        return view('peripheriques.create', compact( 'agents', 'postes'));
+
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+
+        $validatedData = $request->validate([
+
             'num_serie_peripherique' => 'required|string|max:255',
             'num_inventaire_peripherique' => 'required|string|max:255',
             'nom_peripherique' => 'required|string|max:255',
@@ -39,65 +47,71 @@ class PeripheriqueController extends Controller
             'type_peripherique' => 'nullable|string|max:255',
             'etat_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-
+            'agent_id' => 'nullable|exists:agents,id',
+            'poste_id' => 'nullable|exists:postes,id',
         ]);
+        
+        Peripherique::create($validatedData);
 
-        Peripherique::create($validated);
+        return redirect()->route('peripheriques.index')->with('success', 'Peripherique ajouté avec succès');
 
-        return redirect()->route('peripherique.index')->with('success', 'Périphérique créé avec succès');
     }
+
     /**
      * Display the specified resource.
      */
-
     public function show( $id)
     {
+        $agents = Agent::all();
+        $postes = Poste::all();
         $peripheriques = Peripherique::findOrFail($id);
-        return view('peripherique.show', compact('peripheriques'));
+        return view('peripheriques.show', compact('peripheriques', 'agents', 'postes'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        // Récupérer le périphérique par son ID
-        $peripheriques = Peripherique::findOrFail($id); // Utilisez findOrFail pour éviter les erreurs si l'ID n'existe pas
+        $agents = Agent::all();
+        $postes = Poste::all();
+        $peripheriques = Peripherique::findOrFail($id);
+        return view('peripheriques.edit', compact('peripheriques', 'agents', 'postes'));
 
-        // Passer le périphérique à la vue
-        return view('peripherique.edit', compact('peripheriques'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Peripherique $peripheriques)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
+        $validatedData = $request->validate([
             'num_serie_peripherique' => 'required|string|max:255',
             'num_inventaire_peripherique' => 'required|string|max:255',
             'nom_peripherique' => 'required|string|max:255',
             'designation_peripherique' => 'nullable|string|max:255',
             'type_peripherique' => 'nullable|string|max:255',
             'etat_peripherique' => 'nullable|string|max:255',
-            'date_acq' => 'required|date',
-            
+            'date_acq' => 'date',
+            'agent_id' => 'nullable|exists:agents,id',
+            'poste_id' => 'nullable|exists:postes,id',
         ]);
 
-        $peripheriques->update($validated);
+        $peripherique = Peripherique::findOrFail($id);
+        $peripherique->update($validatedData);
 
-        return redirect()->route('peripherique.index')->with('success', 'Périphérique mis à jour avec succès');
-    }
+        return redirect()->route('peripheriques.index')->with('success', 'Périphérique mis à jour avec succès.');    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $peripheriques = Peripherique::find($id);
+        $peripheriques = Peripherique::findOrFail($id);
         $peripheriques->delete();
-        return redirect()->route('peripherique.index')->with('success', 'Peripherique supprimée avec succès.');
-
+        return redirect()->route('peripheriques.index')->with('success', 'Périphérique supprimé avec succès.');
 
     }
 }

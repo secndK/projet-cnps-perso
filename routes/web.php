@@ -1,15 +1,14 @@
 <?php
 
-use App\Models\PosteTravail;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PeripheriqueController;
-use App\Http\Controllers\PosteTravailController;
+use App\Http\Controllers\PosteController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
@@ -54,21 +53,18 @@ Route::middleware('auth')->group(function () {
 
 });
 
+
+
+// gestion des permissions
 Route::resource('permissions', PermissionController::class)->middleware('superadmin');
-
+//gestion des roles
 Route::resource('roles', RolesController::class)->middleware('superadmin');
-
-
+//gestion des utilisateurs
 Route::resource('users', UserController::class)->middleware('superadmin');
-
-Route::resource('poste_travail', PosteTravailController::class)->middleware('superadmin');
-
-Route::resource('peripherique', PeripheriqueController::class)->middleware('superadmin');
-
-
+// gestion des périphériques
+Route::resource('peripheriques', PeripheriqueController::class)->middleware('superadmin');
+//gestion des postes de travail
+Route::resource('postes', PosteController::class)->middleware('superadmin');
+//deconnexion
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::POST('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/permissions/export', [PermissionController::class, 'export'])->name('permissions.export');
-Route::post('/permissions/import', [PermissionController::class, 'import'])->name('permissions.import');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

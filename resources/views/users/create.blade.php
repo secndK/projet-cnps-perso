@@ -57,7 +57,7 @@
             </div>
 
             <!-- Boutons d'action -->
-            <div class="mt-3 d-flex justify-content-between">
+            <div class="mt-7 d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Créer</button>
                 <a href="{{ route('users.index') }}" class="btn btn-secondary">Annuler</a>
 

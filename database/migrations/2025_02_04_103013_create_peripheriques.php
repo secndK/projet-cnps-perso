@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('peripherique', function (Blueprint $table) {
+        Schema::create('peripheriques', function (Blueprint $table) {
             $table->id();
             $table->string('num_serie_peripherique')->unique();
             $table->string('num_inventaire_peripherique');
@@ -24,15 +23,18 @@ return new class extends Migration
             $table->foreignId('agent_id')->nullable()
             ->constrained('agents')
             ->onDelete('cascade');
+            $table->foreignId('poste_id')->nullable()
+            ->constrained('postes')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-
-        Schema::dropIfExists('peripherique');
+        Schema::dropIfExists('peripheriques');
     }
 };

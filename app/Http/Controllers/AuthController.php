@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
+        // Validation des données
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -30,25 +30,17 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            // voir ma doc.txt
-            $role = $user->getRoleNames();
+            // Récupération du rôle de l'utilisateur (si nécessaire)
+            // $role = $user->getRoleNames();
 
-            // dd($role);
-
-            switch ($role) {
-                case 'Super Admin':
-                    return redirect()->intended('dashboard')->with('success', 'Connexion réussie en tant qu\'administrateur.');
-                case 'Admin':
-                    return redirect()->intended('dashboard')->with('success', 'Connexion réussie en tant que manager.');
-                default:
-                    return redirect()->intended('dashboard')->with('success', 'Connexion réussie.');
-            }
+            // Redirection vers le tableau de bord avec un message de succès
+            return redirect()->route('dashboard')->with('success', 'Connexion réussie.');
         }
 
-
-        // En cas d'échec de connexion
-        return redirect()->route('login')->with('error', 'Identifiants invalides. Veuillez réessayer.');
+        // En cas d'échec, redirection avec un message d'erreur
+        return back()->withInput()->with('error', 'Identifiants invalides. Veuillez réessayer.');
     }
+
 
 
     public function showRegisterForm()

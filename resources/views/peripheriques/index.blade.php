@@ -11,7 +11,7 @@
 
     <div class="card-header bg-light d-flex justify-content-start align-items-center">
         <div>
-            <a href="{{ route('peripherique.create') }}" class="btn btn-primary">Créer un périphérique</a>
+            <a href="{{ route('peripheriques.create') }}" class="btn btn-primary">Créer un périphérique</a>
         </div>
     </div>
 
@@ -38,8 +38,8 @@
                     <td>{{ $peripherique->type_peripherique }}</td>
                     <td>{{ $peripherique->etat_peripherique }}</td>
                     <td>
-                        <a href="{{ route('peripherique.show', $peripherique->id) }}" class="btn btn-info btn-sm">Visualiser</a>
-                        <a href="{{ route('peripherique.edit', $peripherique->id) }}" class="btn btn-primary btn-sm">Éditer</a>
+                        <a href="{{ route('peripheriques.show', $peripherique->id) }}" class="btn btn-info btn-sm">Visualiser</a>
+                        <a href="{{ route('peripheriques.edit', $peripherique->id) }}" class="btn btn-primary btn-sm">Éditer</a>
                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePeripheriqueModal{{ $peripherique->id }}">
                             Supprimer
                         </button>

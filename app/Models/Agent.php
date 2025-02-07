@@ -12,6 +12,7 @@ class Agent extends Model
     use HasFactory;
 
     protected $table = 'agents';
+    protected $primaryKey = 'id';
 
 
     protected $fillable = [
@@ -24,18 +25,15 @@ class Agent extends Model
     ];
 
 
-    public function postetras(): HasMany
+    public function postes()
     {
-        return $this->hasMany(PosteTra::class);
+        return $this->hasMany(Poste::class, 'poste_id');
     }
 
 
-
-    public function peripheriques(): HasMany
+    public function peripheriques()
     {
-        return $this->hasMany(Peripherique::class);
+        return $this->hasMany(Peripherique::class, 'peripherique_id');
     }
-
-
 
 }

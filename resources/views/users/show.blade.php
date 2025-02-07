@@ -33,7 +33,6 @@
                     </div>
                 </div>
 
-
                 <div class="mt-3 col-6">
                     <div class="form-group">
                         <label for="usersUpdatedAt" class="form-label">Mis à jour le :</label>
@@ -56,7 +55,6 @@
                 </div>
 
             </div>
-
 
         </form>
 
