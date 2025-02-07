@@ -1,15 +1,17 @@
 <?php
 
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PeripheriqueController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PosteController;
+use App\Http\Controllers\RolesController;
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RolesController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\PeripheriqueController;
-use App\Http\Controllers\PosteController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 
 
 Route::middleware('guest')->group(function () {
@@ -60,7 +62,7 @@ Route::resource('permissions', PermissionController::class)->middleware('superad
 //gestion des roles
 Route::resource('roles', RolesController::class)->middleware('superadmin');
 //gestion des utilisateurs
-Route::resource('users', UserController::class)->middleware('superadmin');
+Route::resource('users', UserController::class)->middleware('superadmin');// gestion des types de périphériques
 // gestion des périphériques
 Route::resource('peripheriques', PeripheriqueController::class)->middleware('superadmin');
 //gestion des postes de travail

@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 return new class extends Migration
+
 {
     /**
      * Run the migrations.
@@ -17,19 +17,21 @@ return new class extends Migration
             $table->string('num_inventaire_peripherique');
             $table->string('nom_peripherique');
             $table->string('designation_peripherique')->nullable();
-            $table->string('type_peripherique')->nullable();
             $table->string('etat_peripherique')->nullable();
             $table->dateTime('date_acq');
-            $table->foreignId('agent_id')->nullable()
-            ->constrained('agents')
-            ->onDelete('cascade');
-            $table->foreignId('poste_id')->nullable()
-            ->constrained('postes')
-            ->onDelete('cascade');
+            //les clés étrangères
+            $table->foreignId('agent_id')->nullable() //clé agents
+                ->constrained('agents')
+                ->onDelete('cascade');
+            $table->foreignId('poste_id')->nullable() //clé type postes
+                ->constrained('postes')
+                ->onDelete('cascade');
+                $table->foreignId('type_peripherique_id')->nullable()  //clé type peripheriques
+                ->constrained('types_peripheriques')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

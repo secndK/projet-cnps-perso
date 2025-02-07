@@ -39,4 +39,10 @@ class Peripherique extends Model
         return $this->belongsTo(Agent::class, 'agent_id');
     }
 
+
+    public function typePeripherique()
+    {
+        return $this->belongsTo(TypePeripherique::class, 'type_peripherique_id');
+    }
+
 }
