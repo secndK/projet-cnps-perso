@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TypePoste;
-
+use App\Services\LogService;
 class TypesPostesController extends Controller
 {
     /**
@@ -30,6 +30,7 @@ class TypesPostesController extends Controller
             'libelle_type' => 'required|string|max:255|unique:types_postes,libelle_type',
         ]);
         TypePoste::create($validatedData);
+        LogService::addLog('Nouveau Type poste crée', 'Libellé: ' . $request->libelle_type);
         return redirect()->route('types-postes.index')->with('success', ' Type de Poste ajouté avec succès');
     }
     /**
@@ -54,9 +55,10 @@ class TypesPostesController extends Controller
     public function update(Request $request, TypePoste $types)
     {
         $validated = $request->validate([
-            'libelle_type' => 'required|unique:types-peripheriques,libelle_type,' . $types->id,
+            'libelle_type' => 'required|unique:types_postes,libelle_type,' . $types->id,
         ]);
         $types->update($validated);
+        LogService::addLog('MAJ Type poste', ' Libellé : ' . $request->libelle_type);
         return redirect()->route('types-postes.index')->with('success', 'Type de poste mis à jour avec succès');
     }
     /**
@@ -66,6 +68,7 @@ class TypesPostesController extends Controller
     {
         $types = TypePoste::findOrFail($id);
         $types->delete();
-        return redirect()->route('types-postes.index')->with('success', 'Type de supprimé avec succès');
+        LogService::addLog('Suppression type postes', 'ID : ' . $id);
+        return redirect()->route('types-postes.index')->with('success', 'Type de poste supprimé avec succès');
     }
 }

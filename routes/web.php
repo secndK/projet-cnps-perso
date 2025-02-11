@@ -2,13 +2,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PosteController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\TypesPostesController;
 use App\Http\Controllers\PeripheriqueController;
 use App\Http\Controllers\TypesPeripheriquesController;
-use App\Http\Controllers\TypesPostesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::middleware('guest')->group(function () {
@@ -61,6 +62,9 @@ Route::resource('peripheriques', PeripheriqueController::class)->middleware('sup
 Route::resource('types-postes', TypesPostesController::class)->middleware('superadmin');
 //gestion des postes de travail
 Route::resource('postes', PosteController::class)->middleware('superadmin');
+// gestion des logs
+Route::resource('logs', LogsController::class)->middleware('superadmin');
+//gestion des roles
 //deconnexion
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

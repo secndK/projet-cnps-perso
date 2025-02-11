@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use App\Services\LogService;
 
 class AuthController extends Controller
 {
@@ -26,14 +27,14 @@ class AuthController extends Controller
 
         // Récupération des identifiants
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
             // Récupération du rôle de l'utilisateur (si nécessaire)
             // $role = $user->getRoleNames();
 
             // Redirection vers le tableau de bord avec un message de succès
+            // Logique de connexion
+            LogService::addLog('Tentative de Connexion', 'Connexion réussie pour ' . $request->email);
             return redirect()->route('dashboard')->with('success', 'Connexion réussie.');
         }
 
@@ -85,9 +86,16 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
         Auth::logout();
+        if ($user) {
+            LogService::addLog('Tentative de Déconnexion', 'Déconnexion réussie pour ' . $user->name);
+        } else {
+            LogService::addLog('Déconnexion', 'Déconnexion réussie pour un utilisateur non authentifié');
+        }
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }

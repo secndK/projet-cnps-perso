@@ -19,8 +19,6 @@ class UserController extends Controller
         return view('users.index', compact('users','roles'));
 
     }
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -28,7 +26,6 @@ class UserController extends Controller
     {
         $roles = Role::get();
         return view('users.create', compact('roles'));
-
     }
 
     /**

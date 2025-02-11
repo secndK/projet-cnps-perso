@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\TypePeripherique;
 
@@ -56,9 +55,7 @@ class TypesPeripheriquesController extends Controller
     {
         $validated = $request->validate([
             'libelle_type' => 'required|unique:types-peripheriques,libelle_type,' . $types->id,
-
         ]);
-
         $types->update($validated);
         return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique mis à jour avec succès');
     }

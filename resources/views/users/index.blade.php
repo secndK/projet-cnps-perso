@@ -13,7 +13,7 @@
 
     <div class="card-body">
         <table id="tableUsers" class="table datatable">
-            <thead class="bg-primary text-white">
+            <thead class="text-white bg-primary">
                 <tr>
                     <th width="1%">No</th>
                     <th>Nom de l'utilisateur</th>
@@ -29,7 +29,7 @@
                 @forelse($users as $key => $user)
                 <tr>
                     <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->name}}</td>
                     <td>{{ $user->email }}</td>
                     <td>
                         <!-- Afficher les rôles sous forme de badges -->

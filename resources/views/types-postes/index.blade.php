@@ -13,7 +13,7 @@
         </div>
         <div class="card-body">
             <table id="tabletype" class="table datatable">
-                <thead class="bg-primary text-white">
+                <thead class="text-white bg-primary">
                     <tr>
                         <th >N°</th>
                         <th >libelle type</th>
@@ -30,8 +30,8 @@
                         <td>{{ $type->created_at->format('d/m/Y H:i') }}</td>
                         <td>{{ $type->updated_at->format('d/m/Y H:i') }}</td>
                         <td>
-                            <a href="{{ route('types-postes.show') }}" class="btn btn-info btn-sm">Visualiser</a>
-                            <a href="{{route('types-postes.edit')  }}" class="btn btn-primary btn-sm">Éditer</a>
+                            <a href="{{ route('types-postes.show', $type->id) }}" class="btn btn-info btn-sm">Visualiser</a>
+                            <a href="{{route('types-postes.edit', $type->id)  }}" class="btn btn-primary btn-sm">Éditer</a>
                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTypePosteModal{{ $type->id }}">
                                 Supprimer
                             </button>
