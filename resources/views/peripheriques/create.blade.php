@@ -7,7 +7,9 @@
     <div class="card-header">
         <div class="mt-3 d-flex justify-content-between">
             <p> Ajoutez un nouveau périphérique</p>
-            <button type="submit" class="btn btn-primary">Créer un nouveau type de peripherique</button>
+            <form action="{{ route('types-peripheriques.create') }}" method="GET">
+                <button type="submit" class="btn btn-primary btn-sm">Créer un nouveau type de peripherique</button>
+            </form>
         </div>
     </div>
     <div class="card-body">
@@ -50,88 +52,26 @@
                         </select>
                     </div>
                 </div>
-
                       <!-- Sélection du type de périphérique avec ajout via modal -->
-                      {{-- <div class="mt-3 col-6">
+                     <div class="mt-3 col-6">
                         <div class="form-group">
                             <label for="TypePeripherique" class="form-label">Type</label>
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addTypeModal">+</button>
-
-                            <div class="d-flex">
                                 <select name="type_peripherique_id" id="TypePeripherique" class="js-example-basic-single form-select me-2">
                                     <option value="">-- Choisir --</option>
                                     @foreach($types as $type)
-                                        <option value="{{ $type->id }}">{{ $type->libelle }}</option>
+                                        <option value="{{ $type->id }}">{{ $type->libelle_type }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+
                         </div>
-                    </div> --}}
-
-
-                {{-- <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="agent_id" class="form-label">Attribuer à propriétaire</label>
-                        <select name="agent_id" class="js-example-basic-single form-control">
-                            <option value="">-- Choisir --</option>
-                            @foreach($agents as $agent)
-                                <option value="{{ $agent->id }}">{{ $agent->nom_agent }}</option>
-                            @endforeach
-                        </select>
                     </div>
-                </div>
-                <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="poste_id" class="form-label">Attribuer à poste</label>
-                        <select name="poste_id" class="js-example-basic-single form-control">
-                            <option value="">-- Choisir --</option>
-                            @foreach($postes as $poste)
-                                <option value="{{ $poste->id }}">{{ $poste->nom_poste }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> --}}
+
                 <div class="mt-3 col-6">
                     <div class="form-group">
                         <label for="DateAcq" class="form-label">Date acquisition</label>
                         <input type="date" name="date_acq" class="form-control" id="DateAcq">
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
-                {{-- <!-- Modale pour ajouter un nouveau type -->
-                <div class="modal fade" id="addTypeModal" tabindex="-1" aria-labelledby="addTypeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addTypeModalLabel">Ajouter un type de périphérique</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="newType" class="form-label">Nom du type</label>
-                                    <input type="text" id="newType" class="form-control">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                <button type="button" class="btn btn-primary" id="saveNewType">Ajouter</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
- --}}
-
-
 
                 <div class="mt-3 d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Créer</button>

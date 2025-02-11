@@ -3,80 +3,53 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('dashboard') }}">
                 <i class="bi bi-clipboard-data"></i>
-              <span>Dashboard</span>
+                <span>Dashboard</span>
             </a>
         </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-sliders"></i><span>Gestion des accès</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ route('roles.index') }}">
-              <i class="bi bi-circle"></i><span>Rôles</span>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#roles-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-sliders"></i><span>Gestion des accès</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-          <li>
-            <a href="{{ route('permissions.index') }}">
-              <i class="bi bi-circle"></i><span>Permissions</span>
+            <ul id="roles-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="{{ route('roles.index') }}"><i class="bi bi-circle"></i><span>Rôles</span></a></li>
+                <li><a href="{{ route('permissions.index') }}"><i class="bi bi-circle"></i><span>Permissions</span></a></li>
+                <li><a href="{{ route('users.index') }}"><i class="bi bi-circle"></i><span>Utilisateurs</span></a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#postes-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal-text"></i><span>Gestion des postes</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
+            <ul id="postes-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="{{ route('types-postes.index') }}"><i class="bi bi-circle"></i><span>Types de postes</span></a></li>
+                <li><a href="{{ route('postes.index') }}"><i class="bi bi-circle"></i><span>Poste de travail</span></a></li>
+            </ul>
+        </li>
 
-          <li>
-            <a href="{{ route('users.index') }}">
-              <i class="bi bi-circle"></i><span>Utilisateurs</span>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#peripheriques-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-usb"></i><span>Gestion des périphériques</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-        </ul>
-      </li>
+            <ul id="peripheriques-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="{{ route('types-peripheriques.index') }}"><i class="bi bi-circle"></i><span>Types de périphériques</span></a></li>
+                <li><a href="{{ route('peripheriques.index') }}"><i class="bi bi-circle"></i><span>Périphériques</span></a></li>
+            </ul>
+        </li>
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('dashboard') }}">
+                <i class="bi bi-dash-circle"></i>
+                <span>Error 404</span>
+            </a>
+        </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Gestion des actifs</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li>
-                <a href="{{ route('postes.index') }}">
-                  <i class="bi bi-circle"></i><span>Poste de travail</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="{{ route('peripheriques.index') }}">
-                  <i class="bi bi-circle"></i><span>Peripherique</span>
-                </a>
-              </li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('dashboard') }}">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li>
-
-      <!-- End Blank Page Nav -->
-
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li>
-
-
-
-
-
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="pages-blank.html">
+                <i class="bi bi-file-earmark"></i>
+                <span>Blank</span>
+            </a>
+        </li>
     </ul>
-
-  </aside><!-- End Sidebar-->
+</aside>

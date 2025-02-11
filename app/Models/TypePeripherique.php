@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-
 class TypePeripherique extends Model
 {
 
@@ -21,6 +19,5 @@ class TypePeripherique extends Model
     {
         return $this->hasMany(Peripherique::class, 'peripherique_id');
     }
-
 
 }

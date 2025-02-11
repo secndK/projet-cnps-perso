@@ -32,9 +32,9 @@
                     </div>
 
                     <div class="mt-3 col-6">
-                        <div class="form-group">   
+                        <div class="form-group">
                                 <label for="nom_poste" class="form-label">Nom du périphérique</label>
-                                <input type="text" name="nom_poste" class="form-control" id="nom_poste" value="{{ $postes->nom_poste }}" required>                  
+                                <input type="text" name="nom_poste" class="form-control" id="nom_poste" value="{{ $postes->nom_poste }}" required>
                         </div>
                     </div>
 
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="designation_poste" class="form-label">Désignation</label>
                             <input type="text" name="designation_poste" class="form-control" id="designation_poste" value="{{ $postes->designation_poste }}">
-                            
+
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                                 <option value="En service" {{ $postes->etat_poste == 'En service' ? 'selected' : '' }}>En service</option>
                                 <option value="Réformé" {{ $postes->etat_poste == 'Réformé' ? 'selected' : '' }}>Réformé</option>
                                 <option value="Non attribué" {{ $postes->etat_poste == 'Non attribué' ? 'selected' : '' }}>Non attribué</option>
-                            </select>            
+                            </select>
                         </div>
                     </div>
 
@@ -66,10 +66,9 @@
                             <select name="type_poste" class="form-select">
                                 <option value="ecran" {{ $postes->type_poste == 'bureau' ? 'selected' : '' }}>Écran</option>
                                 <option value="clavier" {{ $postes->type_poste == 'portable' ? 'selected' : '' }}>Clavier</option>
-                            </select>                                 
+                            </select>
                         </div>
                     </div>
-
 
 
                     <div class="mt-3 col-6">
@@ -81,11 +80,9 @@
                                     <option value="{{ $agent->id }}" {{ $postes->agent_id == $agent->id ? 'selected' : '' }}>{{ $agent->nom_agent }}</option>
                                 @endforeach
                             </select>
-                                                  
+
                         </div>
                     </div>
-
-
 
                     <div class="mt-3 col-6">
                         <div class="form-group">
@@ -96,24 +93,21 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>                                            
-                        
-                    
-
+                    </div>
 
 
                     <div class="mt-3 col-6">
                         <div class="form-group">
-                            
-                                                  
+
+
                         </div>
                     </div>
 
 
                     <div class="mt-3 col-6">
                         <div class="form-group">
-                            
-                                                  
+
+
                         </div>
                     </div>
 

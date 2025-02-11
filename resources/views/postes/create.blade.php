@@ -5,7 +5,14 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        Créer un nouveau poste
+        <div class="mt-3 d-flex justify-content-between">
+            <p> Créer un nouveau poste</p>
+            <form action="{{ route('types-postes.create') }}" method="GET">
+                <button type="submit" class="btn btn-primary btn-sm">Créer un nouveau type de poste</button>
+            </form>
+        </div>
+
+
     </div>
     <div class="card-body">
         <form action="{{ route('postes.store') }}" method="POST">
@@ -86,9 +93,7 @@
 @endsection
 
 
-
 @section('select')
-
 <script>
     $(document).ready(function() {
     $('.js-example-basic-single').select2();

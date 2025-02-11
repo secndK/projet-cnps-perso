@@ -25,7 +25,8 @@ class PeripheriqueController extends Controller
     public function create()
     {
 
-        return view('peripheriques.create');
+        $types = TypePeripherique::all();
+        return view('peripheriques.create', compact('types'));
     }
 
     /**

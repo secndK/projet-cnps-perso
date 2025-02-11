@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('types_peripheriques', function (Blueprint $table) {
             $table->id();
-            $table->string('libelle_type')->unique();
+            $table->string('libelle_type');
             $table->timestamps();
         });
-
     }
-
     /**
      * Reverse the migrations.
      */
