@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des postes de travail')
-@section('module', 'Editer type de poste')
+@section('title', 'Gestion des Périphériques')
+@section('module', 'Editer type de périphériques')
 
 @section('content')
 <div class="card">
     <div class="card-header">
         <div class="card-body">
-            <form action="{{ route('types-postes.update', $types->id) }}" method="POST">
+            <form action="{{ route('types-peripheriques.update', $types->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
             <div class="mb-3 col-12">
-                <label for="libelleType" class="form-label">Type de poste </label>
+                <label for="libelleType" class="form-label">Type de périphérique </label>
                 <input type="text" name="libelle_type" class="form-control" id="libelleType" value="{{ $types->libelle_type}}" required>
             </div>
 

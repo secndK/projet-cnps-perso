@@ -24,6 +24,9 @@ return new class extends Migration
             ->constrained('agents')
             ->onDelete('cascade');
 
+            $table->foreignId('type_poste_id')->nullable()
+                ->constrained('types_postes')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

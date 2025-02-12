@@ -1,16 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Créer un type de poste')
+@section('title', 'Gestion des postes de travail')
+@section('module', 'Créer type de poste')
 
 @section('content')
 <div class="card">
-
-    <div class="card-header">
+    {{-- <div class="card-header">
 
         <h3>Créer un nouveau type de poste</h3>
 
-    </div>
-
+    </div> --}}
     <div class="card-body">
 
         <form action="{{ route('types-postes.store') }}" method="POST">

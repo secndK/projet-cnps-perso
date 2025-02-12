@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TypePeripherique;
+use App\Services\LogService;
 
 class TypesPeripheriquesController extends Controller
 {
@@ -30,6 +31,7 @@ class TypesPeripheriquesController extends Controller
             'libelle_type' => 'required|string|max:255',
         ]);
         TypePeripherique::create($validatedData);
+        LogService::addLog('Nouveau Type périphérique crée', 'Libellé: ' . $request->libelle_type);
         return redirect()->route('types-peripheriques.index')->with('success', ' Type de Périphérique ajouté avec succès');
     }
     /**
@@ -57,6 +59,7 @@ class TypesPeripheriquesController extends Controller
             'libelle_type' => 'required|unique:types-peripheriques,libelle_type,' . $types->id,
         ]);
         $types->update($validated);
+        LogService::addLog('MAJ Type périphériques', ' Libellé : ' . $request->libelle_type);
         return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique mis à jour avec succès');
     }
     /**
@@ -66,6 +69,7 @@ class TypesPeripheriquesController extends Controller
     {
         $types = TypePeripherique::findOrFail($id);
         $types->delete();
+        LogService::addLog('Suppression type périphériques', 'ID : ' . $id);
         return redirect()->route('types-peripheriques.index')->with('success', ' Type de Périphérique supprimé avec succès');
     }
 }

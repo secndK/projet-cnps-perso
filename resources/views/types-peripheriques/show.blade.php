@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Détails du type de postes')
+@section('title', 'Gestion des Périphériques')
+@section('module', 'Détails type de périphériques')
 
 @section('content')
 
 <div class="card">
-    <div class="card-header">
+    {{-- <div class="card-header">
         <h3>Détails de l'utilisateur</h3>
-    </div>
+    </div> --}}
     <div class="card-body">
         <form>
             <div class="mt-3 row">
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="libelleType" class="form-label"> Libelle du type</label>
-                        <input type="text" class="form-control" id="u" readonly value="{{ $types->libelle_type}}" disabled>
+                        <label for="libelleType" class="form-label">Type de périphérique </label>
+                        <input type="text" class="form-control" id="libelleType" readonly value="{{ $types->libelle_type}}" disabled>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
  <!-- Delete Modal -->
  <div class="modal fade" id="deleteTypePeripheriqueModal{{ $type->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{{ route('types-peripheriques.destroy', $types) }}" method="POST">
+        <form action="{{ route('types-peripheriques.destroy',$type->id) }}" method="POST">
             @csrf
             @method('DELETE')
             <div class="modal-content">

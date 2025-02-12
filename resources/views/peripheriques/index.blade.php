@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Periphériques')
+
+@section('title', 'Gestion des périphériques')
+@section('module', ' périphérique')
 
 @section('content')
 
@@ -17,9 +19,9 @@
 
     <div class="card-body">
         <table id="tableperipherique" class="table datatable">
-            <thead class="bg-primary text-white">
+            <thead class="text-white bg-primary">
                 <tr>
-                    {{-- <th>id</th> --}}
+                    <th scope="col">N°</th>
                     <th >N°série</th>
                     <th>N°inventaire</th>
                     <th >Nom</th> <!-- Nouvelle colonne pour les peripheriques -->
@@ -31,11 +33,11 @@
             <tbody>
                 @forelse ($peripheriques as $peripherique)
                 <tr>
-                    {{-- <td>{{ $peripherique->id }}</td> --}}
+                    <td scope="row">{{ $loop->index + 1 }}</td>
                     <td>{{ $peripherique->num_serie_peripherique }}</td>
                     <td>{{ $peripherique->num_inventaire_peripherique }}</td>
                     <td>{{ $peripherique->nom_peripherique. ' ' .$peripherique->designation_peripherique }}</td>
-                    <td>{{ $peripherique->type_peripherique }}</td>
+                    <td>{{ $peripherique->typePeripherique->libelle_type ?? 'Non défini' }}</td>
                     <td>{{ $peripherique->etat_peripherique }}</td>
                     <td>
                         <a href="{{ route('peripheriques.show', $peripherique->id) }}" class="btn btn-info btn-sm">Visualiser</a>
@@ -45,7 +47,7 @@
                         </button>
                     </td>
                 </tr>
-                @include('peripherique.modals.delete', ['peripherique' => $peripherique])
+                @include('peripheriques.modals.delete', ['peripherique' => $peripherique])
                 @empty
                 <tr>
                     <td colspan="8" class="text-center text-muted">Aucun périphérique trouvé.</td>

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', ' Types de postes')
+
+@section('title', 'Gestion des postes de travail')
+@section('module', 'Types de poste')
 
 @section('content')
 

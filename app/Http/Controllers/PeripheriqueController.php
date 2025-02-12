@@ -7,6 +7,7 @@ use App\Models\Peripherique;
 use App\Models\Agent;
 use App\Models\Poste;
 use App\Models\TypePeripherique;
+use App\Services\LogService;
 
 class PeripheriqueController extends Controller
 {
@@ -15,7 +16,7 @@ class PeripheriqueController extends Controller
      */
     public function index()
     {
-        $peripheriques = Peripherique::all();
+        $peripheriques = Peripherique::with('typePeripherique')->get();
         return view('peripheriques.index', compact('peripheriques'));
     }
 
@@ -50,14 +51,15 @@ class PeripheriqueController extends Controller
 
         return redirect()->route('peripheriques.index')->with('success', 'Périphérique ajouté avec succès');
     }
-
     /**
      * Afficher les détails d'un périphérique.
      */
     public function show($id)
     {
-        $peripherique = Peripherique::findOrFail($id);
-        return view('peripheriques.show', compact('peripherique'));
+        $peripheriques = Peripherique::with('typePeripherique')->findOrFail($id);
+        $types = TypePeripherique::all();
+
+        return view('peripheriques.show', compact('peripheriques','types'));
     }
 
     /**
@@ -65,9 +67,9 @@ class PeripheriqueController extends Controller
      */
     public function edit($id)
     {
-        $peripherique = Peripherique::findOrFail($id);
-
-        return view('peripheriques.edit', compact('peripherique'));
+        $peripheriques = Peripherique::with('typePeripherique')->findOrFail($id);
+        $types = TypePeripherique::all();
+        return view('peripheriques.edit', compact('peripheriques','types'));
     }
     /**
      * Mettre à jour un périphérique.

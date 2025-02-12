@@ -1,18 +1,17 @@
-@extends('layouts.app')
 
-@section('title', 'Créer un nouveau poste')
+@extends('layouts.app')
+@section('title', 'Gestion des postes de travail')
+@section('module', 'Créer un poste de travail')
 
 @section('content')
 <div class="card">
     <div class="card-header">
-        <div class="mt-3 d-flex justify-content-between">
+        <div class="d-flex justify-content-between">
             <p> Créer un nouveau poste</p>
             <form action="{{ route('types-postes.create') }}" method="GET">
                 <button type="submit" class="btn btn-primary btn-sm">Créer un nouveau type de poste</button>
             </form>
         </div>
-
-
     </div>
     <div class="card-body">
         <form action="{{ route('postes.store') }}" method="POST">
@@ -42,49 +41,44 @@
                     <input type="text" name="designation_poste" class="form-control" id="designation_poste">
                 </div>
 
-                {{-- <!-- Type de poste -->
-                <div class="col-6 mt-3">
-                    <label for="type_poste" class="form-label">Type de poste</label>
-                    <select name="type_poste" class="form-select" id="type_poste">
-                </div> --}}
+
 
                 <!-- État du poste -->
-                <div class="col-6 mt-3">
-                    <label for="etat_poste" class="form-label">État du poste</label>
-                    <input type="text" name="etat_poste" class="form-control" id="etat_poste">
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="EtatPoste" class="form-label">État</label>
+                        <select name="etat_poste" id="EtatPoste" class="js-example-basic-single form-select">
+                            <option value="">-- Choisir --</option>
+                            <option value="En panne">En panne</option>
+                            <option value="En service">En service</option>
+                            <option value="Réformé">Réformé</option>
+                            <option value="Non attribué">Non attribué</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Date d'acquisition -->
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="TypePoste" class="form-label">Type</label>
+                            <select name="type_poste_id" id="TypePoste" class="js-example-basic-single form-select me-2">
+                                <option value="">-- Choisir --</option>
+                                @foreach($types as $type)
+                                    <option value="{{ $type->id }}">{{ $type->libelle_type }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                </div>
+
+
                 <div class="col-6 mt-3">
                     <label for="date_acq" class="form-label">Date d'acquisition</label>
                     <input type="date" name="date_acq" class="form-control" id="date_acq" required>
                 </div>
 
-                <!-- Agent -->
-                <div class="col-6 mt-3">
-                    <label for="agent_id" class="form-label">Agent</label>
-                    <select name="agent_id" class="form-control" id="agent_id">
-                        <option value="">-- Choisir un agent --</option>
-                        @foreach($agents as $agent)
-                            <option value="{{ $agent->id }}">{{ $agent->nom_agent }}</option>
-                        @endforeach
-                    </select>
-                </div>
 
-                <!-- Périphériques -->
-                <div class="col-6 mt-3">
-                    <label for="peripheriques" class="form-label">Périphériques</label>
-                    <select name="peripheriques[]" class="js-example-basic-multiple form-control" id="peripheriques" multiple="multiple">
-                        @foreach($peripheriques as $peripherique)
-                            <option value="{{ $peripherique->id }}">{{ $peripherique->nom_peripherique }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Boutons -->
-                <div class="mt-8 d-flex justify-content-between">
+                <div class="mt-3 d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Créer</button>
-                    <a href="{{ route('postes.index') }}" class="btn btn-secondary">Annuler</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Annuler</a>
                 </div>
             </div>
         </form>

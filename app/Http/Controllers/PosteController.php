@@ -3,32 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\P;
+use App\Models\TypePoste;
 use App\Models\Agent;
 use App\Models\Poste;
 use App\Models\Peripherique;
+use App\Services\LogService;
 
 class PosteController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
+    */
     public function index()
     {
-        $postes = Poste::with( 'agents')->get();
-
-        
+        $postes = Poste::with( 'TypePoste')->get();
         return view('postes.index', compact('postes'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $agents = Agent::all();
-        $peripheriques = Peripherique::whereNull('poste_id')->get();
-        return view('postes.create', compact('agents', 'peripheriques'));
+        $types = TypePoste::all();
+        return view('postes.create', compact('types'));
     }
 
     /**
@@ -39,30 +36,20 @@ class PosteController extends Controller
     */
     public function store(Request $request)
     {
-        
         $validatedData = $request->validate([
             'num_serie_poste' => 'required|unique:postes',
             'num_inventaire_poste' => 'required|unique:postes',
             'nom_poste' => 'required',
             'designation_poste' => 'nullable',
-            'type_poste' => 'nullable',
             'etat_poste' => 'nullable',
             'date_acq' => 'required|date',
             'agent_id' => 'nullable|exists:agents,id',
-            'peripheriques' => 'nullable|array',
-            'peripheriques.*' => 'exists:peripheriques,id',
+            'type_poste_id' => 'nullable|exists:types_postes,id',
         ]);
-        
-        $poste = Poste::create($validatedData);
 
-       
-        if (!empty($validatedData['peripheriques'])) {
-            $poste->peripheriques()->sync($validatedData['peripheriques']);
-        }
+        Poste::create($validatedData);
 
-  
-        return redirect()->route('postes.index')
-                        ->with('success', 'Poste créé avec succès.');
+        return redirect()->route('postes.index')->with('success', 'Poste créé avec succès.');
     }
 
 /**
@@ -70,15 +57,10 @@ class PosteController extends Controller
     */
     public function show($id)
     {
-       
-        $agents = Agent::all();
-        $peripheriques = Peripherique::whereNull('poste_id')->get();
 
-        // Récupération du poste avec ses relations
-        $postes = Poste::with(['peripheriques', 'agent'])->findOrFail($id);
-
-        // Retourne la vue avec les données
-        return view('postes.show', compact('postes', 'agents', 'peripheriques'));    
+       $postes = Poste::with('TypePoste')->findOrFail($id);
+       $types = TypePoste::all();
+        return view('postes.show', compact('postes','types'));
     }
 
     /**
@@ -86,43 +68,32 @@ class PosteController extends Controller
      */
     public function edit($id)
     {
-        
-        $postes = Poste::findOrFail($id);
-        $peripheriques = Peripherique::where('poste_id', $id)->get();
-        $agents = Agent::all();
-
-      
-        return view('postes.edit', compact('postes', 'agents', 'peripheriques'));
+        $postes = Poste::with( 'TypePoste')->findOrFail($id);
+        $types = TypePoste::all();
+        return view('postes.edit', compact('postes', 'types'));
     }
 
     /**
      * Met à jour un poste spécifique dans la base de données.
      */
-    public function update(Request $request, Poste $postes)
+    public function update(Request $request, $id)
     {
 
         $validatedData = $request->validate([
-            'num_serie_poste' => 'required|unique:postes,num_serie_poste,' . $postes->id,
-            'num_inventaire_poste' => 'required|unique:postes,num_inventaire_poste,' . $postes->id,
+            'num_serie_poste' => 'required|unique:postes,num_serie_poste,' ,
+            'num_inventaire_poste' => 'required|unique:postes,num_inventaire_poste,',
             'nom_poste' => 'required',
             'designation_poste' => 'nullable',
             'type_poste' => 'nullable',
             'etat_poste' => 'nullable',
             'date_acq' => 'required|date',
             'agent_id' => 'nullable|exists:agents,id',
-            'peripheriques' => 'nullable|array',
-            'peripheriques.*' => 'exists:peripheriques,id',
+            'type_poste_id' => 'nullable|exists:types_postes,id',
         ]);
 
-       
+        $postes = Poste::findOrFail($id);
         $postes->update($validatedData);
-        
-        if (!empty($validatedData['peripheriques'])) {
-            $postes->peripheriques()->sync($validatedData['peripheriques']);
-        }
-       
-        return redirect()->route('postes.index')
-                        ->with('success', 'Poste mis à jour avec succès.');
+        return redirect()->route('postes.index')->with('success', 'Poste mis à jour avec succès.');
     }
 
         /**

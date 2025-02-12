@@ -20,11 +20,11 @@ class Peripherique extends Model
         'num_inventaire_peripherique',
         'nom_peripherique',
         'designation_peripherique',
-        'type_peripherique',
         'etat_peripherique',
         'date_acq',
         'agent_id',
         'poste_id',
+        'type_peripherique_id',
 
     ];
 

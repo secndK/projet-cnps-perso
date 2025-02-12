@@ -1,15 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Créer un type de périphérique')
+@section('title', 'Gestion des périphériques')
+@section('module', 'type de périphérique')
 
 @section('content')
 <div class="card">
-
+{{--
     <div class="card-header">
 
         <h3>Créer un nouveau type de périphérique</h3>
 
-    </div>
+    </div> --}}
 
     <div class="card-body">
 
@@ -17,7 +18,7 @@
 
             @csrf
 
-              <div class="col-12 mt-3">
+              <div class="mt-3 col-12">
 
                 <label for="libelle_type" class="form-label">Libellé du type</label>
                 <input type="text" name="libelle_type" class="form-control" id="libelle_type" required>

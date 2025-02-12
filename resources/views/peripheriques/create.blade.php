@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
+
 @section('title', 'Gestion des périphériques')
+@section('module', 'Créer un périphérique')
 
 @section('content')
 <div class="card">
     <div class="card-header">
         <div class="mt-3 d-flex justify-content-between">
-            <p> Ajoutez un nouveau périphérique</p>
+            <p> Ajouter un nouveau périphérique</p>
             <form action="{{ route('types-peripheriques.create') }}" method="GET">
                 <button type="submit" class="btn btn-primary btn-sm">Créer un nouveau type de peripherique</button>
             </form>
@@ -62,7 +64,6 @@
                                         <option value="{{ $type->id }}">{{ $type->libelle_type }}</option>
                                     @endforeach
                                 </select>
-
                         </div>
                     </div>
 

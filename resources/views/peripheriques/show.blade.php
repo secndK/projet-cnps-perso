@@ -1,13 +1,12 @@
 @extends('layouts.app')
-
-@section('title', 'Détails du périphérique')
+@section('title', 'Gestion des périphériques')
+@section('module', 'Détails périphérique')
 
 @section('content')
 <div class="card">
     <div class="card-header">
-        Détails du périphérique : {{ $peripheriques->nom_peripherique }}
+        <h4><strong>Détails de: {{ $peripheriques->nom_peripherique }}</strong></h4>
     </div>
-
     <div class="card-body">
         <form>
             <div class="row">
@@ -41,38 +40,18 @@
                     </select>
                 </div>
 
-                <div class="col-6 mt-3">
-                    <label for="type_peripherique" class="form-label">Type</label>
-                    <select name="type_peripherique" class="form-select" disabled>
-                        <option value="ecran" {{ $peripheriques->type_peripherique == 'ecran' ? 'selected' : '' }}>Écran</option>
-                        <option value="clavier" {{ $peripheriques->type_peripherique == 'clavier' ? 'selected' : '' }}>Clavier</option>
-                        <option value="souris" {{ $peripheriques->type_peripherique == 'souris' ? 'selected' : '' }}>Souris</option>
-                        <option value="telephone ip" {{ $peripheriques->type_peripherique == 'telephone ip' ? 'selected' : '' }}>Téléphone IP</option>
-                        <option value="imprimante" {{ $peripheriques->type_peripherique == 'imprimante' ? 'selected' : '' }}>Imprimante</option>
-                        <option value="domino wifi" {{ $peripheriques->type_peripherique == 'domino wifi' ? 'selected' : '' }}>Domino Wi-Fi</option>
-                    </select>
-                </div>
-
-                <div class="col-6 mt-3">
-                    <label for="agent_id" class="form-label">Propriétaire</label>
-                    <select name="agent_id" class="js-example-basic-single form-control" disabled>
+                <div class="mt-3 col-6">
+                    <label for="TypePeripherique" class="form-label">Type</label>
+                    <select name="type_peripherique_id" id="TypePeripherique" class="form-select" disabled>
                         <option value="">-- Choisir --</option>
-                        @foreach($agents as $agent)
-                            <option value="{{ $agent->id }}" {{ $peripheriques->agent_id == $agent->id ? 'selected' : '' }}>{{ $agent->nom_agent }}</option>
+                        @foreach($types as $type)
+                            <option value="{{ $type->id }}"
+                                {{ $peripheriques->type_peripherique_id == $type->id ? 'selected' : '' }}>
+                                {{ $type->libelle_type }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
-
-                <div class="col-6 mt-3">
-                    <label for="poste_id" class="form-label">Poste</label>
-                    <select name="poste_id" class="js-example-basic-single form-control" disabled>
-                        <option value="">-- Choisir --</option>
-                        @foreach($postes as $poste)
-                            <option value="{{ $poste->id }}" {{ $peripheriques->poste_id == $poste->id ? 'selected' : '' }}>{{ $poste->nom_poste }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
                 <div class="col-6 mt-3">
                     <label for="date_acq" class="form-label">Date d'acquisition</label>
                     <input type="date" name="date_acq" class="form-control" id="date_acq" value="{{ \Carbon\Carbon::parse($peripheriques->date_acq)->format('Y-m-d') }}" disabled>
@@ -83,7 +62,6 @@
                 </div>
             </div>
         </form>
-        
     </div>
 </div>
 @endsection

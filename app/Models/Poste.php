@@ -19,18 +19,21 @@ class Poste extends Model
         'etat_poste',
         'date_acq',
         'agent_id',
+        'type_poste_id',
     ];
-
 
     public function agents()
     {
         return $this->belongsTo(Agent::class, 'agent_id');
     }
 
-
     public function peripheriques()
     {
         return $this->hasMany(Peripherique::class);
+    }
+
+    public function typePoste(){
+        return $this->belongsTo(TypePoste::class, 'type_poste_id');
     }
 
 }
