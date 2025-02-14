@@ -36,4 +36,9 @@ class Agent extends Model
         return $this->hasMany(Peripherique::class, 'peripherique_id');
     }
 
+    public function attributions()
+    {
+        return $this->hasMany(Attribution::class);
+    }
+
 }

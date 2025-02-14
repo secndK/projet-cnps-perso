@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TypePoste;
-use App\Models\Agent;
+
 use App\Models\Poste;
-use App\Models\Peripherique;
+
 use App\Services\LogService;
 
 class PosteController extends Controller
@@ -27,7 +27,6 @@ class PosteController extends Controller
         $types = TypePoste::all();
         return view('postes.create', compact('types'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -44,11 +43,9 @@ class PosteController extends Controller
             'etat_poste' => 'nullable',
             'date_acq' => 'required|date',
             'agent_id' => 'nullable|exists:agents,id',
-            'type_poste_id' => 'nullable|exists:types_postes,id',
+            'type_poste_id' => 'required|exists:types_postes,id',
         ]);
-
         Poste::create($validatedData);
-
         return redirect()->route('postes.index')->with('success', 'Poste créé avec succès.');
     }
 

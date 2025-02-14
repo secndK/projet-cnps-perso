@@ -2,6 +2,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AttributionController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PosteController;
@@ -65,6 +66,7 @@ Route::resource('postes', PosteController::class)->middleware('superadmin');
 // gestion des logs
 Route::resource('logs', LogsController::class)->middleware('superadmin');
 //gestion des roles
+Route::resource('attributions', AttributionController::class)->middleware('superadmin');
 //deconnexion
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

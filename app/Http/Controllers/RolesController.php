@@ -27,7 +27,7 @@ class RolesController extends Controller
     public function index()
     {
         $roles = Role::with('permissions')->get(); // Charger les rôles et leurs permissions
-        $permissions = Permission::all(); // Charger toutes les permissions
+        // $permissions = Permission::all(); // Charger toutes les permissions
         return view('roles.index', compact('roles', 'permissions'));
     }
 
@@ -85,7 +85,6 @@ class RolesController extends Controller
     public function show(Role $role)
     {
         $rolePermissions = $role->permissions; // Récupérer les permissions associées au rôle
-
         return view('roles.show', compact('role', 'rolePermissions'));
     }
 

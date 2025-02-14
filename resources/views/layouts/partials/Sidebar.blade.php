@@ -12,12 +12,14 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#roles-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-sliders"></i><span>Gestion des accès</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-sliders"></i><span>Gestion des accès et attributions</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="roles-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li><a href="{{ route('roles.index') }}"><i class="bi bi-circle"></i><span>Rôles</span></a></li>
                 <li><a href="{{ route('permissions.index') }}"><i class="bi bi-circle"></i><span>Permissions</span></a></li>
                 <li><a href="{{ route('users.index') }}"><i class="bi bi-circle"></i><span>Utilisateurs</span></a></li>
+                <li><a href="{{ route('attributions.index') }}"><i class="bi bi-circle"></i><span>Attributions</span></a></li>
+
             </ul>
         </li>
         <li class="nav-item">

@@ -35,7 +35,7 @@
                         <td>{{ $poste->num_inventaire_poste}}
                         <td>{{ $poste->nom_poste}}</td>
                         <td>{{ $poste->designation_poste }}</td>
-                        <td>{{ $poste->typePoste>libelle_type ?? 'Non défini' }}</td>
+                        <td>{{ $poste->TypePoste->libelle_type ?? 'Non défini' }}</td>
                         <td>{{ $poste->etat_poste }}</td>
                         <td>
                             <a href="{{ route('postes.show', $poste->id) }}" class="btn btn-info btn-sm">Visualiser</a>

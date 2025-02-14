@@ -27,7 +27,7 @@ class TypesPostesController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'libelle_type' => 'required|string|max:255|unique:types_postes,libelle_type',
+            'libelle_type' => 'required|string|max:255',
         ]);
         TypePoste::create($validatedData);
         LogService::addLog('Nouveau Type poste crée', 'Libellé: ' . $request->libelle_type);

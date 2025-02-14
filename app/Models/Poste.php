@@ -15,7 +15,6 @@ class Poste extends Model
         'num_inventaire_poste',
         'nom_poste',
         'designation_poste',
-        'type_poste',
         'etat_poste',
         'date_acq',
         'agent_id',
@@ -29,11 +28,16 @@ class Poste extends Model
 
     public function peripheriques()
     {
-        return $this->hasMany(Peripherique::class);
+        return $this->hasMany(Peripherique::class, 'peripherique_id');
     }
 
     public function typePoste(){
         return $this->belongsTo(TypePoste::class, 'type_poste_id');
+    }
+
+    public function attributions()
+    {
+        return $this->hasMany(Attribution::class);
     }
 
 }
