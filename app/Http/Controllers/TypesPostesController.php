@@ -12,14 +12,14 @@ class TypesPostesController extends Controller
     public function index()
     {
         $types = TypePoste::all();
-        return view('types-postes.index', compact('types'));
+        return view('pages.types-postes.index', compact('types'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('types-postes.create');
+        return view('pages.types-postes.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -39,7 +39,7 @@ class TypesPostesController extends Controller
     public function show($id)
     {
         $types = TypePoste::findOrFail($id);
-        return view('types-postes.show',compact('types'));
+        return view('pages.types-postes.show',compact('types'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -47,7 +47,7 @@ class TypesPostesController extends Controller
     public function edit($id)
     {
         $types = TypePoste::findOrFail($id);
-        return view('types-postes.edit',compact('types'));
+        return view('pages.types-postes.edit',compact('types'));
     }
     /**
      * Update the specified resource in storage.

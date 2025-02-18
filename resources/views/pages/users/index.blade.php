@@ -52,7 +52,7 @@
                     </td>
                 </tr>
 
-                @include('users.modals.delete', ['user' => $user])
+                @include('pages.users.modals.delete', ['user' => $user])
 
                 @empty
                 <tr>

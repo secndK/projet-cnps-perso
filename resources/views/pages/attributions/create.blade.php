@@ -14,16 +14,9 @@
     <div class="card-body">
         <form action="{{ route('attributions.store') }}" method="POST">
             @csrf
-
             <div class="mt-1 row">
-              <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="libelle_attribution">Libellé</label>
-                        <input type="text" name="libelle_attribution" id="libelle_attribution" class="form-control" required>
-                    </div>
-                </div>
 
-                <div class="mt-3 col-6">
+                <div class="mt-3 col-12">
                     <div class="form-group">
                         <label for="agent_id">Agent</label>
                         <select name="agent_id" id="agent_id" class="js-example-basic-single form-control" required>
@@ -36,7 +29,7 @@
 
                 </div>
 
-                <div class="mt-3 col-6">
+                <div class="mt-3 col-12">
 
                     <div class="form-group">
                         <label for="postes">Postes</label>
@@ -49,7 +42,7 @@
 
                 </div>
 
-                <div class="mt-3 col-6">
+                <div class="mt-3 col-12">
                     <div class="form-group">
                         <label for="peripheriques">Périphériques</label>
                         <select name="peripheriques[]" id="peripheriques" class="js-example-basic-multiple form-control" multiple required>
@@ -61,25 +54,8 @@
 
                 </div>
 
-                <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="date_attribution">Date Attribution</label>
-                        <input type="date" name="date_attribution" id="date_attribution" class="form-control" required>
-                    </div>
-
-                </div>
-
-                <div class="mt-3 col-6">
-
-                    <div class="form-group">
-                        <label for="date_retrait">Date Retrait</label>
-                        <input type="date" name="date_retrait" id="date_retrait" class="form-control">
-                    </div>
-
-                </div>
-
                 <div class="mt-3 d-flex justify-content-between">
-                    <button type="submit" class="btn btn-primary">Créer</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
                     <a href="{{ url()->previous() }}" class="btn btn-secondary">Annuler</a>
                 </div>
 

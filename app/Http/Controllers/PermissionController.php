@@ -15,12 +15,12 @@ class PermissionController extends Controller
     {
         $permissions = Permission::all();
         // $permissions = Permission::paginate(2);
-        return view('permissions.index', compact('permissions'));
+        return view('pages.permissions.index', compact('permissions'));
     }
 
     public function create()
     {
-        return view('permissions.create');
+        return view('pages.permissions.create');
     }
 
     public function store(Request $request)
@@ -36,13 +36,13 @@ class PermissionController extends Controller
     public function show($id)
     {
         $permission = Permission::findOrFail($id);
-        return view('permissions.show', compact('permission'));
+        return view('pages.permissions.show', compact('permission'));
     }
 
     public function edit($id)
     {
         $permission = Permission::findOrFail($id);
-        return view('permissions.edit', compact('permission'));
+        return view('pages.permissions.edit', compact('permission'));
     }
 
     public function update(Request $request, Permission $permission)

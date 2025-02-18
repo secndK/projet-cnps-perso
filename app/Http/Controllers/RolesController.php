@@ -27,8 +27,8 @@ class RolesController extends Controller
     public function index()
     {
         $roles = Role::with('permissions')->get(); // Charger les rôles et leurs permissions
-        // $permissions = Permission::all(); // Charger toutes les permissions
-        return view('roles.index', compact('roles', 'permissions'));
+        $permissions = Permission::all(); // Charger toutes les permissions
+        return view('pages.roles.index', compact('roles', 'permissions'));
     }
 
 
@@ -40,7 +40,7 @@ class RolesController extends Controller
     public function create()
     {
         $permissions = Permission::get();
-        return view('roles.create', compact('permissions'));
+        return view('pages.roles.create', compact('permissions'));
     }
 
     /**
@@ -85,7 +85,7 @@ class RolesController extends Controller
     public function show(Role $role)
     {
         $rolePermissions = $role->permissions; // Récupérer les permissions associées au rôle
-        return view('roles.show', compact('role', 'rolePermissions'));
+        return view('pages.roles.show', compact('role', 'rolePermissions'));
     }
 
 
@@ -107,7 +107,7 @@ class RolesController extends Controller
         $permissions = Permission::all(); // Récupérer toutes les permissions
         $rolePermissions = $role->permissions->pluck('name')->toArray(); // Extraire les noms des permissions associées
 
-        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        return view('pages.roles.edit', compact('role', 'permissions', 'rolePermissions'));
 }
 
 

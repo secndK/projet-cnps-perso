@@ -45,7 +45,7 @@
                             </button>
                         </td>
                     </tr>
-                    @include('postes.modals.delete', ['poste' => $poste])
+                    @include('pages.postes.modals.delete', ['poste' => $poste])
                 @empty
                     <tr>
                         <td colspan="8" class="text-center text-muted">Aucun poste de travail trouvé.</td>

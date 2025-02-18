@@ -47,7 +47,7 @@
                         </button>
                     </td>
                 </tr>
-                @include('peripheriques.modals.delete', ['peripherique' => $peripherique])
+                @include('pages.peripheriques.modals.delete', ['peripherique' => $peripherique])
                 @empty
                 <tr>
                     <td colspan="8" class="text-center text-muted">Aucun périphérique trouvé.</td>

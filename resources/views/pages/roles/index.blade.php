@@ -50,7 +50,7 @@
                             </button>
                         </td>
                     </tr>
-                    @include('roles.modals.delete', ['role' => $role])
+                    @include('pages.roles.modals.delete', ['role' => $role])
                 @empty
                     <tr>
                         <td colspan="7" class="text-center">Aucun rôle trouvé.</td>

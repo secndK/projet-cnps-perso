@@ -13,7 +13,7 @@ class LogsController extends Controller
     public function index()
     {
         $logs = Log::all();
-        return view(('logs.index'), compact('logs'));
+        return view(('pages.logs.index'), compact('logs'));
     }
 
     /**

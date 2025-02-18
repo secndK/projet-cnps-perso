@@ -17,7 +17,7 @@ class PosteController extends Controller
     public function index()
     {
         $postes = Poste::with( 'TypePoste')->get();
-        return view('postes.index', compact('postes'));
+        return view('pages.postes.index', compact('postes'));
     }
     /**
      * Show the form for creating a new resource.
@@ -25,7 +25,7 @@ class PosteController extends Controller
     public function create()
     {
         $types = TypePoste::all();
-        return view('postes.create', compact('types'));
+        return view('pages.postes.create', compact('types'));
     }
     /**
      * Store a newly created resource in storage.
@@ -57,7 +57,7 @@ class PosteController extends Controller
 
        $postes = Poste::with('TypePoste')->findOrFail($id);
        $types = TypePoste::all();
-        return view('postes.show', compact('postes','types'));
+        return view('pages.postes.show', compact('postes','types'));
     }
 
     /**
@@ -67,7 +67,7 @@ class PosteController extends Controller
     {
         $postes = Poste::with( 'TypePoste')->findOrFail($id);
         $types = TypePoste::all();
-        return view('postes.edit', compact('postes', 'types'));
+        return view('pages.postes.edit', compact('postes', 'types'));
     }
 
     /**

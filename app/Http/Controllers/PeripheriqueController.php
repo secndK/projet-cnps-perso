@@ -16,7 +16,7 @@ class PeripheriqueController extends Controller
     public function index()
     {
         $peripheriques = Peripherique::with('typePeripherique')->get();
-        return view('peripheriques.index', compact('peripheriques'));
+        return view('pages.peripheriques.index', compact('peripheriques'));
     }
     /**
      * Afficher le formulaire de création d'un périphérique.
@@ -25,7 +25,7 @@ class PeripheriqueController extends Controller
     {
 
         $types = TypePeripherique::all();
-        return view('peripheriques.create', compact('types'));
+        return view('pages.peripheriques.create', compact('types'));
     }
 
     /**
@@ -47,7 +47,7 @@ class PeripheriqueController extends Controller
 
         Peripherique::create($request->all());
 
-        return redirect()->route('peripheriques.index')->with('success', 'Périphérique ajouté avec succès');
+        return redirect()->route('pages.peripheriques.index')->with('success', 'Périphérique ajouté avec succès');
     }
     /**
      * Afficher les détails d'un périphérique.
@@ -57,7 +57,7 @@ class PeripheriqueController extends Controller
         $peripheriques = Peripherique::with('typePeripherique')->findOrFail($id);
         $types = TypePeripherique::all();
 
-        return view('peripheriques.show', compact('peripheriques','types'));
+        return view('pages.peripheriques.show', compact('peripheriques','types'));
     }
 
     /**
@@ -67,7 +67,7 @@ class PeripheriqueController extends Controller
     {
         $peripheriques = Peripherique::with('typePeripherique')->findOrFail($id);
         $types = TypePeripherique::all();
-        return view('peripheriques.edit', compact('peripheriques','types'));
+        return view('pages.peripheriques.edit', compact('peripheriques','types'));
     }
     /**
      * Mettre à jour un périphérique.

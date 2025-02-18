@@ -7,10 +7,7 @@ class Attribution extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'libelle_attribution',
         'agent_id',
-        'date_attribution',
-        'date_retrait',
     ];
 
     public function agent()

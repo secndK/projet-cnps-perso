@@ -17,12 +17,6 @@
             @method('PUT')
 
             <div class="mt-1 row">
-                <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="libelle_attribution">Libellé</label>
-                        <input type="text" name="libelle_attribution" id="libelle_attribution" class="form-control" value="{{ $attribution->libelle_attribution }}" required>
-                    </div>
-                </div>
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
@@ -55,20 +49,6 @@
                                 <option value="{{ $peripherique->id }}" {{ in_array($peripherique->id, $attribution->peripheriques->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $peripherique->nom_peripherique }}</option>
                             @endforeach
                         </select>
-                    </div>
-                </div>
-
-                <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="date_attribution">Date Attribution</label>
-                        <input type="date" name="date_attribution" id="date_attribution" class="form-control" value="{{ $attribution->date_attribution }}" required>
-                    </div>
-                </div>
-
-                <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="date_retrait">Date Retrait</label>
-                        <input type="date" name="date_retrait" id="date_retrait" class="form-control" value="{{ $attribution->date_retrait }}">
                     </div>
                 </div>
 

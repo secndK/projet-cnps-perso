@@ -16,7 +16,7 @@ class AttributionController extends Controller
     public function index()
     {
         $attributions = Attribution::with(['agent', 'postes', 'peripheriques'])->get();
-        return view('attributions.index', compact('attributions'));
+        return view('pages.attributions.index', compact('attributions'));
     }
 
     /**
@@ -24,7 +24,7 @@ class AttributionController extends Controller
      */
     public function create()
     {
-        return view('attributions.create', [
+        return view('pages.attributions.create', [
             'agents' => Agent::all(),
             'postes' => Poste::all(),
             'peripheriques' => Peripherique::all(),
@@ -37,14 +37,14 @@ class AttributionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'libelle_attribution' => 'required|string|max:255',
+
             'agent_id' => 'required|exists:agents,id',
             'postes' => 'required|array|min:1',
             'postes.*' => 'exists:postes,id',
             'peripheriques' => 'required|array|min:1',
             'peripheriques.*' => 'exists:peripheriques,id',
-            'date_attribution' => 'required|date',
-            'date_retrait' => 'nullable|date',
+
+
         ]);
 
         // Création de l'attribution
@@ -52,14 +52,14 @@ class AttributionController extends Controller
             'libelle_attribution' => $validatedData['libelle_attribution'],
             'agent_id' => $validatedData['agent_id'],
             'date_attribution' => $validatedData['date_attribution'],
-            'date_retrait' => $validatedData['date_retrait'] ?? null,
+
         ]);
 
         // Associer les postes et périphériques
         $attribution->postes()->sync($validatedData['postes']);
         $attribution->peripheriques()->sync($validatedData['peripheriques']);
 
-        return redirect()->route('attributions.index')->with('success', 'Attribution créée avec succès.');
+        return redirect()->route('pages.attributions.index')->with('success', 'Attribution créée avec succès.');
     }
 
     /**
@@ -68,7 +68,7 @@ class AttributionController extends Controller
     public function show(string $id)
     {
         $attribution = Attribution::with(['agent', 'postes', 'peripheriques'])->findOrFail($id);
-        return view('attributions.show', compact('attribution'));
+        return view('pages.attributions.show', compact('attribution'));
     }
 
     /**
@@ -76,7 +76,7 @@ class AttributionController extends Controller
      */
     public function edit(string $id)
     {
-        return view('attributions.edit', [
+        return view('pages.attributions.edit', [
             'attribution' => Attribution::with(['postes', 'peripheriques'])->findOrFail($id),
             'agents' => Agent::all(),
             'postes' => Poste::all(),
@@ -97,7 +97,7 @@ class AttributionController extends Controller
             'peripheriques' => 'required|array|min:1',
             'peripheriques.*' => 'exists:peripheriques,id',
             'date_attribution' => 'required|date',
-            'date_retrait' => 'nullable|date',
+
         ]);
 
         $attribution = Attribution::findOrFail($id);
@@ -112,7 +112,7 @@ class AttributionController extends Controller
         $attribution->postes()->sync($validatedData['postes']);
         $attribution->peripheriques()->sync($validatedData['peripheriques']);
 
-        return redirect()->route('attributions.index')->with('success', 'Attribution mise à jour avec succès.');
+        return redirect()->route('pages.attributions.index')->with('success', 'Attribution mise à jour avec succès.');
     }
 
     /**
@@ -124,7 +124,6 @@ class AttributionController extends Controller
         $attribution->postes()->detach();
         $attribution->peripheriques()->detach();
         $attribution->delete();
-
-        return redirect()->route('attributions.index')->with('success', 'Attribution supprimée avec succès.');
+        return redirect()->route('pages.attributions.index')->with('success', 'Attribution supprimée avec succès.');
     }
 }

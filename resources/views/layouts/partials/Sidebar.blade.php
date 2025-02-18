@@ -10,6 +10,18 @@
             </ul>
         </li>
 
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#attribution-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-usb"></i><span>Gestion des attributions</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="attribution-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li><a href="{{ route('attributions.index') }}"><i class="bi bi-circle"></i><span>Attributions</span></a></li>
+                <li><a href="#"><i class="bi bi-circle"></i><span>Historique d'attribution</span></a></li>
+                <li><a href="{{ route('logs.index') }}"><i class="bi bi-circle"></i><span>Logs</span></a></li>
+            </ul>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#roles-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-sliders"></i><span>Gestion des accès et attributions</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -18,7 +30,7 @@
                 <li><a href="{{ route('roles.index') }}"><i class="bi bi-circle"></i><span>Rôles</span></a></li>
                 <li><a href="{{ route('permissions.index') }}"><i class="bi bi-circle"></i><span>Permissions</span></a></li>
                 <li><a href="{{ route('users.index') }}"><i class="bi bi-circle"></i><span>Utilisateurs</span></a></li>
-                <li><a href="{{ route('attributions.index') }}"><i class="bi bi-circle"></i><span>Attributions</span></a></li>
+
 
             </ul>
         </li>

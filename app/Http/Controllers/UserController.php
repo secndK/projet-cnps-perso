@@ -16,8 +16,8 @@ class UserController extends Controller
     public function index(){
 
         $users = User::with('roles')->get();
-        // $roles = Role::all();
-        return view('users.index', compact('users','roles'));
+
+        return view('pages.users.index', compact('users'));
 
     }
     /**
@@ -26,7 +26,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-        return view('users.create', compact('roles'));
+        return view('pages.users.create', compact('roles'));
     }
 
     /**
@@ -34,7 +34,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation des données
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -42,16 +42,15 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        // Création de l'utilisateur
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Attribution du rôle à l'utilisateur
-        $user->roles()->attach($request->role_id);
 
+        $user->roles()->attach($request->role_id);
         return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
@@ -64,7 +63,7 @@ class UserController extends Controller
     {
         // Récupérer les rôles de l'utilisateur
         $userRoles = $user->roles;
-        return view('users.show', compact('user', 'userRoles'));
+        return view('pages.users.show', compact('user', 'userRoles'));
     }
 
 
@@ -75,7 +74,7 @@ class UserController extends Controller
     {
         // Récupérer tous les rôles pour la liste déroulante
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        return view('pages.users.edit', compact('user', 'roles'));
     }
 
 

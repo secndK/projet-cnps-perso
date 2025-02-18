@@ -13,14 +13,14 @@ class TypesPeripheriquesController extends Controller
     public function index()
     {
         $types = TypePeripherique::all();
-        return view('types-peripheriques.index', compact('types'));
+        return view('pages.types-peripheriques.index', compact('types'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('types-peripheriques.create');
+        return view('pages.types-peripheriques.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -40,7 +40,7 @@ class TypesPeripheriquesController extends Controller
     public function show($id)
     {
         $types = TypePeripherique::findOrFail($id);
-        return view('types-peripheriques.show',compact('types'));
+        return view('pages.types-peripheriques.show',compact('types'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -48,7 +48,7 @@ class TypesPeripheriquesController extends Controller
     public function edit($id)
     {
         $types = TypePeripherique::findOrFail($id);
-        return view('types-peripheriques.edit',compact('types'));
+        return view('pages.types-peripheriques.edit',compact('types'));
     }
     /**
      * Update the specified resource in storage.

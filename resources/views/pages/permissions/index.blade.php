@@ -2,7 +2,7 @@
 
 @section('title', 'Permissions')
 
-@include('permissions.modals.create')
+@include('pages.permissions.modals.create')
 
 @section('content')
 
@@ -52,7 +52,7 @@
 
                             {{-- @include('permissions.modals.view', ['permission' => $permission])
                             @include('permissions.modals.edit', ['permission' => $permission]) --}}
-                            @include('permissions.modals.delete', ['permission' => $permission])
+                            @include('pages.permissions.modals.delete', ['permission' => $permission])
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center">Aucune permission trouvée.</td>

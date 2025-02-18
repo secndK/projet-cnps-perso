@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('attributions', function (Blueprint $table) {
             $table->id();
-            $table->string('libelle_attribution');
             $table->foreignId('agent_id')->nullable() //clé agents
             ->constrained('agents')
             ->onDelete('cascade');
-            $table->date('date_attribution');
             $table->date('date_retrait')->nullable();
             $table->timestamps();
         });
