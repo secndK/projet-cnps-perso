@@ -16,7 +16,7 @@ class TypePoste extends Model
 
     public function postes()
     {
-        return $this->hasMany(Poste::class, 'poste_id');
+        return $this->hasMany(Poste::class,);
     }
 
 }

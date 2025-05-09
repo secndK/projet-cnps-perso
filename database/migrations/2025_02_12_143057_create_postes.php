@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('designation_poste')->nullable();
             $table->string('etat_poste');
             $table->dateTime('date_acq');
-            $table->foreignId('agent_id')->nullable()
-            ->constrained('agents')
+            $table->foreignId('user_id')->nullable()
+            ->constrained('users')
             ->onDelete('cascade');
             $table->foreignId('type_poste_id')->constrained('types_postes')->onDelete('cascade');
             $table->timestamps();
@@ -29,6 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('attribution_poste');
         Schema::dropIfExists('postes');
     }
 };

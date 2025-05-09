@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des accès')
-@section('module', 'Attribution des équipements')
+@section('module', 'Détails attribution des équipements')
 
 @section('content')
 
@@ -13,40 +13,78 @@
     </div>
 
     <div class="card-body">
-        <div class="form-group">
-            <label><strong>Libellé :</strong></label>
-            <p>{{ $attribution->libelle_attribution }}</p>
-        </div>
-        <div class="form-group">
-            <label><strong>Agent :</strong></label>
-            <p>{{ $attribution->agent->nom }}</p>
-        </div>
-        <div class="form-group">
-            <label><strong>Postes :</strong></label>
-            <ul>
-                @foreach ($attribution->postes as $poste)
-                    <li>{{ $poste->nom_poste }}</li>
-                @endforeach
-            </ul>
-        </div>
-        <div class="form-group">
-            <label><strong>Périphériques :</strong></label>
-            <ul>
-                @foreach ($attribution->peripheriques as $peripherique)
-                    <li>{{ $peripherique->nom }}</li>
-                @endforeach
-            </ul>
-        </div>
-        <div class="form-group">
-            <label><strong>Date Attribution :</strong></label>
-            <p>{{ $attribution->date_attribution }}</p>
-        </div>
-        <div class="form-group">
-            <label><strong>Date Retrait :</strong></label>
-            <p>{{ $attribution->date_retrait ?? 'N/A' }}</p>
-        </div>
-        <a href="{{ route('attributions.index') }}" class="btn btn-secondary">Retour</a>
+        <form>
+            <div class="mt-1 row">
+                <div class="mt-3 col-12">
+                    <div class="form-group">
+                        <label for="user_id">Utilisateur</label>
+                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" disabled>
+                            <option value="">Sélectionner un utilisateur</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}" {{ $attribution->user_id == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="mt-3 col-12">
+                    <div class="form-group">
+                        <label for="postes">Postes</label>
+                        <select name="postes[]" id="postes" class="js-example-basic-multiple form-control" multiple disabled>
+                            @foreach ($postes as $poste)
+                                <option value="{{ $poste->id }}" {{ in_array($poste->id, $attribution->postes->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                    {{ $poste->designation_poste }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-3 col-12">
+                    <div class="form-group">
+                        <label for="peripheriques">Périphériques</label>
+                        <select name="peripheriques[]" id="peripheriques" class="js-example-basic-multiple form-control" multiple disabled>
+                            @foreach ($peripheriques as $peripherique)
+                                <option value="{{ $peripherique->id }}" {{ in_array($peripherique->id, $attribution->peripheriques->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                    {{ $peripherique->nom_peripherique }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-3 col-12">
+                    <div class="form-group">
+                        <label for="date_attribution">Date d'attribution</label>
+                        <input type="date" name="date_attribution" id="date_attribution"
+                               class=" form-control"
+                               value="{{ $attribution->date_attribution->format('Y-m-d') }}"
+                               disabled>
+                    </div>
+                </div>
+
+                <div class="mt-3 d-flex justify-content-between">
+                    <a href="{{ route('attributions.index') }}" class="btn btn-secondary">Retour</a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+
+@section('select')
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+            disabled: true
+        });
+        $('.js-example-basic-multiple').select2({
+            disabled: true
+        });
+    });
+</script>
+@endsection
 
 @endsection

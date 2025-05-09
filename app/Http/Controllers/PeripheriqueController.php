@@ -1,13 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\Models\Peripherique;
+use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
+
+use App\Models\Peripherique;
 use App\Models\TypePeripherique;
 use App\Services\LogService;
-
 class PeripheriqueController extends Controller
 {
     /**
@@ -23,31 +23,32 @@ class PeripheriqueController extends Controller
      */
     public function create()
     {
-
         $types = TypePeripherique::all();
         return view('pages.peripheriques.create', compact('types'));
     }
-
     /**
      * Enregistrer un nouveau périphérique.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'num_serie_peripherique' => 'required|string|max:255',
+            'num_serie_peripherique' => 'required|unique:peripheriques|string|max:255',
             'num_inventaire_peripherique' => 'required|string|max:255',
             'nom_peripherique' => 'required|string|max:255',
             'designation_peripherique' => 'nullable|string|max:255',
             'etat_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-            'agent_id' => 'nullable|exists:agents,id',
+            'user_id' => 'nullable|exists:users,id',
             'poste_id' => 'nullable|exists:postes,id',
-            'type_peripherique_id' => 'required|exists:types_peripheriques,id',
+            'types_peripherique_id' => 'required|exists:types_peripheriques,id',
         ]);
 
         Peripherique::create($request->all());
+        // dd($a);
+        $user = Auth::user();
 
-        return redirect()->route('pages.peripheriques.index')->with('success', 'Périphérique ajouté avec succès');
+          LogService::addLog('Création', 'Création de periphérique ' . $user->matricule_agent);
+        return redirect()->route('peripheriques.index')->with('success', 'Périphérique ajouté avec succès');
     }
     /**
      * Afficher les détails d'un périphérique.
@@ -59,7 +60,6 @@ class PeripheriqueController extends Controller
 
         return view('pages.peripheriques.show', compact('peripheriques','types'));
     }
-
     /**
      * Afficher le formulaire d'édition d'un périphérique.
      */
@@ -81,14 +81,16 @@ class PeripheriqueController extends Controller
             'designation_peripherique' => 'nullable|string|max:255',
             'etat_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-            'agent_id' => 'nullable|exists:agents,id',
+            'user_id' => 'nullable|exists:users,id',
             'poste_id' => 'nullable|exists:postes,id',
-            'type_peripherique_id' => 'required|exists:types_peripheriques,id',
+            'types_peripherique_id' => 'required|exists:types_peripheriques,id',
         ]);
 
         $peripherique = Peripherique::findOrFail($id);
         $peripherique->update($validatedData);
-
+        $user = Auth::user();
+        // 3. Log de la connexion réussie
+        LogService::addLog('Modification', 'Modification de periphérique ' . $user->matricule_agent);
         return redirect()->route('peripheriques.index')->with('success', 'Périphérique mis à jour avec succès');
     }
     /**
@@ -98,6 +100,9 @@ class PeripheriqueController extends Controller
     {
         $peripherique = Peripherique::findOrFail($id);
         $peripherique->delete();
+        $user = Auth::user();
+        // 3. Log de la connexion réussie
+        LogService::addLog('Modification', 'Modification de periphérique ' . $user->matricule_agent);
         return redirect()->route('peripheriques.index')->with('success', 'Périphérique supprimé avec succès');
     }
 }

@@ -17,7 +17,7 @@ class TypePeripherique extends Model
 
     public function peripheriques()
     {
-        return $this->hasMany(Peripherique::class, 'peripherique_id');
+        return $this->hasMany(Peripherique::class);
     }
 
 }

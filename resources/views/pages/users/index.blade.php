@@ -12,15 +12,20 @@
     </div>
 
     <div class="card-body">
-        <table id="tableUsers" class="table datatable">
+        <div class="table-responsive-sm">
+            <table id="tableUsers" class="table datatable">
             <thead class="text-white bg-primary">
                 <tr>
-                    <th width="1%">No</th>
-                    <th>Nom de l'utilisateur</th>
+                    <th>No</th>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
                     <th>Email</th>
-                    <th>Rôles</th> <!-- Nouvelle colonne pour les rôles -->
-                    <th>Créé le</th>
-                    <th>Mis à jour le</th>
+                    <th>Direction</th>
+                    <th>Localisation</th>
+                    <th>Rôles</th>
+                    {{-- <th>Créé le</th>
+                    <th>Mis à jour le</th> --}}
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,8 +34,12 @@
                 @forelse($users as $key => $user)
                 <tr>
                     <td>{{ $user->id }}</td>
+                    <td>{{ $user->matricule_agent }}</td>
                     <td>{{ $user->name}}</td>
+                    <td>{{ $user->prenom_agent }}</td>
                     <td>{{ $user->email }}</td>
+                    <td>{{ $user->direction_agent }}</td>
+                    <td>{{ $user->localisation_agent }}</td>
                     <td>
                         <!-- Afficher les rôles sous forme de badges -->
                         @if ($user->roles->count() > 0)
@@ -41,8 +50,8 @@
                             <span class="text-muted">Aucun rôle</span>
                         @endif
                     </td>
-                    <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
-                    <td>{{ $user->updated_at->format('d/m/Y H:i') }}</td>
+                    {{-- <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
+                    <td>{{ $user->updated_at->format('d/m/Y H:i') }}</td> --}}
                     <td>
                         <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm">Visualiser</a>
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">Éditer</a>
@@ -63,6 +72,8 @@
             </tbody>
 
         </table>
+        </div>
+
     </div>
 </div>
 

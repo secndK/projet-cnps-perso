@@ -3,16 +3,28 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Attribution extends Model
+
 {
     use HasFactory;
+
     protected $fillable = [
-        'agent_id',
+        'user_id',
+        'poste_id',
+        'peripherique_id',
+        'date_attribution',
     ];
 
-    public function agent()
+
+    protected $casts = [
+        'date_attribution' => 'date',
+    ];
+
+
+    public function user()
     {
-        return $this->belongsTo(Agent::class);
+        return $this->belongsTo(User::class);
     }
 
     public function postes()
@@ -24,4 +36,6 @@ class Attribution extends Model
     {
         return $this->belongsToMany(Peripherique::class);
     }
+
+
 }

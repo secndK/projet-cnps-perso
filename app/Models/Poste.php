@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Poste extends Model
 {
+
+    use HasFactory;
     protected $table = 'postes';
     protected $primaryKey = 'id';
 
@@ -17,13 +18,13 @@ class Poste extends Model
         'designation_poste',
         'etat_poste',
         'date_acq',
-        'agent_id',
+        'user_id',
         'type_poste_id',
     ];
 
-    public function agents()
+    public function users()
     {
-        return $this->belongsTo(Agent::class, 'agent_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function peripheriques()
@@ -31,13 +32,14 @@ class Poste extends Model
         return $this->hasMany(Peripherique::class, 'peripherique_id');
     }
 
-    public function typePoste(){
-        return $this->belongsTo(TypePoste::class, 'type_poste_id');
+    public function typePoste()
+    {
+        return $this->belongsTo(TypePoste::class, );
     }
 
     public function attributions()
     {
-        return $this->hasMany(Attribution::class);
+        return $this->belongsToMany(Attribution::class);
     }
 
 }

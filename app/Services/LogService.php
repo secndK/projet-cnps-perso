@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LogService
 {
-    public static function addLog(string $eventType, string $details = null): void
+    public static function addLog(string $eventType, string $details): void
     {
         Log::create([
             'user' => Auth::user() ? Auth::user()->name : 'System',

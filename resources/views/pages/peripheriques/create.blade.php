@@ -58,7 +58,7 @@
                      <div class="mt-3 col-6">
                         <div class="form-group">
                             <label for="TypePeripherique" class="form-label">Type</label>
-                                <select name="type_peripherique_id" id="TypePeripherique" class="js-example-basic-single form-select me-2">
+                                <select name="types_peripherique_id" id="TypePeripherique" class="js-example-basic-single form-select me-2">
                                     <option value="">-- Choisir --</option>
                                     @foreach($types as $type)
                                         <option value="{{ $type->id }}">{{ $type->libelle_type }}</option>
@@ -76,7 +76,7 @@
 
                 <div class="mt-3 d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Créer</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Annuler</a>
+                    <a href="{{ route('peripheriques.index') }}" class="btn btn-secondary">Annuler</a>
                 </div>
             </div>
         </form>

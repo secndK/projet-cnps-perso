@@ -7,6 +7,8 @@ use App\Models\TypePoste;
 
 use App\Models\Poste;
 
+use App\Models\User;
+
 use App\Services\LogService;
 
 class PosteController extends Controller
@@ -31,7 +33,7 @@ class PosteController extends Controller
      * Store a newly created resource in storage.
      */
    /**
- * Stocke un nouveau poste dans la base de données.
+
     */
     public function store(Request $request)
     {
@@ -42,22 +44,22 @@ class PosteController extends Controller
             'designation_poste' => 'nullable',
             'etat_poste' => 'nullable',
             'date_acq' => 'required|date',
-            'agent_id' => 'nullable|exists:agents,id',
+            'user_id' => 'nullable|exists:users,id',
             'type_poste_id' => 'required|exists:types_postes,id',
         ]);
         Poste::create($validatedData);
         return redirect()->route('postes.index')->with('success', 'Poste créé avec succès.');
     }
-
-/**
- * Affiche les détails d'un poste spécifique.
+    /**
+     * Affiche les détails d'un poste spécifique.
     */
     public function show($id)
     {
+        $poste = Poste::with('typePoste')->findOrFail($id);
+        $types = TypePoste::all();
+        $user = User::find($poste->user_id);
 
-       $postes = Poste::with('TypePoste')->findOrFail($id);
-       $types = TypePoste::all();
-        return view('pages.postes.show', compact('postes','types'));
+        return view('pages.postes.show', compact('poste', 'types', 'user'));
     }
 
     /**
@@ -84,7 +86,7 @@ class PosteController extends Controller
             'type_poste' => 'nullable',
             'etat_poste' => 'nullable',
             'date_acq' => 'required|date',
-            'agent_id' => 'nullable|exists:agents,id',
+            'user_id' => 'nullable|exists:users,id',
             'type_poste_id' => 'nullable|exists:types_postes,id',
         ]);
 
@@ -92,8 +94,7 @@ class PosteController extends Controller
         $postes->update($validatedData);
         return redirect()->route('postes.index')->with('success', 'Poste mis à jour avec succès.');
     }
-
-        /**
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)

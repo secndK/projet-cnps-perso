@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TypePeripherique;
 use App\Services\LogService;
-
 class TypesPeripheriquesController extends Controller
 {
     /**

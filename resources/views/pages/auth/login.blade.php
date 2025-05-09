@@ -20,7 +20,6 @@
                                                 <!-- Google Fonts -->
 <link href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
                                                 <!-- Vendor CSS Files -->
 <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -29,17 +28,14 @@
 <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
 <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
                                                 <!-- Template Main CSS File -->
 <link href="assets/css/style.css" rel="stylesheet">
-
 
                                                 {{-- lien font ubuntu --}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-
-                                                {{-- ma feuille de style --}}
+                                              {{-- ma feuille de style --}}
 <style>
 
     body {
@@ -87,7 +83,6 @@
                     <form method="POST" action="{{ route('login') }}" class="mt-3 row g-3 needs-validation" novalidate>
                         @csrf
 
-
                         @session('error')
                             <div class="alert alert-danger" role="alert">
                                 {{ $value }}
@@ -95,11 +90,11 @@
                         @endsession
 
                       <div class="col-12">
-                        <label for="yourUsername" class="form-label">E-mail</label>
+                        <label for="yourUserMatricule" class="form-label">Matricule</label>
                         <div class="input-group has-validation">
-                          <span class="input-group-text" id="inputGroupPrepend">@</span>
-                          <input type="text" name="email" class="form-control" id="yourEmail" required>
-                          @error('email')
+                          <span class="input-group-text" id="inputGroupPrepend">N°</span>
+                          <input type="text" name="matricule_agent" class="form-control" id="yourMatricule" required>
+                          @error('matricule_agent')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -130,11 +125,9 @@
                       <div class="col-12">
                         <button class="bg-orange-600 hover:bg-orange-400 btn btn-sm w-100 text-cyan-50 hover:text-cyan-100" type="submit">connexion</button>
                       </div>
-                      <div class="col-12">
-
+                      {{-- <div class="col-12">
                         <p class="m-0 text-center text-secondary">pas de compte ? &#x1F605; <a href="{{ route('register') }}" class="link-primary text-decoration-none">S'inscrire</a></p>
-
-                      </div>
+                      </div> --}}
                     </form>
 
                   </div>

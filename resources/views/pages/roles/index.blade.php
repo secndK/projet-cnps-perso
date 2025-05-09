@@ -29,7 +29,6 @@
                     <tr>
                         <td>{{ $role->id }}</td>
                         <td>{{ $role->name }}</td>
-
                         <td>
                             <!-- Afficher les permissions sous forme de badges -->
                             @if ($role->permissions->count() > 0)
@@ -61,7 +60,6 @@
     </div>
 </div>
 @endsection
-
 {{-- Script pour initialisation de la datatable --}}
 @section('script')
 <script>

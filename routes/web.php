@@ -13,6 +13,9 @@ use App\Http\Controllers\PeripheriqueController;
 use App\Http\Controllers\TypesPeripheriquesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+
+
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/', [AuthController::class, 'login'])->name('login.post');
@@ -58,11 +61,11 @@ Route::resource('users', UserController::class)->middleware('superadmin');
 // gestion des types de périphériques
 Route::resource('types-peripheriques', TypesPeripheriquesController::class)->middleware('superadmin');
 // gestion des périphériques
-Route::resource('peripheriques', PeripheriqueController::class)->middleware('superadmin');
+Route::resource('peripheriques', PeripheriqueController::class);
 //gestion des types de postes de travail
 Route::resource('types-postes', TypesPostesController::class)->middleware('superadmin');
 //gestion des postes de travail
-Route::resource('postes', PosteController::class)->middleware('superadmin');
+Route::resource('postes', PosteController::class);
 // gestion des logs
 Route::resource('logs', LogsController::class)->middleware('superadmin');
 //gestion des roles

@@ -72,7 +72,7 @@
 
                 <div class="mt-3 d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Créer</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Annuler</a>
+                    <a href="{{ route('postes.index') }}" class="btn btn-secondary">Annuler</a>
                 </div>
             </div>
         </form>

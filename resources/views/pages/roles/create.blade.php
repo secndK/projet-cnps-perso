@@ -72,8 +72,9 @@
 
             <!-- Boutons d'action -->
             <div class="d-flex justify-content-between">
-                <a href="{{ route('roles.index') }}" class="btn btn-secondary">Annuler</a>
                 <button type="submit" class="btn btn-primary">Créer</button>
+                <a href="{{ route('roles.index') }}" class="btn btn-secondary">Annuler</a>
+
             </div>
         </form>
     </div>

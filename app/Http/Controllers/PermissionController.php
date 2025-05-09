@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use App\Services\LogService;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\User;
 
 
 
@@ -30,6 +33,9 @@ class PermissionController extends Controller
         ]);
 
         Permission::create($validated);
+        $user = Auth::user();
+          // 3. Log de la connexion réussie
+          LogService::addLog('Création', 'Création de permissions ' . $user->matricule_agent);
         return redirect()->route('permissions.index')->with('success', 'Permissions crée avec  succes');
     }
 
@@ -52,6 +58,9 @@ class PermissionController extends Controller
         ]);
 
         $permission->update($validated);
+        $user = Auth::user();
+          // 3. Log de la connexion réussie
+          LogService::addLog('Modification', 'Modification de permission par ' . $user->matricule_agent);
         return redirect()->route('permissions.index')->with('success', 'Permission mise à jour avec succès');
     }
 
@@ -59,6 +68,9 @@ class PermissionController extends Controller
     {
         $permission = Permission::findOrFail($id);
         $permission->delete();
+        $user = Auth::user();
+          // 3. Log de la connexion réussie
+          LogService::addLog('Suppression', 'Suppression de permissions par' . $user->matricule_agent);
         return redirect()->route('permissions.index')->with('success', 'Permission supprimée avec succès.');
     }
 

@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 class Peripherique extends Model
 {
-
     use HasFactory;
     protected $table = 'peripheriques';
     protected $primaryKey = 'id';
@@ -20,10 +17,9 @@ class Peripherique extends Model
         'designation_peripherique',
         'etat_peripherique',
         'date_acq',
-        'agent_id',
+        'user_id',
         'poste_id',
         'type_peripherique_id',
-
     ];
 
     public function postes()
@@ -31,9 +27,9 @@ class Peripherique extends Model
         return $this->belongsTo(Poste::class,  'poste_id');
     }
 
-    public function agents()
+    public function users()
     {
-        return $this->belongsTo(Agent::class, 'agent_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 

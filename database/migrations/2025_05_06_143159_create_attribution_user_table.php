@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 return new class extends Migration
 {
     /**
@@ -10,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attribution_poste', function (Blueprint $table) {
+        Schema::create('attribution_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attribution_id')->constrained('attributions')->onDelete('cascade');
-            $table->foreignId('poste_id')->constrained('postes')->onDelete('cascade');
+            $table->foreignId('attribution_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('etat')->default('possédé'); // ou 'retiré'
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('attribution_poste');
+        Schema::dropIfExists('attribution_user');
     }
 };

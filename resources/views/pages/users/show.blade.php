@@ -10,19 +10,46 @@
     <div class="card-body">
         <!-- Informations de l'utilisateur -->
         <form>
-            <div class="mt-3 row">
+            <div class=" row">
 
-                <div class="col-6">
+
+                  <div class="mt-3 col-6">
+                    <label for="matriculeAgent" class="form-label">Matricule de l'utilisateur</label>
+                    <input type="text" name="matricule_agent" class="form-control" id="matriculeAgent" readonly value="{{ $user->matricule_agent }}" disabled>
+                </div>
+
+                <div class="mt-3 col-6">
                     <div class="form-group">
                         <label for="usersName" class="form-label">Nom de l'utilisateur</label>
                         <input type="text" class="form-control" id="usersName" readonly value="{{ $user->name}}" disabled>
                     </div>
                 </div>
 
-                <div class="col-6">
+
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="usersName" class="form-label">Prenom de l'utilisateur</label>
+                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->prenom_agent}}" disabled>
+                    </div>
+                </div>
+
+                <div class="mt-3 col-6">
                     <div class="form-group">
                         <label for="usersEmail" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="usersEmail" value="{{ $user->email}}" disabled>
+                        <input type="email" class="form-control" id="usersEmail" readonly value="{{ $user->email}}" disabled>
+                    </div>
+                </div>
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="usersName" class="form-label">Direction de l'utilisateur</label>
+                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->direction_agent}}" disabled>
+                    </div>
+                </div>
+
+                 <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="usersName" class="form-label">Localisation de l'utilisateur</label>
+                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->localisation_agent}}" disabled>
                     </div>
                 </div>
 
@@ -53,11 +80,8 @@
                             @endif
                         </select>                    </div>
                 </div>
-
             </div>
-
         </form>
-
         <!-- Bouton de retour -->
         <div class="mt-3 d-flex justify-content-start">
             <a href="{{ route('users.index') }}" class="btn btn-secondary">Retour à la liste</a>

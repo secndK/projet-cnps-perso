@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des accès')
+
 @section('module', 'Attribution des équipements')
 
 @section('content')
@@ -18,16 +19,17 @@
 
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="agent_id">Agent</label>
-                        <select name="agent_id" id="agent_id" class="js-example-basic-single form-control" required>
+                        <label for="user_id">Agent</label>
+                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" required>
                             <option value="">Sélectionner un agent</option>
-                            @foreach ($agents as $agent)
-                                <option value="{{ $agent->id }}">{{ $agent->nom_agent }}</option>
+                            @foreach ($users as $users)
+                                <option value="{{ $users->id }}">{{ $users->name}}</option>
                             @endforeach
                         </select>
                     </div>
 
                 </div>
+
 
                 <div class="mt-3 col-12">
 
@@ -54,9 +56,15 @@
 
                 </div>
 
+
+                <div class="col-12 mt-3">
+                    <label for="date_attribution" class="form-label">Date d'attribution</label>
+                    <input type="date" name="date_attribution" class="form-control" id="date_attribution" required>
+                </div>
+
                 <div class="mt-3 d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Valider</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Annuler</a>
+                    <a href="{{ route('attributions.index') }}" class="btn btn-secondary">Annuler</a>
                 </div>
 
             </div>

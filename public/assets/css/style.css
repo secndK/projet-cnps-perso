@@ -747,9 +747,12 @@ h6 {
     border-radius: 50%;
 }
 
-.sidebar-nav .nav-content a:hover {
+.sidebar-nav .nav-content a:hover,
+.sidebar-nav .nav-content a.active
+{
     color: #4154f1;
 }
+
 
 /*--------------------------------------------------------------
 # Dashboard

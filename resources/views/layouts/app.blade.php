@@ -25,14 +25,18 @@
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
+
+
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-
-
 
     {{-- lien select 2 --}}
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    {{-- @vite('resources/css/app.css') --}}
+                                                        <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -99,7 +103,7 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js"') }}"></script>
+
   <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
   <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
@@ -111,36 +115,12 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script src="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
-
-
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('.sidebar-nav .nav-link');
-    const currentPath = window.location.pathname;
-
-    links.forEach(link => {
-        const linkPath = link.getAttribute('href');
-
-        // Vérifie si le lien correspond au chemin actuel
-        if (linkPath === currentPath || currentPath.startsWith(linkPath)) {
-        link.classList.add('active');
-        } else {
-        link.classList.remove('active');
-        }
-    });
-    });
-
-  </script>
-
 
   {{-- js pour datatable --}}
 
@@ -162,7 +142,6 @@
 
                     {{-- SCRIPT POUR LE TOAST --}}
     <script>
-
         document.addEventListener("DOMContentLoaded", function() {
             var toastElList = [].slice.call(document.querySelectorAll('.toast'))
             var toastList = toastElList.map(function(toastEl) {
@@ -170,12 +149,50 @@
             })
             toastList.forEach(toast => toast.show());
         });
-
     </script>
 
+    {{-- Code pour la sidebar active --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        let links = document.querySelectorAll(".sidebar-nav .nav-content a");
 
+        let currentUrl = window.location.href;
 
+        links.forEach(link => {
+            if (link.href === currentUrl) {
+                link.classList.add("active");
 
+                let parentMenu = link.closest(".nav-content");
+                if (parentMenu) {
+                    parentMenu.classList.add("show");
+                    let parentToggle = document.querySelector(`[data-bs-target="#${parentMenu.id}"]`);
+                    if (parentToggle) {
+                        parentToggle.classList.remove("collapsed");
+                    }
+                }
+                localStorage.setItem("activeLink", link.href);
+            }
+        });
+
+        let savedActiveLink = localStorage.getItem("activeLink");
+        if (savedActiveLink) {
+            links.forEach(link => {
+                if (link.href === savedActiveLink) {
+                        link.classList.add("active");
+                        let parentMenu = link.closest(".nav-content");
+                        if (parentMenu) {
+                            parentMenu.classList.add("show");
+                            let parentToggle = document.querySelector(`[data-bs-target="#${parentMenu.id}"]`);
+                            if (parentToggle) {
+                                parentToggle.classList.remove("collapsed");
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
 
 </body>
 

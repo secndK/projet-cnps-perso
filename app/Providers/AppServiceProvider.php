@@ -13,7 +13,6 @@ use Illuminate\Pagination\Paginator;
 
 
 
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
     /**
      * Bootstrap any application services.
      */
@@ -36,22 +34,11 @@ class AppServiceProvider extends ServiceProvider
                 ->action('button', $url);
         });
 
-
-
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;
         });
 
         Paginator::useBootstrapFive();
     }
-
-
-
-
-
-
-
-
-
 
     }

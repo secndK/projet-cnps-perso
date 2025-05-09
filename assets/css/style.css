@@ -751,11 +751,14 @@ h6 {
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
   color: #4154f1;
+  background-color: #4154f1;
+
 }
 
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
 }
+
 
 /*--------------------------------------------------------------
 # Dashboard

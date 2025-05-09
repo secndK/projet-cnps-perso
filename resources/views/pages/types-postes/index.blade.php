@@ -39,7 +39,7 @@
                             </button>
                         </td>
                     </tr>
-                     @include('types-postes.modals.delete', ['type' => $type])
+                     @include('pages.types-postes.modals.delete', ['type' => $type])
                     @empty
                     <tr>
                         <td colspan="8" class="text-center text-muted">Aucun type de poste trouvé.</td>
