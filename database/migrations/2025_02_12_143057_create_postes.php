@@ -15,7 +15,8 @@ return new class extends Migration
             $table->string('num_inventaire_poste');
             $table->string('nom_poste');
             $table->string('designation_poste')->nullable();
-            $table->string('etat_poste');
+            $table->string('etat_poste')->nullable();
+            $table->string('statut_poste')->nullable();
             $table->dateTime('date_acq');
             $table->foreignId('user_id')->nullable()
             ->constrained('users')

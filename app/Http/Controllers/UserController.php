@@ -46,8 +46,10 @@ class UserController extends Controller
             'direction_agent' => 'required|string|max:255',
             'localisation_agent' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
+
+
         ]);
+        // dd($request->all());
 
         try {
             DB::beginTransaction();
@@ -60,6 +62,7 @@ class UserController extends Controller
                 'direction_agent' => $validatedData['direction_agent'],
                 'localisation_agent' => $validatedData['localisation_agent'],
                 'password' => Hash::make($validatedData['password']),
+
             ]);
 
 
@@ -115,7 +118,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'direction_agent' => 'required|string|max:255',
             'localisation_agent' => 'required|string|max:255',
-            'role_id' => 'required|exists:roles,id',
+
         ];
 
         // Ajoute la validation du mot de passe si présent
@@ -145,10 +148,7 @@ class UserController extends Controller
                     'password' => bcrypt($validatedData['password']),
                 ]);
             }
-
-
             $user->roles()->sync([$validatedData['role_id']]);
-
             DB::commit();
 
             return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
@@ -158,8 +158,6 @@ class UserController extends Controller
             return redirect()->back()->withInput()->with('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
         }
     }
-
-
     /**
      * Remove the specified resource from storage.
      */
@@ -168,13 +166,10 @@ class UserController extends Controller
         try {
 
             DB::beginTransaction();
-
             $user = User::findOrFail($id);
             $user->roles()->detach();
             $user->delete();
-
             DB::commit();
-
             return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();

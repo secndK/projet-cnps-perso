@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\TypePeripherique;
 use App\Services\LogService;
+use Illuminate\Support\Facades\Log;
+
 class TypesPeripheriquesController extends Controller
 {
     /**
@@ -14,6 +17,7 @@ class TypesPeripheriquesController extends Controller
         $types = TypePeripherique::all();
         return view('pages.types-peripheriques.index', compact('types'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -21,46 +25,74 @@ class TypesPeripheriquesController extends Controller
     {
         return view('pages.types-peripheriques.create');
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'libelle_type' => 'required|string|max:255',
-        ]);
-        TypePeripherique::create($validatedData);
-        LogService::addLog('Nouveau Type périphérique crée', 'Libellé: ' . $request->libelle_type);
-        return redirect()->route('types-peripheriques.index')->with('success', ' Type de Périphérique ajouté avec succès');
+        try {
+            // Vérifie si le libellé existe déjà
+            $existingType = TypePeripherique::where('libelle_type', $request->libelle_type)->first();
+
+            if ($existingType) {
+                return redirect()->back()->withInput()->with('error', 'Ce type de périphérique existe déjà.');
+            }
+
+            // Validation des données
+            $validatedData = $request->validate([
+                'libelle_type' => 'required|string|max:255|unique:types_peripheriques,libelle_type',
+            ]);
+
+            // Création du type
+            TypePeripherique::create($validatedData);
+
+            // Log de l'action
+            LogService::addLog('Nouveau Type périphérique créé', 'Libellé: ' . $request->libelle_type);
+
+            return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique ajouté avec succès');
+
+        } catch (\Throwable $e) {
+            Log::error("Erreur création TypePeripherique : " . $e->getMessage());
+
+            return redirect()->back()->withInput()->with('error', 'Une erreur est survenue lors de la création du type de périphérique.');
+        }
     }
+
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
         $types = TypePeripherique::findOrFail($id);
-        return view('pages.types-peripheriques.show',compact('types'));
+        return view('pages.types-peripheriques.show', compact('types'));
     }
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
     {
         $types = TypePeripherique::findOrFail($id);
-        return view('pages.types-peripheriques.edit',compact('types'));
+        return view('pages.types-peripheriques.edit', compact('types'));
     }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, TypePeripherique $types)
     {
         $validated = $request->validate([
-            'libelle_type' => 'required|unique:types-peripheriques,libelle_type,' . $types->id,
+            'libelle_type' => 'required|unique:types_peripheriques,libelle_type,' . $types->id,
         ]);
+
         $types->update($validated);
-        LogService::addLog('MAJ Type périphériques', ' Libellé : ' . $request->libelle_type);
+
+        LogService::addLog('MAJ Type périphérique', 'Libellé: ' . $request->libelle_type);
+
         return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique mis à jour avec succès');
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -68,7 +100,9 @@ class TypesPeripheriquesController extends Controller
     {
         $types = TypePeripherique::findOrFail($id);
         $types->delete();
-        LogService::addLog('Suppression type périphériques', 'ID : ' . $id);
-        return redirect()->route('types-peripheriques.index')->with('success', ' Type de Périphérique supprimé avec succès');
+
+        LogService::addLog('Suppression type périphériques', 'ID: ' . $id);
+
+        return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique supprimé avec succès');
     }
 }

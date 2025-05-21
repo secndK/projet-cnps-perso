@@ -12,7 +12,6 @@
         <form>
             <div class=" row">
 
-
                   <div class="mt-3 col-6">
                     <label for="matriculeAgent" class="form-label">Matricule de l'utilisateur</label>
                     <input type="text" name="matricule_agent" class="form-control" id="matriculeAgent" readonly value="{{ $user->matricule_agent }}" disabled>

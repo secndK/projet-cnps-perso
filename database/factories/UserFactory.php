@@ -34,9 +34,6 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'direction_agent' => $this->faker->randomElement(['DSI', 'RH', 'COMPT']),
             'localisation_agent' => $this->faker->city(),
-
-            // 'password' => static::$password ??= Hash::make('password'),
-
             'password' => 'password',
             'remember_token' => Str::random(10),
 

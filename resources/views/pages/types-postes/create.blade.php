@@ -26,7 +26,7 @@
             <div class="mt-3">
 
                 <button type="submit" class="btn btn-primary">Créer</button>
-                <a href="{{ url()->previous() }}" class="btn btn-secondary">Retour</a>
+                <a href="{{ route('types-postes.index') }}" class="btn btn-secondary">Retour</a>
 
             </div>
 

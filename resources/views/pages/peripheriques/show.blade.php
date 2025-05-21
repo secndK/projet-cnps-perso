@@ -15,22 +15,22 @@
                     <input type="text" name="num_serie_peripherique" class="form-control" id="num_serie_peripherique" value="{{ $peripheriques->num_serie_peripherique }}" disabled>
                 </div>
 
-                <div class="col-6 mt-3">
+                <div class="mt-3 col-6">
                     <label for="num_inventaire_peripherique" class="form-label">N° d'inventaire</label>
                     <input type="text" name="num_inventaire_peripherique" class="form-control" id="num_inventaire_peripherique" value="{{ $peripheriques->num_inventaire_peripherique }}" disabled>
                 </div>
 
-                <div class="col-6 mt-3">
+                <div class="mt-3 col-6">
                     <label for="nom_peripherique" class="form-label">Nom du périphérique</label>
                     <input type="text" name="nom_peripherique" class="form-control" id="nom_peripherique" value="{{ $peripheriques->nom_peripherique }}" disabled>
                 </div>
 
-                <div class="col-6 mt-3">
+                <div class="mt-3 col-6">
                     <label for="designation_peripherique" class="form-label">Désignation</label>
                     <input type="text" name="designation_peripherique" class="form-control" id="designation_peripherique" value="{{ $peripheriques->designation_peripherique }}" disabled>
                 </div>
 
-                <div class="col-6 mt-3">
+                <div class="mt-3 col-6">
                     <label for="etat_peripherique" class="form-label">État</label>
                     <select name="etat_peripherique" class="form-select" disabled>
                         <option value="En panne" {{ $peripheriques->etat_peripherique == 'En panne' ? 'selected' : '' }}>En panne</option>
@@ -39,6 +39,16 @@
                         <option value="Non attribué" {{ $peripheriques->etat_peripherique == 'Non attribué' ? 'selected' : '' }}>Non attribué</option>
                     </select>
                 </div>
+
+
+                <div class="mt-3 col-6">
+                    <label for="etat_peripherique" class="form-label">État</label>
+                    <select name="etat_peripherique" class="form-select" disabled>
+                        <option value="En panne" {{ $peripheriques->etat_peripherique == 'En panne' ? 'selected' : '' }}>En panne</option>
+                        <option value="En service" {{ $peripheriques->etat_peripherique == 'En service' ? 'selected' : '' }}>En service</option>
+                    </select>
+                </div>
+
 
                 <div class="mt-3 col-6">
                     <label for="TypePeripherique" class="form-label">Type</label>
@@ -52,7 +62,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-6 mt-3">
+                <div class="mt-3 col-6">
                     <label for="date_acq" class="form-label">Date d'acquisition</label>
                     <input type="date" name="date_acq" class="form-control" id="date_acq" value="{{ \Carbon\Carbon::parse($peripheriques->date_acq)->format('Y-m-d') }}" disabled>
                 </div>

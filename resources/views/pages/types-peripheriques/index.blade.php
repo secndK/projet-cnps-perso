@@ -42,7 +42,20 @@
                 </tr>
                 @endforelse
             </tbody>
+
         </table>
+         <div class="mt-3 d-flex justify-content-end">
+            <a href="{{ route('peripheriques.index') }}" class="btn btn-secondary btn-sm"> Aller à la rubrique périphérique </a>
+        </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+        $('.datatable').DataTable();
+        responsive: true
+    });
+</script>
 @endsection

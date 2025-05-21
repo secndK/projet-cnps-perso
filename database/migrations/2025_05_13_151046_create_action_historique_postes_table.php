@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 return new class extends Migration
 {
     /**
@@ -11,20 +10,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attribution_user', function (Blueprint $table) {
+        Schema::create('action_historique_postes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attribution_id')->constrained()->onDelete('cascade');
+            $table->string('action_type'); // created, updated, deleted
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('etat')->default('possédé'); // ou 'retiré'
+            $table->unsignedBigInteger('poste_id')->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('attribution_user');
+        Schema::dropIfExists('action_historiques_poste');
     }
 };

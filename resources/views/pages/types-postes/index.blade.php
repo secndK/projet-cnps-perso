@@ -27,7 +27,7 @@
                 <tbody>
                     @forelse ($types as $type)
                     <tr>
-                        <td>{{ $type->id }}</td>
+                       <td scope="row">{{ $loop->index + 1 }}</td>
                         <td>{{ $type->libelle_type }}</td>
                         <td>{{ $type->created_at->format('d/m/Y H:i') }}</td>
                         <td>{{ $type->updated_at->format('d/m/Y H:i') }}</td>
@@ -45,10 +45,29 @@
                         <td colspan="8" class="text-center text-muted">Aucun type de poste trouvé.</td>
                     </tr>
                     @endforelse
+
                 </tbody>
+
             </table>
+
+            <div class="mt-3 d-flex justify-content-end">
+
+                <a href="{{ route('postes.index') }}" class="btn btn-secondary btn-sm"> Aller à la rubrique poste de travail </a>
+
+            </div>
         </div>
+
     </div>
+
 </div>
 
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+        $('.datatable').DataTable();
+        responsive: true
+    });
+</script>
 @endsection

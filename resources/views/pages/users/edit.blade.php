@@ -63,7 +63,7 @@
                 <div class="mt-3 col-6">
                     <label class="form-label">Rôle</label>
                     <select name="role_id" class="form-select" required>
-                        <option value="">Sélectionnez un rôle</option>
+                        {{-- <option value="">Sélectionnez un rôle</option> --}}
                         @foreach ($roles as $role)
                             <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
                                 {{ $role->name }}

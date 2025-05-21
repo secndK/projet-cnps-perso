@@ -49,9 +49,13 @@
                 <ul id="postes-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li><a href="{{ route('types-postes.index') }}"><i class="bi bi-circle"></i><span>Types de postes</span></a></li>
                     <li><a href="{{ route('postes.index') }}"><i class="bi bi-circle"></i><span>Poste de travail</span></a></li>
-                </ul>
+                    <li>
+                        <a href="{{ route('postes.historique') }}">
+                            <i class="bi bi-clock-history"></i>
+                            <span>Historique d'action</span>
+                        </a>
+                    </li>                </ul>
             </li>
-
             <!-- 📌 Gestion des Périphériques -->
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#peripheriques-nav" aria-expanded="false">
@@ -63,7 +67,6 @@
                     <li><a href="{{ route('peripheriques.index') }}"><i class="bi bi-circle"></i><span>Périphériques</span></a></li>
                 </ul>
             </li>
-
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('dashboard') }}">

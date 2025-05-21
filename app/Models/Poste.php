@@ -17,6 +17,7 @@ class Poste extends Model
         'nom_poste',
         'designation_poste',
         'etat_poste',
+        'statut_poste',
         'date_acq',
         'user_id',
         'type_poste_id',
@@ -24,17 +25,17 @@ class Poste extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function peripheriques()
     {
-        return $this->hasMany(Peripherique::class, 'peripherique_id');
+        return $this->hasMany(Peripherique::class);
     }
 
     public function typePoste()
     {
-        return $this->belongsTo(TypePoste::class, );
+        return $this->belongsTo(TypePoste::class);
     }
 
     public function attributions()

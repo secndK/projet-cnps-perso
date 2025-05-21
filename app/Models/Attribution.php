@@ -11,14 +11,14 @@ class Attribution extends Model
 
     protected $fillable = [
         'user_id',
-        'poste_id',
-        'peripherique_id',
         'date_attribution',
+        'date_retrait',
     ];
 
 
     protected $casts = [
         'date_attribution' => 'date',
+        'date_retrait' => 'date',
     ];
 
 

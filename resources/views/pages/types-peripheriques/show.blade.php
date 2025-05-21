@@ -21,7 +21,7 @@
             </div>
         </form>
         <div class="mt-3 d-flex justify-content-start">
-            <a href="{{ route('users.index') }}" class="btn btn-secondary">Retour à la liste</a>
+            <a href="{{ route('types-peripheriques.index') }}" class="btn btn-secondary">Retour à la liste</a>
         </div>
     </div>
 </div>

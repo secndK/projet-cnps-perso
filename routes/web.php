@@ -2,18 +2,17 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AttributionController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PosteController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\AttributionController;
 use App\Http\Controllers\TypesPostesController;
 use App\Http\Controllers\PeripheriqueController;
+
 use App\Http\Controllers\TypesPeripheriquesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
-
 
 
 Route::middleware('guest')->group(function () {
@@ -65,7 +64,36 @@ Route::resource('peripheriques', PeripheriqueController::class);
 //gestion des types de postes de travail
 Route::resource('types-postes', TypesPostesController::class)->middleware('superadmin');
 //gestion des postes de travail
-Route::resource('postes', PosteController::class);
+// Affichage de tous les postes
+Route::get('postes', [PosteController::class, 'index'])->name('postes.index');
+
+// Formulaire de création d’un poste
+Route::get('postes/create', [PosteController::class, 'create'])->name('postes.create');
+
+// Enregistrement d’un nouveau poste
+Route::post('postes', [PosteController::class, 'store'])->name('postes.store');
+
+// Route personnalisée pour l'historique
+Route::get('postes/historique', [PosteController::class, 'historique'])->name('postes.historique');
+
+// Affichage d’un poste spécifique
+Route::get('postes/{poste}', [PosteController::class, 'show'])->name('postes.show');
+
+// Formulaire d’édition d’un poste
+Route::get('postes/{poste}/edit', [PosteController::class, 'edit'])->name('postes.edit');
+
+// Mise à jour d’un poste
+Route::put('postes/{poste}', [PosteController::class, 'update'])->name('postes.update');
+
+// Suppression d’un poste
+Route::delete('postes/{poste}', [PosteController::class, 'destroy'])->name('postes.destroy');
+
+
+
+
+
+
+
 // gestion des logs
 Route::resource('logs', LogsController::class)->middleware('superadmin');
 //gestion des roles
@@ -73,6 +101,10 @@ Route::resource('attributions', AttributionController::class)->middleware('super
 //deconnexion
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
+
 
 
 

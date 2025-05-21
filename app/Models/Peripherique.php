@@ -16,6 +16,7 @@ class Peripherique extends Model
         'nom_peripherique',
         'designation_peripherique',
         'etat_peripherique',
+        'statut_peripherique',
         'date_acq',
         'user_id',
         'poste_id',

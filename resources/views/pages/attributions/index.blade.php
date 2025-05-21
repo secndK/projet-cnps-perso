@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Gestion des accès')
+@section('title', 'Gestion des attributions')
 @section('module', ' Attribution')
 
 
@@ -20,10 +20,10 @@
             <thead class="text-white bg-primary">
                 <tr>
                     <th scope="col">N°</th>
-                    <th>Agent</th>
-                    <th width="27%">Postes</th>
-                    <th width="25%">Périphériques</th>
-                    <th width="20%" >Action</th>
+                    <th >Agent</th>
+                    <th >Postes</th>
+                    <th >Périphériques</th>
+                    <th width="15%">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                         <a href="{{ route('attributions.show', $attribution) }}" class="btn btn-info btn-sm">Visualiser</a>
                         <a href="{{ route('attributions.edit', $attribution) }}" class="btn btn-primary btn-sm">Modifier</a>
                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAttributionModal{{ $attribution->id }}">
-                                Supprimer
+                                Annuler
                             </button>
                     </td>
                 </tr>
@@ -60,4 +60,13 @@
         </table>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+        $('.datatable').DataTable();
+        responsive: true
+    });
+</script>
 @endsection

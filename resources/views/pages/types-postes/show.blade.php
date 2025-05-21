@@ -2,7 +2,6 @@
 
 @section('title', 'Gestion des postes de travail')
 @section('module', 'Détails type de poste')
-
 @section('content')
 
 <div class="card">

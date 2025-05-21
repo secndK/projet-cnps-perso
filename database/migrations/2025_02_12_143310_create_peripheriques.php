@@ -14,21 +14,17 @@ return new class extends Migration
             $table->string('nom_peripherique');
             $table->string('designation_peripherique')->nullable();
             $table->string('etat_peripherique')->nullable();
+            $table->string('statut_peripherique')->nullable();
             $table->dateTime('date_acq');
-
-            // Corrected foreign key declarations
             $table->foreignId('user_id')->nullable()
                   ->constrained('users')
                   ->onDelete('cascade');
-
             $table->foreignId('poste_id')->nullable()
                   ->constrained('postes')
                   ->onDelete('cascade');
-
             $table->foreignId('type_peripherique_id')->nullable()
                   ->constrained('types_peripheriques')
                   ->onDelete('cascade');
-
             $table->timestamps();
         });
     }

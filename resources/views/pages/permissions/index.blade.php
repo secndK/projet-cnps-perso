@@ -20,7 +20,7 @@
         <div class="card-body">
 
                 <table id="tablePermissions" class="table datatable">
-                    <thead class=" text-white">
+                    <thead class="text-white ">
                         <tr>
                             <th width="1%">No</th>
                             <th>Nom de la permission</th>
@@ -34,7 +34,7 @@
 
                         @forelse ($permissions as $key => $permission)
                             <tr>
-                                <td>{{ $permission->id }}</td>
+                                <td scope="row">{{ $loop->index + 1 }}</td>
                                 <td>{{ $permission->name }}</td>
                                 <td>
                                     <span class="badge bg-success">{{ $permission->guard_name }}</span>
@@ -62,12 +62,8 @@
                     </tbody>
                 </table>
 
-
-
         </div>
     </div>
-
-
 
 
 @endsection
@@ -77,8 +73,8 @@
 <script>
     $(document).ready(function () {
         $('.datatable').DataTable();
+        responsive: true
     });
-
 </script>
 @endsection
 

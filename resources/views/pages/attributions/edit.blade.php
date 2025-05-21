@@ -18,7 +18,7 @@
                 <div class="mt-3 col-12">
                     <div class="form-group">
                         <label for="user_id">user</label>
-                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" required>
+                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" >
                             <option value="">Sélectionner un utilisateur</option>
                             @foreach ($users as $users)
                                 <option value="{{ $users->id }}" {{ $attribution->user_id == $users->id ? 'selected' : '' }}>{{ $users->name}}</option>
@@ -31,7 +31,7 @@
                 <div class="mt-3 col-12">
                     <div class="form-group">
                         <label for="postes">Postes</label>
-                        <select name="postes[]" id="postes" class="js-example-basic-multiple form-control" multiple required>
+                        <select name="postes[]" id="postes" class="js-example-basic-multiple form-control" multiple >
                             @foreach ($postes as $poste)
                                 <option value="{{ $poste->id }}" {{ in_array($poste->id, $attribution->postes->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $poste->designation_poste }}</option>
                             @endforeach
@@ -51,7 +51,7 @@
                 </div>
 
 
-                <div class="col-12 mt-3">
+                <div class="mt-3 col-12">
                     <label for="date_attribution" class="form-label">Date d'attribution</label>
                     <input type="date" name="date_attribution" class=" form-control" id="date_attribution" value="{{ $attribution->date_attribution->format('Y-m-d') }}" required>
                 </div>

@@ -66,6 +66,16 @@
                     </div>
                 </div>
 
+                <div class="mt-3 col-12">
+                    <div class="form-group">
+                        <label for="date_attribution">Date de retrait</label>
+                        <input type="date" name="date_retrait id="date_retrait"
+                               class=" form-control"
+                               value="{{ $attribution->date_retrait->format('Y-m-d') }}"
+                               disabled>
+                    </div>
+                </div>
+
                 <div class="mt-3 d-flex justify-content-between">
                     <a href="{{ route('attributions.index') }}" class="btn btn-secondary">Retour</a>
                 </div>

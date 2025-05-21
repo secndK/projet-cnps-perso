@@ -49,8 +49,16 @@
                             <option value="">-- Choisir --</option>
                             <option value="En panne">En panne</option>
                             <option value="En service">En service</option>
-                            <option value="Réformé">Réformé</option>
-                            <option value="Non attribué">Non attribué</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="StatutPeripherique" class="form-label">Statut</label>
+                        <select name="statut_peripherique" id="statutPeripherique" class="js-example-basic-single form-select">
+                            <option value="">-- Choisir --</option>
+                            <option value="Attribué">Attribué</option>
+                            <option value="Non Attribué">Non attribué</option>
                         </select>
                     </div>
                 </div>
@@ -75,8 +83,8 @@
                 </div>
 
                 <div class="mt-3 d-flex justify-content-between">
-                    <button type="submit" class="btn btn-primary">Créer</button>
                     <a href="{{ route('peripheriques.index') }}" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Créer</button>
                 </div>
             </div>
         </form>

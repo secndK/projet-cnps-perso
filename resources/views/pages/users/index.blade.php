@@ -33,7 +33,7 @@
             <tbody>
                 @forelse($users as $key => $user)
                 <tr>
-                    <td>{{ $user->id }}</td>
+                    <td scope="row">{{ $loop->index + 1 }}</td>
                     <td>{{ $user->matricule_agent }}</td>
                     <td>{{ $user->name}}</td>
                     <td>{{ $user->prenom_agent }}</td>
@@ -41,7 +41,6 @@
                     <td>{{ $user->direction_agent }}</td>
                     <td>{{ $user->localisation_agent }}</td>
                     <td>
-                        <!-- Afficher les rôles sous forme de badges -->
                         @if ($user->roles->count() > 0)
                             @foreach ($user->roles as $role)
                                 <span class="badge bg-info me-1">{{ $role->name }}</span>
@@ -83,6 +82,7 @@
 <script>
     $(document).ready(function () {
         $('.datatable').DataTable();
+        responsive: true
     });
 </script>
 @endsection

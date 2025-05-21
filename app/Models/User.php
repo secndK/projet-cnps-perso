@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'direction_agent',
         'localisation_agent',
         'password',
+
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -39,12 +40,12 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
     public function postes()
     {
-        return $this->hasMany(Poste::class, 'poste_id');
+        return $this->hasMany(Poste::class);
     }
 
     public function peripheriques()
     {
-        return $this->hasMany(Peripherique::class, 'peripherique_id');
+        return $this->hasMany(Peripherique::class);
     }
 
     public function attributions()
