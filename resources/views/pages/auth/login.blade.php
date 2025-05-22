@@ -93,8 +93,8 @@
                         <label for="yourUserMatricule" class="form-label">Matricule</label>
                         <div class="input-group has-validation">
                           <span class="input-group-text" id="inputGroupPrepend">N°</span>
-                          <input type="text" name="matricule_agent" class="form-control" id="yourMatricule" required>
-                          @error('matricule_agent')
+                          <input type="text" name="username" class="form-control" id="yourUsername" required>
+                          @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

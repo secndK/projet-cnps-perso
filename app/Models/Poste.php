@@ -19,13 +19,13 @@ class Poste extends Model
         'etat_poste',
         'statut_poste',
         'date_acq',
-        'user_id',
+        'agent_id',
         'type_poste_id',
     ];
 
-    public function users()
+    public function agent()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Agent::class);
     }
 
     public function peripheriques()

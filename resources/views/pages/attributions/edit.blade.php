@@ -17,11 +17,11 @@
             <div class="mt-1 row">
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="user_id">user</label>
-                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" >
+                        <label for="agent_id">agent</label>
+                        <select name="agent_id" id="agent_id" class="js-example-basic-single form-control" >
                             <option value="">Sélectionner un utilisateur</option>
-                            @foreach ($users as $users)
-                                <option value="{{ $users->id }}" {{ $attribution->user_id == $users->id ? 'selected' : '' }}>{{ $users->name}}</option>
+                            @foreach ($agents as $agents)
+                                <option value="{{ $agents->id }}" {{ $attribution->agent_id == $agents->id ? 'selected' : '' }}>{{ $agents->name}}</option>
                             @endforeach
                         </select>
                     </div>

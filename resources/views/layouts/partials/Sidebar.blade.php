@@ -23,7 +23,7 @@
                 </a>
                 <ul id="attribution-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li><a href="{{ route('attributions.index') }}"><i class="bi bi-circle"></i><span>Attributions</span></a></li>
-                    <li><a href="#"><i class="bi bi-circle"></i><span>Historique d'attribution</span></a></li>
+                    <li><a href="{{ route('attributions.logs') }}"><i class="bi bi-circle"></i><span>Historique d'attribution</span></a></li>
                 </ul>
             </li>
 

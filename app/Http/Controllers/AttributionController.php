@@ -1,19 +1,91 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\Attribution;
+use App\Models\Agent;
 use App\Models\Poste;
+use App\Models\HistoAttri;
+use App\Models\Attribution;
 use App\Models\Peripherique;
-use App\Models\User;
-use Illuminate\Support\Facades\Log;
+use App\Services\LogService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
 class AttributionController extends Controller
 {
+
+
+
+    public function Logs(Request $request)
+    {
+        try {
+            $from = $request->input('from');
+            $to = $request->input('to');
+            $action = $request->input('action');
+            $search = $request->input('q');
+
+            $query = HistoAttri::orderBy('created_at'  );
+
+            if ($from) {
+                $query->where('created_at', '>=', Carbon::parse($from)->startOfDay());
+            }
+
+            if ($to) {
+                $query->where('created_at', '<=', Carbon::parse($to)->endOfDay());
+            }
+
+            if ($action) {
+                $query->where('action_type', $action);
+            }
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('action_type', 'like', "%{$search}%")
+                    ->orWhere('id', 'like', "%{$search}%")
+                    ->orWhere('attribution_id', 'like', "%{$search}%")
+                    ->orWhereHas('agent', function ($subQ) use ($search) {
+                        $subQ->where('nom_agent', 'like', "%{$search}%")
+                            ->orWhere('prenom_agent', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('user', function ($subQ) use ($search) {
+                        $subQ->where('name', 'like', "%{$search}%");
+                    });
+                });
+            }
+
+            $logs = $query->paginate(15)->withQueryString();
+
+            // Préchargement des utilisateurs et agents
+            $userIds = $logs->pluck('user_id')->unique()->filter()->toArray();
+            $agentIds = $logs->pluck('agent_id')->unique()->filter()->toArray();
+
+            $users = \App\Models\User::whereIn('id', $userIds)->get()->keyBy('id');
+            $agents = Agent::whereIn('id', $agentIds)->get()->keyBy('id');
+
+            return view('pages.attributions.log', compact('logs', 'users', 'agents', 'from', 'to', 'action', 'search'));
+
+        } catch (\Exception $e) {
+            Log::error("Erreur affichage logs: " . $e->getMessage());
+            return redirect()->route('attributions.index')
+                ->with('error', 'Impossible d\'afficher les logs.');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
     public function index()
     {
         try {
-            $attributions = Attribution::with(['user', 'postes', 'peripheriques'])->get();
+            $attributions = Attribution::with(['agent', 'postes', 'peripheriques'])->get();
             return view('pages.attributions.index', compact('attributions'));
         } catch (\Exception $e) {
             Log::error("Erreur lors du chargement des attributions : " . $e->getMessage());
@@ -26,9 +98,11 @@ class AttributionController extends Controller
     {
         try {
             return view('pages.attributions.create', [
-                'users' => User::all(),
-                'postes' => Poste::all(),
-                'peripheriques' => Peripherique::all(),
+
+                'agents' => Agent::all(), // Liste de tous les agents
+                'postes' => Poste::whereNull('agent_id')->get(), // Uniquement les postes non attribués
+                'peripheriques' => Peripherique::whereNull('agent_id')->get(), // Uniquement les périphériques non attribués
+
             ]);
         } catch (\Exception $e) {
             Log::error("Erreur lors de la préparation du formulaire de création : " . $e->getMessage());
@@ -39,7 +113,7 @@ class AttributionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'agent_id' => 'required|exists:agents,id',
             'date_attribution' => 'required|date',
             'date_retrait' => 'nullable|date',
             'postes' => 'nullable|array',
@@ -52,17 +126,16 @@ class AttributionController extends Controller
             return redirect()->back()
                 ->withInput()
                 ->withErrors([
-                    'postes' => 'Au moins un poste ou un périphérique doit être sélectionné.',
-                    'peripheriques' => 'Au moins un poste ou un périphérique doit être sélectionné.'
+                    'postes' => 'Au moins un poste ou périphérique doit être sélectionné.',
+                    'peripheriques' => 'Au moins un poste ou périphérique doit être sélectionné.'
                 ]);
         }
 
         try {
             DB::beginTransaction();
 
-            // Création de l'attribution
             $attribution = Attribution::create([
-                'user_id' => $validatedData['user_id'],
+                'agent_id' => $validatedData['agent_id'],
                 'date_attribution' => $validatedData['date_attribution'],
                 'date_retrait' => $validatedData['date_retrait'] ?? null,
             ]);
@@ -71,11 +144,11 @@ class AttributionController extends Controller
             if (!empty($validatedData['postes'])) {
                 $attribution->postes()->sync($validatedData['postes']);
 
-                // Mise à jour des statuts des postes
                 Poste::whereIn('id', $validatedData['postes'])
                     ->update([
                         'statut_poste' => 'attribué',
-                        'etat_poste' => 'en service'  // Ajout du statut "en service"
+                        'etat_poste' => 'en service',
+                        'agent_id' => $validatedData['agent_id']
                     ]);
             }
 
@@ -83,47 +156,78 @@ class AttributionController extends Controller
             if (!empty($validatedData['peripheriques'])) {
                 $attribution->peripheriques()->sync($validatedData['peripheriques']);
 
-                // Mise à jour des statuts des périphériques
                 Peripherique::whereIn('id', $validatedData['peripheriques'])
                     ->update([
                         'statut_peripherique' => 'attribué',
-                        'etat_peripherique' => 'en service'  // Ajout du statut "en service"
+                        'etat_peripherique' => 'en service',
+                        'agent_id' => $validatedData['agent_id']
                     ]);
             }
 
+            // Logging
+            $postes = $attribution->postes->pluck('id')->toArray();
+            $peripheriques = $attribution->peripheriques->pluck('id')->toArray();
+
+
+
+
             DB::commit();
+            LogService::attributionLog('Création', $validatedData['agent_id'], $attribution->id, $postes, $peripheriques);
 
-            return redirect()->route('attributions.index')
-                ->with('success', 'Attribution créée avec succès.');
-
+            return redirect()->route('attributions.index')->with('success', 'Attribution créée avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Erreur création attribution: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+            Log::error("Erreur création attribution: " . $e->getMessage());
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erreur création: ' . $e->getMessage());
         }
     }
 
-    public function edit(string $id)
+
+   public function show(string $id)
     {
         try {
-            return view('pages.attributions.edit', [
-                'attribution' => Attribution::with(['postes', 'peripheriques'])->findOrFail($id),
-                'users' => User::all(),
-                'postes' => Poste::all(),
-                'peripheriques' => Peripherique::all(),
-            ]);
+            $attribution = Attribution::with(['agent', 'postes', 'peripheriques'])->findOrFail($id);
+
+            // Chargement de tous les agents, postes et périphériques pour l'affichage des infos
+            $agents = Agent::all();
+            $postes = Poste::all();
+            $peripheriques = Peripherique::all();
+
+            return view('pages.attributions.show', compact('attribution', 'agents', 'postes', 'peripheriques'));
         } catch (\Exception $e) {
-            Log::error("Erreur lors du chargement de l'édition de l'attribution : " . $e->getMessage());
-            return redirect()->route('attributions.index')->with('error', 'Erreur lors du chargement des données d\'édition.');
+            Log::error("Erreur lors de l'affichage de l'attribution {$id} : " . $e->getMessage());
+            return redirect()->route('attributions.index')->with('error', 'Impossible d\'afficher les détails de l\'attribution.');
         }
     }
 
-   public function update(Request $request, string $id)
+
+    public function edit(string $id)
+    {
+        try {
+            $attribution = Attribution::with(['postes', 'peripheriques'])->findOrFail($id);
+
+            return view('pages.attributions.edit', [
+                'attribution' => $attribution,
+                'agents' => Agent::all(),
+                'postes' => Poste::whereNull('agent_id')
+                    ->orWhereIn('id', $attribution->postes->pluck('id'))
+                    ->get(),
+                'peripheriques' => Peripherique::whereNull('agent_id')
+                    ->orWhereIn('id', $attribution->peripheriques->pluck('id'))
+                    ->get()
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Erreur édition attribution {$id}: " . $e->getMessage());
+            return redirect()->route('attributions.index')->with('error', 'Erreur chargement édition.');
+        }
+    }
+
+    public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'agent_id' => 'required|exists:agents,id',
             'date_attribution' => 'required|date',
             'date_retrait' => 'nullable|date',
             'postes' => 'nullable|array',
@@ -136,72 +240,98 @@ class AttributionController extends Controller
             DB::beginTransaction();
 
             $attribution = Attribution::findOrFail($id);
+            $agentId = $validatedData['agent_id'];
 
-            // Récupère les anciennes relations avant modification
-            $oldPostes = $attribution->postes->pluck('id')->toArray();
-            $oldPeripheriques = $attribution->peripheriques->pluck('id')->toArray();
-
-            // Met à jour les informations de base
+            // Mise à jour de l'attribution
             $attribution->update([
-                'user_id' => $validatedData['user_id'],
+                'agent_id' => $agentId,
                 'date_attribution' => $validatedData['date_attribution'],
                 'date_retrait' => $validatedData['date_retrait'] ?? null,
             ]);
 
-            // Synchronise les nouveaux postes
+            // Postes
             $newPostes = $validatedData['postes'] ?? [];
             $attribution->postes()->sync($newPostes);
 
-            // Synchronise les nouveaux périphériques
+            Poste::whereIn('id', $newPostes)->update([
+                'statut_poste' => 'attribué',
+                'etat_poste' => 'en service',
+                'agent_id' => $agentId
+            ]);
+
+            // Périphériques
             $newPeripheriques = $validatedData['peripheriques'] ?? [];
             $attribution->peripheriques()->sync($newPeripheriques);
 
-            // Gestion des statuts des postes
-            $allPostes = array_unique(array_merge($oldPostes, $newPostes));
-            foreach ($allPostes as $posteId) {
-                $statut = in_array($posteId, $newPostes) ? 'attribué' : 'non attribué';
-                Poste::where('id', $posteId)->update(['statut_poste' => $statut]);
-            }
+            Peripherique::whereIn('id', $newPeripheriques)->update([
+                'statut_peripherique' => 'attribué',
+                'etat_peripherique' => 'en service',
+                'agent_id' => $agentId
+            ]);
 
-            // Gestion des statuts des périphériques
-            $allPeripheriques = array_unique(array_merge($oldPeripheriques, $newPeripheriques));
-            foreach ($allPeripheriques as $peripheriqueId) {
-                $statut = in_array($peripheriqueId, $newPeripheriques) ? 'attribué' : 'non attribué';
-                Peripherique::where('id', $peripheriqueId)->update(['statut_peripherique' => $statut]);
-            }
+            // Logging
+            LogService::attributionLog(
+                'Modification',
+                $agentId,
+                $attribution->id,
+                $newPostes,
+                $newPeripheriques
+            );
 
             DB::commit();
 
-            return redirect()->route('attributions.index')->with('success', 'Attribution mise à jour avec succès.');
+            return redirect()->route('attributions.index')
+                ->with('success', 'Attribution mise à jour avec succès.')
+                ->with('updated_attribution_id', $attribution->id);
+
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Erreur de mise à jour de l'attribution {$id}: " . $e->getMessage());
+            Log::error("Erreur mise à jour attribution [ID: {$id}]: " . $e->getMessage());
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erreur lors de la mise à jour: ' . $e->getMessage());
         }
     }
 
+
+
+
+
+
+    //on ne supprime pas vraimment un eattribution vu que on peux réattribué une machine du systmème à quelqun d'autre pour les cas de depart/demission/panne
+    //MR KOUAME KOUASSI THIERRY à suggérer de simplement implémenter la date de retrait
+
     public function destroy(string $id)
     {
-       try {
+        try {
             DB::beginTransaction();
 
-            $attribution = Attribution::findOrFail($id);
+            $attribution = Attribution::find($id);
+            $postes = $attribution->postes->pluck('id')->toArray();
+            $peripheriques = $attribution->peripheriques->pluck('id')->toArray();
 
-            $attribution->update([
-                'date_retrait' => now(),
+            // Mise à jour date retrait
+            $attribution->update(['date_retrait' => now()]);
+
+            // Libération des équipements
+            Poste::whereIn('id', $postes)->update([
+                'statut_poste' => 'non attribué',
+                'agent_id' => null
             ]);
 
+            Peripherique::whereIn('id', $peripheriques)->update([
+                'statut_peripherique' => 'non attribué',
+                'agent_id' => null
+            ]);
 
-
+            LogService::attributionLog('Retrait', $attribution->agent_id, $attribution->id, $postes, $peripheriques);
 
             DB::commit();
-            return redirect()->route('attributions.index')->with('success', 'Attribution retirée avec succès.');
+            return redirect()->route('attributions.index')->with('success', 'Attribution retirée.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Erreur lors de la mise à jour de la date de retrait : " . $e->getMessage());
-            return redirect()->route('attributions.index')->with('error', 'Erreur lors du retrait.');
+            Log::error("Erreur retrait attribution {$id}: " . $e->getMessage());
+            return redirect()->route('attributions.index')->with('error', 'Erreur retrait.');
         }
     }
 }

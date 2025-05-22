@@ -17,12 +17,12 @@
             <div class="mt-1 row">
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="user_id">Utilisateur</label>
-                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" disabled>
+                        <label for="agent_id">Agent Bénéficiaire</label>
+                        <select name="agent_id" id="agent_id" class="js-example-basic-single form-control" disabled>
                             <option value="">Sélectionner un utilisateur</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ $attribution->user_id == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
+                            @foreach ($agents as $agent)
+                                <option value="{{ $agent->id }}" {{ $attribution->agent_id == $agent->id ? 'selected' : '' }}>
+                                    {{ $agent->nom_agent }} {{ $agent->prenom_agent }}
                                 </option>
                             @endforeach
                         </select>
@@ -68,13 +68,13 @@
 
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="date_attribution">Date de retrait</label>
-                        <input type="date" name="date_retrait id="date_retrait"
-                               class=" form-control"
-                               value="{{ $attribution->date_retrait->format('Y-m-d') }}"
-                               disabled>
+                        <label for="date_retrait">Date de retrait</label>
+                        <input type="date" name="date_retrait" id="date_retrait"
+                            class="form-control"
+                            value="{{ $attribution->date_retrait ? $attribution->date_retrait->format('Y-m-d') : '' }}"
+                            disabled>
                     </div>
-                </div>
+            </div>
 
                 <div class="mt-3 d-flex justify-content-between">
                     <a href="{{ route('attributions.index') }}" class="btn btn-secondary">Retour</a>

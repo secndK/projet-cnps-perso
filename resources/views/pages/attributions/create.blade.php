@@ -29,12 +29,12 @@
 
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="user_id">Agent</label>
-                        <select name="user_id" id="user_id" class="js-example-basic-single form-control" required>
+                        <label for="agent_id">Agent Bénéficiaire</label>
+                        <select name="agent_id" id="agent_id" class="js-example-basic-single form-control" required>
                             <option value="">Sélectionner un agent</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name}}
+                            @foreach ($agents as $agent)
+                                <option value="{{ $agent->id }}" {{ old('agent_id') == $agent->id ? 'selected' : '' }}>
+                                    {{ $agent->nom_agent}}
                                 </option>
                             @endforeach
                         </select>

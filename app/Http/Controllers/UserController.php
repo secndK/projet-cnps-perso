@@ -36,15 +36,15 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'matricule_agent' => 'required|string|max:255|unique:users,matricule_agent',
+
+            'username' => 'required|string|max:255|unique:users,username' .$id,
             'name' => 'required|string|max:255',
-            'prenom_agent' => 'required|string|max:255',
+
             'email' => 'required|email|unique:users,email',
-            'direction_agent' => 'required|string|max:255',
-            'localisation_agent' => 'required|string|max:255',
+
             'password' => 'required|string|min:8|confirmed',
 
 
@@ -55,12 +55,11 @@ class UserController extends Controller
             DB::beginTransaction();
 
             $user = User::create([
-                'matricule_agent' => $validatedData['matricule_agent'],
+
+                'username' => $validatedData['username'],
                 'name' => $validatedData['name'],
-                'prenom_agent' => $validatedData['prenom_agent'],
                 'email' => $validatedData['email'],
-                'direction_agent' => $validatedData['direction_agent'],
-                'localisation_agent' => $validatedData['localisation_agent'],
+
                 'password' => Hash::make($validatedData['password']),
 
             ]);
@@ -112,12 +111,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $attiéké = [
-            'matricule_agent' => 'required|string|max:255|unique:users,matricule_agent,' . $id,
+
+            'username' => 'required|string|max:255|unique:users,username' .$id,
             'name' => 'required|string|max:255',
-            'prenom_agent' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'direction_agent' => 'required|string|max:255',
-            'localisation_agent' => 'required|string|max:255',
+
 
         ];
 
@@ -134,12 +132,11 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             $user->update([
-                'matricule_agent'     => $validatedData['matricule_agent'],
+
+                'username'            => $validatedData['username'],
                 'name'                => $validatedData['name'],
-                'prenom_agent'        => $validatedData['prenom_agent'],
                 'email'               => $validatedData['email'],
-                'direction_agent'     => $validatedData['direction_agent'],
-                'localisation_agent'  => $validatedData['localisation_agent'],
+
             ]);
 
             // Met à jour le mot de passe uniquement si fourni

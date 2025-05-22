@@ -26,9 +26,9 @@ class PosteFactory extends Factory
 
             'num_inventaire_poste' =>  str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT) .'-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT) .'-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT) .'-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
 
-            'nom_poste' => 'DELL LATTITUDE ' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
+            'nom_poste' => $this->faker->randomElement(['DELL LATITUDE', 'MACBOOK AIR', 'HP PROBOOK', 'HP ELITE G6']) . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
 
-            'designation_poste' => ' ordinateur destiné au personnelle',
+            'designation_poste' => $this->faker->randomElement(['DELL LATITUDE', 'MACBOOK AIR', 'HP PROBOOK', 'HP ELITE G6']),
 
             'etat_poste' =>  $this->faker->randomElement(['En service', 'En panne', 'Non définis']),
 

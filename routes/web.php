@@ -97,6 +97,7 @@ Route::delete('postes/{poste}', [PosteController::class, 'destroy'])->name('post
 // gestion des logs
 Route::resource('logs', LogsController::class)->middleware('superadmin');
 //gestion des roles
+Route::get('/attributions/logs', [AttributionController::class, 'logs'])->name('attributions.logs');
 Route::resource('attributions', AttributionController::class)->middleware('superadmin');
 //deconnexion
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -90,7 +90,7 @@ class PosteController extends Controller
                 'etat_poste' => 'nullable|string',
                 'statut_poste' => 'nullable|string',
                 'date_acq' => 'required|date_format:Y-m-d',
-                'user_id' => 'nullable|exists:users,id',
+                'agent_id' => 'nullable|exists:agents,id',
                 'type_poste_id' => 'required|exists:types_postes,id',
             ]);
 
@@ -143,7 +143,7 @@ class PosteController extends Controller
             'etat_poste' => 'nullable|string',
             'statut_poste' => 'nullable|string',
             'date_acq' => 'required|date_format:Y-m-d',
-            'user_id' => 'nullable|exists:users,id',
+            'agent_id' => 'nullable|exists:agents,id',
             'type_poste_id' => 'required|exists:types_postes,id',
         ]);
 

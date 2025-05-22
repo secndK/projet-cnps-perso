@@ -27,13 +27,10 @@ class UserFactory extends Factory
 
         return [
 
-            'matricule_agent' => $matricule,
+            'username' => $matricule,
             'name' => $this->faker->firstName(),
-            'prenom_agent' => $this->faker->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'direction_agent' => $this->faker->randomElement(['DSI', 'RH', 'COMPT']),
-            'localisation_agent' => $this->faker->city(),
             'password' => 'password',
             'remember_token' => Str::random(10),
 

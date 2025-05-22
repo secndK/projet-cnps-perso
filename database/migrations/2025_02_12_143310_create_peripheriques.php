@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('etat_peripherique')->nullable();
             $table->string('statut_peripherique')->nullable();
             $table->dateTime('date_acq');
-            $table->foreignId('user_id')->nullable()
-                  ->constrained('users')
+            $table->foreignId('agent_id')->nullable()
+                  ->constrained('agents')
                   ->onDelete('cascade');
             $table->foreignId('poste_id')->nullable()
                   ->constrained('postes')

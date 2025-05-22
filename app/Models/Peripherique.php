@@ -18,7 +18,7 @@ class Peripherique extends Model
         'etat_peripherique',
         'statut_peripherique',
         'date_acq',
-        'user_id',
+        'agent_id',
         'poste_id',
         'type_peripherique_id',
     ];
@@ -28,11 +28,10 @@ class Peripherique extends Model
         return $this->belongsTo(Poste::class,  'poste_id');
     }
 
-    public function users()
+    public function agent()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Agent::class);
     }
-
 
     public function typePeripherique()
     {

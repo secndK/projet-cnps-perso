@@ -21,19 +21,19 @@ class AuthController extends Controller
         Log::info('Tentative de Connexion');
 
         $request->validate([
-            'matricule_agent' => 'required|string',
+            'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('matricule_agent', $request->matricule_agent)->first();
+        $user = User::where('username', $request->username)->first();
 
         if (!$user) {
-            LogService::addLog('Connexion échouée', 'Matricule invalide : ' . $request->matricule_agent);
+            LogService::addLog('Connexion échouée', 'Matricule invalide : ' . $request->username);
             return back()->withInput()->with('error', 'Matricule incorrect.');
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            LogService::addLog('Connexion échouée', 'Mot de passe incorrect pour : ' . $request->matricule_agent);
+            LogService::addLog('Connexion échouée', 'Mot de passe incorrect pour : ' . $request->username);
             return back()->withInput()->with('error', 'Mot de passe incorrect.');
         }
 
@@ -41,7 +41,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        LogService::addLog('Connexion', 'Connexion réussie pour ' . $user->matricule_agent);
+        LogService::addLog('Connexion', 'Connexion réussie pour ' . $user->username);
 
         return redirect()->route('dashboard')->with('success', 'Connexion réussie.');
     }
@@ -55,12 +55,12 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         $user = User::create([
-            'matricule_agent' => $data['matricule_agent'],
+            'username' => $data['username'],
+
             'name' => $data['name'],
-            'prenom_agent' => $data['prenom_agent'],
+
             'email' => $data['email'],
-            'direction_agent' => $data['direction_agent'],
-            'localisation_agent' => $data['localisaon_agent'],
+
             'password' => Hash::make($data['password']),
         ]);
         event(new Registered($user));
@@ -69,19 +69,19 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'matricule_agent' => 'required|string|max:255|unique:users',
-            'name' => 'required|string|max:255',
-            'prenom_agent' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+
+            'name' => 'required|string|max:255|',
+
             'email' => 'required|string|email|max:255|unique:users',
-            'direction_agent' => 'required|string|max:255',
-            'localisation_agent' => 'required|string|max:255',
+
             'password' => 'required|string|min:6|confirmed',
         ]);
          // Attribuer un rôle par défaut
 
 
         try {
-            $data = $request->only(['matricule_agent','name','prenom_agent','email', 'direction_agent', 'localisation_agent', 'password']);
+            $data = $request->only(['username','name','email', 'password']);
             $user = $this->create($data);
             Auth::login($user);
 
@@ -97,7 +97,7 @@ class AuthController extends Controller
         $user = Auth::user();
         Auth::logout();
         if ($user) {
-            LogService::addLog('Tentative de Déconnexion', 'Déconnexion réussie pour ' . $user->name);
+            LogService::addLog('Tentative de Déconnexion', 'Déconnexion réussie pour ' . $user->username);
         } else {
             LogService::addLog('Déconnexion', 'Déconnexion réussie pour un utilisateur non authentifié');
         }

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('attributions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('agent_id')->constrained('agents')->onDelete('cascade');
             $table->date('date_attribution');
             $table->date('date_retrait')->nullable();
             $table->timestamps();

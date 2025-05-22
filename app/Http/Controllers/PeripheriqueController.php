@@ -68,7 +68,7 @@ class PeripheriqueController extends Controller
             'etat_peripherique' => 'nullable|string|max:255',
             'statut_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-            'user_id' => 'nullable|exists:users,id',
+            'agent_id' => 'nullable|exists:agents,id',
             'poste_id' => 'nullable|exists:postes,id',
             'type_peripherique_id' => 'required|exists:types_peripheriques,id',
         ]);
@@ -130,7 +130,7 @@ class PeripheriqueController extends Controller
             'etat_peripherique' => 'nullable|string|max:255',
             'statut_peripherique' => 'nullable|string|max:255',
             'date_acq' => 'required|date',
-            'user_id' => 'nullable|exists:users,id',
+            'agent_id' => 'nullable|exists:agents,id',
             'poste_id' => 'nullable|exists:postes,id',
             'type_peripherique_id' => 'required|exists:types_peripheriques,id',
         ]);

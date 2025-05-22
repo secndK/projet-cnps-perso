@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('etat_poste')->nullable();
             $table->string('statut_poste')->nullable();
             $table->dateTime('date_acq');
-            $table->foreignId('user_id')->nullable()
-            ->constrained('users')
+            $table->foreignId('agent_id')->nullable()
+            ->constrained('agents')
             ->onDelete('cascade');
             $table->foreignId('type_poste_id')->constrained('types_postes')->onDelete('cascade');
             $table->timestamps();

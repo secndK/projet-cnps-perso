@@ -20,12 +20,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
-        'matricule_agent',
+
+        'username',
         'name',
-        'prenom_agent',
+
         'email',
-        'direction_agent',
-        'localisation_agent',
+
         'password',
 
     ];
@@ -38,15 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
-    public function postes()
-    {
-        return $this->hasMany(Poste::class);
-    }
 
-    public function peripheriques()
-    {
-        return $this->hasMany(Peripherique::class);
-    }
 
     public function attributions()
     {

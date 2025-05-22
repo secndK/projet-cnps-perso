@@ -10,7 +10,7 @@ class Attribution extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'agent_id',
         'date_attribution',
         'date_retrait',
     ];
@@ -21,10 +21,9 @@ class Attribution extends Model
         'date_retrait' => 'date',
     ];
 
-
-    public function user()
+    public function agent()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Agent::class);
     }
 
     public function postes()
@@ -36,6 +35,8 @@ class Attribution extends Model
     {
         return $this->belongsToMany(Peripherique::class);
     }
+
+
 
 
 }
