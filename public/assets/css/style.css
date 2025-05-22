@@ -15,9 +15,28 @@
 
 body {
     font-family: "Open Sans", sans-serif;
-    background: #f6f9ff;
-    color: #444444;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    height: 9   0vh;
+    background: linear-gradient(-45deg, #EBD4D4FF, #F6F1D2FF, #E7E8FBFF, #F3E8DEFF);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
 }
+
+/* Animation du fond */
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 a {
     color: #4154f1;
@@ -1236,3 +1255,31 @@ h6 {
 .text-dark {
     color: #ffffff !important; /* Forcer le texte blanc en cas de conflit */
 }
+
+/* Fond des liens normaux */
+.page-link {
+    background-color: #f8f9fa; /* fond clair */
+    color: #0d6efd;            /* texte bleu */
+    border: 1px solid #dee2e6;
+}
+
+/* Au survol */
+.page-link:hover {
+    background-color: #EDBA43FF; /* fond bleu */
+    color: #fff;               /* texte blanc */
+}
+
+/* Lien actif */
+.page-item.active .page-link {
+    background-color: #198754; /* vert Bootstrap */
+    border-color: #198754;
+    color: white;
+}
+
+/* Lien désactivé */
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+

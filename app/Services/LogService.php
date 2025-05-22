@@ -21,21 +21,16 @@ class LogService
         // ]);
     }
 
-    public static function posteLog(string $action, int $posteId)
-    {
-            ActionHistoriquePoste::create([
-                'action_type' => $action,
-                'user_id' => Auth::id(),
-                'poste_id' => $posteId,
-            ]);
-        }
-
     public static function attributionLog(
         string $action,
         int $agentId,
         int $attributionId,
         ?array $postes = null,
-        ?array $peripheriques = null
+        ?array $peripheriques = null,
+        ?array $postesAjoutes = null,
+        ?array $postesRetires = null,
+        ?array $peripheriquesAjoutes = null,
+        ?array $peripheriquesRetires = null
     ) {
         try {
             DB::table('histo_attri_tables')->insert([
@@ -43,8 +38,13 @@ class LogService
                 'user_id' => Auth::id(),
                 'agent_id' => $agentId,
                 'attribution_id' => $attributionId,
-                'postes' => !empty($postes) ? json_encode($postes) : null,
-                'peripheriques' => !empty($peripheriques) ? json_encode($peripheriques) : null,
+                // Enregistre uniquement si pas vide
+                'postes' => $action === 'Modification' ? null : (!empty($postes) ? json_encode($postes) : null),
+                'peripheriques' => $action === 'Modification' ? null : (!empty($peripheriques) ? json_encode($peripheriques) : null),
+                'postes_ajoutes' => !empty($postesAjoutes) ? json_encode($postesAjoutes) : null,
+                'postes_retires' => !empty($postesRetires) ? json_encode($postesRetires) : null,
+                'peripheriques_ajoutes' => !empty($peripheriquesAjoutes) ? json_encode($peripheriquesAjoutes) : null,
+                'peripheriques_retires' => !empty($peripheriquesRetires) ? json_encode($peripheriquesRetires) : null,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -55,17 +55,6 @@ class LogService
 
 
 
-    public static function getAttributionLogs($limit = null)
-    {
-        $query = DB::table('histo_attri_tables')
-                ->orderBy('created_at');
-
-        if ($limit) {
-            $query->limit($limit);
-        }
-
-        return $query->get();
-    }
 
 
 }

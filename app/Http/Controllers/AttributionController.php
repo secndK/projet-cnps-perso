@@ -54,7 +54,7 @@ class AttributionController extends Controller
                 });
             }
 
-            $logs = $query->paginate(15)->withQueryString();
+            $logs = $query->paginate(3)->withQueryString();
 
             // Préchargement des utilisateurs et agents
             $userIds = $logs->pluck('user_id')->unique()->filter()->toArray();
@@ -242,6 +242,10 @@ class AttributionController extends Controller
             $attribution = Attribution::findOrFail($id);
             $agentId = $validatedData['agent_id'];
 
+            // Récupération des anciennes relations
+            $oldPostes = $attribution->postes->pluck('id')->toArray();
+            $oldPeripheriques = $attribution->peripheriques->pluck('id')->toArray();
+
             // Mise à jour de l'attribution
             $attribution->update([
                 'agent_id' => $agentId,
@@ -249,9 +253,18 @@ class AttributionController extends Controller
                 'date_retrait' => $validatedData['date_retrait'] ?? null,
             ]);
 
-            // Postes
+            // Gestion des postes
             $newPostes = $validatedData['postes'] ?? [];
+
+            $postesAjoutes = array_diff($newPostes, $oldPostes);
+            $postesRetires = array_diff($oldPostes, $newPostes);
+
             $attribution->postes()->sync($newPostes);
+
+            Poste::whereIn('id', $postesRetires)->update([
+                'statut_poste' => 'non attribué',
+                'agent_id' => null
+            ]);
 
             Poste::whereIn('id', $newPostes)->update([
                 'statut_poste' => 'attribué',
@@ -259,9 +272,18 @@ class AttributionController extends Controller
                 'agent_id' => $agentId
             ]);
 
-            // Périphériques
+            // Gestion des périphériques
             $newPeripheriques = $validatedData['peripheriques'] ?? [];
+
+            $peripheriquesAjoutes = array_diff($newPeripheriques, $oldPeripheriques);
+            $peripheriquesRetires = array_diff($oldPeripheriques, $newPeripheriques);
+
             $attribution->peripheriques()->sync($newPeripheriques);
+
+            Peripherique::whereIn('id', $peripheriquesRetires)->update([
+                'statut_peripherique' => 'non attribué',
+                'agent_id' => null
+            ]);
 
             Peripherique::whereIn('id', $newPeripheriques)->update([
                 'statut_peripherique' => 'attribué',
@@ -269,13 +291,17 @@ class AttributionController extends Controller
                 'agent_id' => $agentId
             ]);
 
-            // Logging
+            // Logging détaillé
             LogService::attributionLog(
                 'Modification',
                 $agentId,
                 $attribution->id,
                 $newPostes,
-                $newPeripheriques
+                $newPeripheriques,
+                $postesAjoutes,
+                $postesRetires,
+                $peripheriquesAjoutes,
+                $peripheriquesRetires
             );
 
             DB::commit();
@@ -292,6 +318,8 @@ class AttributionController extends Controller
                 ->with('error', 'Erreur lors de la mise à jour: ' . $e->getMessage());
         }
     }
+
+
 
 
 

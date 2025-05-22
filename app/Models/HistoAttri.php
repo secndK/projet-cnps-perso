@@ -16,14 +16,24 @@ class HistoAttri extends Model
         'user_id',
         'agent_id',
         'postes',
-        'peripheriques'
+        'peripheriques',
+        'postes_ajoutes',
+        'postes_retires',
+        'peripheriques_ajoutes',
+        'peripheriques_retires',
 
     ];
 
      protected $casts = [
         'postes' => 'array',
-        'peripheriques' => 'array'
+        'peripheriques' => 'array',
+        'postes_ajoutes' => 'array',
+        'postes_retires' => 'array',
+        'peripheriques_ajoutes' => 'array',
+        'peripheriques_retires' => 'array',
     ];
+
+
 
 
     public function user()

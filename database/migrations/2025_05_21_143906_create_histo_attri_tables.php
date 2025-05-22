@@ -19,6 +19,10 @@ return new class extends Migration
             $table->foreignId('agent_id')->constrained()->onDelete('cascade'); // bénéficiaire
             $table->json('postes')->nullable();
             $table->json('peripheriques')->nullable();
+            $table->json('postes_ajoutes')->nullable();
+            $table->json('postes_retires')->nullable();
+            $table->json('peripheriques_ajoutes')->nullable();
+            $table->json('peripheriques_retires')->nullable();
             $table->timestamps();
         });
     }
