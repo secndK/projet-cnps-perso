@@ -15,17 +15,38 @@ class RolesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $roles = Role::with('permissions')->get();
-            $permissions = Permission::all();
-            return view('pages.roles.index', compact('roles', 'permissions'));
+            $search = $request->input('search'); // nom du rôle
+            $permission = $request->input('permission'); // nom de permission
+            $dateFrom = $request->input('created_from');
+            $dateTo = $request->input('created_to');
+
+            $roles = Role::with('permissions')
+                ->when($search, function ($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->when($permission, function ($query, $permission) {
+                    $query->whereHas('permissions', function ($q) use ($permission) {
+                        $q->where('name', 'like', "%{$permission}%");
+                    });
+                })
+                ->when($dateFrom, function ($query, $dateFrom) {
+                    $query->whereDate('created_at', '>=', $dateFrom);
+                })
+                ->when($dateTo, function ($query, $dateTo) {
+                    $query->whereDate('created_at', '<=', $dateTo);
+                })
+                ->paginate(4);
+
+            return view('pages.roles.index', compact('roles', 'search', 'permission', 'dateFrom', 'dateTo'));
         } catch (\Throwable $e) {
             Log::error("Erreur lors du chargement des rôles : " . $e->getMessage());
             return redirect()->back()->with('error', 'Impossible de charger la liste des rôles.');
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -1,6 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Gestion des postes de travail')
-@section('module', 'Modifier un poste de travail')
+
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('postes.index') }}">Postes de travail</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edition de poste de travail</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">
@@ -38,7 +47,7 @@
                     <label for="etat_poste" class="form-label">État</label>
                     <select name="etat_poste" id="etat_poste" class="js-example-basic-single form-select">
                         <option value="">-- Choisir --</option>
-                        @foreach(['En panne', 'En service', 'Reformé'] as $etat)
+                        @foreach(['en panne', 'en service', 'Bon'] as $etat)
                             <option value="{{ $etat }}" {{ old('etat_poste', $poste->etat_poste) == $etat ? 'selected' : '' }}>{{ $etat }}</option>
                         @endforeach
                     </select>
@@ -48,7 +57,7 @@
                     <label for="statut_poste" class="form-label">Statut</label>
                     <select name="statut_poste" id="statut_poste" class="js-example-basic-single form-select">
                         <option value="">-- Choisir --</option>
-                        @foreach(['Attribué', 'Non attribué'] as $statut)
+                        @foreach(['attribué', 'disponible'] as $statut)
                             <option value="{{ $statut }}" {{ old('statut_poste', $poste->statut_poste) == $statut ? 'selected' : '' }}>{{ $statut }}</option>
                         @endforeach
                     </select>

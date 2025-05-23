@@ -2,7 +2,14 @@
 
 @section('title', 'Gestion des accès')
 
-@section('module', 'Attribution des équipements')
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('attributions.index') }}">Attribution</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Creation d'attribution</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 
@@ -44,10 +51,10 @@
                 <div class="mt-3 col-12">
                     <div class="form-group">
                         <label for="postes">Postes</label>
-                        <select name="postes[]" id="postes" class="js-example-basic-multiple form-control" multiple required>
+                        <select name="postes[]" id="postes" class="js-example-basic-multiple form-control" multiple >
                             @foreach ($postes as $poste)
                                 <option value="{{ $poste->id }}" {{ in_array($poste->id, old('postes', [])) ? 'selected' : '' }}>
-                                    {{ $poste->designation_poste }}
+                                    {{ $poste->nom_poste }}
                                 </option>
                             @endforeach
                         </select>

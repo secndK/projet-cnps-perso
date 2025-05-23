@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des accès')
-@section('module', 'Détails attribution des équipements')
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('attributions.index') }}">Attribution</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Détails d'attribution</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 
@@ -22,7 +30,7 @@
                             <option value="">Sélectionner un utilisateur</option>
                             @foreach ($agents as $agent)
                                 <option value="{{ $agent->id }}" {{ $attribution->agent_id == $agent->id ? 'selected' : '' }}>
-                                    {{ $agent->nom_agent }} {{ $agent->prenom_agent }}
+                                    {{ $agent->matricule_agent }} {{ $agent->prenom_agent }}
                                 </option>
                             @endforeach
                         </select>
@@ -36,7 +44,7 @@
                         <select name="postes[]" id="postes" class="js-example-basic-multiple form-control" multiple disabled>
                             @foreach ($postes as $poste)
                                 <option value="{{ $poste->id }}" {{ in_array($poste->id, $attribution->postes->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                    {{ $poste->designation_poste }}
+                                    {{ $poste->nom_poste }}
                                 </option>
                             @endforeach
                         </select>

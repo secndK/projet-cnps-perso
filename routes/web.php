@@ -6,11 +6,12 @@ use App\Http\Controllers\LogsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PosteController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AttributionController;
 use App\Http\Controllers\TypesPostesController;
-use App\Http\Controllers\PeripheriqueController;
 
+use App\Http\Controllers\PeripheriqueController;
 use App\Http\Controllers\TypesPeripheriquesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -50,6 +51,11 @@ Route::middleware('auth')->group(function () {
     })->middleware('throttle:6,1')->name('verification.send');
 
 });
+
+
+//gestion du tableau de bord
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
 // gestion des permissions
 Route::resource('permissions', PermissionController::class)->middleware('superadmin');

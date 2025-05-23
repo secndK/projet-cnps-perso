@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des périphériques')
-@section('module', 'Modifier un périphérique')
+
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('peripheriques.index') }}">Peripherique</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Modification de peripherique</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">
@@ -33,16 +42,19 @@
                 <div class="mt-3 col-6">
                     <label for="etat_peripherique" class="form-label">État</label>
                     <select name="etat_peripherique" class="form-select">
-                        <option value="En panne" {{ $peripherique->etat_peripherique == 'En panne' ? 'selected' : '' }}>En panne</option>
-                        <option value="En service" {{ $peripherique->etat_peripherique == 'En service' ? 'selected' : '' }}>En service</option>
+                        <option value="En service" {{ $peripherique->etat_peripherique == 'Bon' ? 'selected' : '' }}>Bon</option>
+                        <option value="En service" {{ $peripherique->etat_peripherique == 'en service' ? 'selected' : '' }}>En service</option>
+                        <option value="En panne" {{ $peripherique->etat_peripherique == 'en panne' ? 'selected' : '' }}>En panne</option>
                     </select>
                 </div>
 
                 <div class="mt-3 col-6">
-                    <label for="etat_peripherique" class="form-label">État</label>
-                    <select name="etat_peripherique" class="form-select">
-                        <option value="En panne" {{ $peripherique->etat_peripherique == 'En panne' ? 'selected' : '' }}>En panne</option>
-                        <option value="En service" {{ $peripherique->etat_peripherique == 'En service' ? 'selected' : '' }}>En service</option>
+                    <label for="statu_peripherique" class="form-label">Statut</label>
+                    <select name="statut_peripherique" class="form-select">
+                        <option value="disponible" {{ $peripherique->etat_peripherique == 'disponible' ? 'selected' : '' }}>Disponible</option>
+                        <option value="attribué" {{ $peripherique->etat_peripherique == 'attribué' ? 'selected' : '' }}>Attribué</option>
+                        <option value="réformé" {{ $peripherique->etat_peripherique == 'reformé' ? 'selected' : '' }}>Reformé</option>
+
                     </select>
                 </div>
 

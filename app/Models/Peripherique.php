@@ -19,7 +19,6 @@ class Peripherique extends Model
         'statut_peripherique',
         'date_acq',
         'agent_id',
-        'poste_id',
         'type_peripherique_id',
     ];
 

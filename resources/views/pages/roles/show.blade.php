@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('title', 'Détails du Rôle')
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Rôles</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Détails de rôle</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">

@@ -28,9 +28,10 @@ class PosteFactory extends Factory
 
             'nom_poste' => $this->faker->randomElement(['DELL LATITUDE', 'MACBOOK AIR', 'HP PROBOOK', 'HP ELITE G6']) . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
 
-            'designation_poste' => $this->faker->randomElement(['DELL LATITUDE', 'MACBOOK AIR', 'HP PROBOOK', 'HP ELITE G6']),
+            'designation_poste' => 'N/A',
 
-            'etat_poste' =>  $this->faker->randomElement(['En service', 'En panne', 'Non définis']),
+            'etat_poste' =>  'Bon',
+            'statut_poste' =>  'disponible',
 
             'date_acq' => $this->faker->date('Y-m-d'),
 

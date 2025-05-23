@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Gestion des postes de travail')
-@section('module', 'Détails poste de travail')
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('postes.index') }}">Postes de travail</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Détails de poste de travail</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">
@@ -52,6 +60,23 @@
                         @endforeach
                     </select>
                 </div>
+
+                <div class="mt-3 col-6">
+                    <label class="form-label">Propriétaire</label>
+                    <input type="text" class="form-control" value="{{ $poste->agent->matricule_agent ?? 'N/A' }}" disabled>
+                </div>
+
+                 <div class="mt-3 col-6">
+                    <label class="form-label">Direction</label>
+                    <input type="text" class="form-control" value="{{ $poste->agent->direction_agent ?? 'N/A' }}" disabled>
+                </div>
+
+                <div class="mt-3 col-6">
+                    <label class="form-label">Localisation</label>
+                    <input type="text" class="form-control" value="{{ $poste->agent->localisation_agent ?? 'N/A' }}" disabled>
+                </div>
+
+
 
 
 

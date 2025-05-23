@@ -21,7 +21,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $matricule = 'CNPS-' . str_pad((string) static::$counter, 4, '0', STR_PAD_LEFT);
+        $matricule = 'M-' . str_pad((string) static::$counter, 5, '0', STR_PAD_LEFT);
         static::$counter++; // incrémente le compteur à chaque utilisateur
 
 

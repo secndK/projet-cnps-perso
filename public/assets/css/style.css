@@ -15,13 +15,13 @@
 
 body {
     font-family: "Open Sans", sans-serif;
-    color: #ffffff;
+    color: #000;
     margin: 0;
     padding: 0;
     height: 9   0vh;
-    background: linear-gradient(-45deg, #EBD4D4FF, #F6F1D2FF, #E7E8FBFF, #F3E8DEFF);
+    background: linear-gradient(-90deg, #E0E3F5FF, #EEFCF4FF, #E9E7F8FF, #FEEDFDFF);
     background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    animation: gradientBG 18s ease infinite;
 }
 
 /* Animation du fond */
@@ -56,6 +56,34 @@ h5,
 h6 {
     font-family: "Nunito", sans-serif;
 }
+/* HTML: <div class="loader"></div> */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 /*--------------------------------------------------------------
 # Main
@@ -1282,4 +1310,6 @@ h6 {
     background-color: #e9ecef;
     border-color: #dee2e6;
 }
+
+
 

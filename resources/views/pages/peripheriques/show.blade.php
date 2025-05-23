@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Gestion des périphériques')
-@section('module', 'Détails périphérique')
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('peripheriques.index') }}">Peripherique</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Détails de peripherique</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">
@@ -33,21 +41,38 @@
                 <div class="mt-3 col-6">
                     <label for="etat_peripherique" class="form-label">État</label>
                     <select name="etat_peripherique" class="form-select" disabled>
-                        <option value="En panne" {{ $peripheriques->etat_peripherique == 'En panne' ? 'selected' : '' }}>En panne</option>
-                        <option value="En service" {{ $peripheriques->etat_peripherique == 'En service' ? 'selected' : '' }}>En service</option>
-                        <option value="Réformé" {{ $peripheriques->etat_peripherique == 'Réformé' ? 'selected' : '' }}>Réformé</option>
-                        <option value="Non attribué" {{ $peripheriques->etat_peripherique == 'Non attribué' ? 'selected' : '' }}>Non attribué</option>
+                        <option value="en panne" {{ $peripheriques->etat_peripherique == 'en panne' ? 'selected' : '' }}>En panne</option>
+                        <option value="en service" {{ $peripheriques->etat_peripherique == 'en service' ? 'selected' : '' }}>En service</option>
+                        <option value="Bon" {{ $peripheriques->etat_peripherique == 'Bon' ? 'selected' : '' }}>Bon</option>
                     </select>
                 </div>
 
+               <div class="mt-3 col-6">
+                    <label for="statu_peripherique" class="form-label">Statut</label>
+                    <select name="statut_peripherique" class="form-select" disabled>
+                        <option value="disponible" {{ $peripheriques->statut_peripherique == 'disponible' ? 'selected' : '' }}>Disponible</option>
+                        <option value="attribué" {{ $peripheriques->statut_peripherique == 'attribué' ? 'selected' : '' }}>Attribué</option>
+                        <option value="réformé" {{ $peripheriques->statut_peripherique == 'reformé' ? 'selected' : '' }}>Reformé</option>
+
+                    </select>
+                </div>
+
+                 <div class="mt-3 col-6">
+                    <label class="form-label">Propriétaire</label>
+                    <input type="text" class="form-control" value="{{ $peripheriques->agent->matricule_agent ?? 'N/A' }}" disabled>
+                </div>
+
+                 <div class="mt-3 col-6">
+                    <label class="form-label">Direction</label>
+                    <input type="text" class="form-control" value="{{ $peripheriques->agent->direction_agent ?? 'N/A' }}" disabled>
+                </div>
 
                 <div class="mt-3 col-6">
-                    <label for="etat_peripherique" class="form-label">État</label>
-                    <select name="etat_peripherique" class="form-select" disabled>
-                        <option value="En panne" {{ $peripheriques->etat_peripherique == 'En panne' ? 'selected' : '' }}>En panne</option>
-                        <option value="En service" {{ $peripheriques->etat_peripherique == 'En service' ? 'selected' : '' }}>En service</option>
-                    </select>
+                    <label class="form-label">Localisation</label>
+                    <input type="text" class="form-control" value="{{ $peripheriques->agent->localisation_agent ?? 'N/A' }}" disabled>
                 </div>
+
+
 
 
                 <div class="mt-3 col-6">

@@ -1,12 +1,19 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des attributions')
-@section('module', ' Historique')
+
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Historique d'attribution</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
-<br>
-<br>
-<br>
+
+
 <div class="container">
     {{-- <h1 class="mb-4">Historique des attributions</h1> --}}
         <form method="GET" class="mb-4 row g-3 align-items-end">
@@ -63,8 +70,9 @@
                             {{-- Bénéficiaire --}}
                             <td>
                                 @if(isset($agents[$log->agent_id]))
-                                    {{ $agents[$log->agent_id]->nom_agent }} {{ $agents[$log->agent_id]->prenom_agent }}
+                                    {{ $agents[$log->agent_id]->matricule_agent }}
                                 @else
+
                                     Inconnu
                                 @endif
                             </td>
@@ -79,7 +87,7 @@
                                         $postesAjoutes = is_string($log->postes_ajoutes) ? json_decode($log->postes_ajoutes, true) : $log->postes_ajoutes;
                                     @endphp
                                     @if(!empty($postesAjoutes))
-                                        <div><strong>Ajoutés :</strong></div>
+                                        <div ><p class="fs-6"><strong>Ajoutés :</strong></p></div>
                                         @foreach($postesAjoutes as $posteId)
                                             @php $poste = \App\Models\Poste::find($posteId); @endphp
                                             <span class="mb-1 badge bg-success d-inline-block">

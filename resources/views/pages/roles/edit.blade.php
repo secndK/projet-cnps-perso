@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('title', 'Éditer Rôle')
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Rôles</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edition de rôles</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">
@@ -23,7 +31,7 @@
                 <label class="form-label">Permissions</label>
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <thead class="table-dark text-white">
+                        <thead class="text-white table-dark">
                             <tr>
                                 <th scope="col" width="1%">
                                     <!-- Case à cocher pour sélectionner/désélectionner tout -->

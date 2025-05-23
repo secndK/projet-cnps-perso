@@ -15,13 +15,25 @@ class PermissionController extends Controller
     public function index(Request $request)
     {
         try {
-            $permissions = Permission::all();
-            return view('pages.permissions.index', compact('permissions'));
+            $search = $request->input('search');
+            $guard = $request->input('guard');
+            $dateFrom = $request->input('created_from');
+            $dateTo = $request->input('created_to');
+
+            $permissions = Permission::query()
+                ->when($search, fn($q) => $q->where('name', 'like', "%{$search}%"))
+                ->when($guard, fn($q) => $q->where('guard_name', 'like', "%{$guard}%"))
+                ->when($dateFrom, fn($q) => $q->whereDate('created_at', '>=', $dateFrom))
+                ->when($dateTo, fn($q) => $q->whereDate('created_at', '<=', $dateTo))
+                ->paginate(4);
+
+            return view('pages.permissions.index', compact('permissions', 'search', 'guard', 'dateFrom', 'dateTo'));
         } catch (\Exception $e) {
             Log::error("Erreur lors du chargement des permissions : " . $e->getMessage());
             return redirect()->back()->with('error', 'Impossible de charger la liste des permissions.');
         }
     }
+
 
     public function create()
     {

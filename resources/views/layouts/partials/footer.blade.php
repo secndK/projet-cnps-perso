@@ -1,6 +1,6 @@
 <footer id="footer" class="footer">
     <div class="copyright">
-      &copy;<span class="text-sm">Réalisé par Koffi kan jean-eudes|stagiaire CNPS</span>
+      &copy;<small><span class="text-sm">Réalisé par Koffi kan jean-eudes|stagiaire CNPS</span></small>
     </div>
     <div class="credits">
     </div>

@@ -1,7 +1,16 @@
 
 @extends('layouts.app')
 @section('title', 'Gestion des postes de travail')
-@section('module', 'Créer un poste de travail')
+
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('postes.index') }}">Postes de travail</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Creation de poste de travail</li>
+  </ol>
+</nav>
+@endsection
 
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -15,8 +24,6 @@
 
 
 @section('content')
-
-
 
 <div class="card">
     <div class="card-header">
@@ -57,8 +64,9 @@
                         <label for="EtatPoste" class="form-label">État</label>
                         <select name="etat_poste" id="EtatPoste" class="js-example-basic-single form-select" >
                             <option value="">-- Choisir --</option>
-                            <option value="En panne">En panne</option>
-                            <option value="En service">En service</option>
+                            <option value="Bon">Bon</option>
+                            <option value="en panne">En panne</option>
+                            <option value="en service">En service</option>
                         </select>
                     </div>
                 </div>
@@ -68,8 +76,8 @@
                         <label for="StatutPoste" class="form-label">Statut</label>
                         <select name="statut_poste" id="StatutPoste" class="js-example-basic-single form-select" >
                             <option value="">-- Choisir --</option>
-                            <option value="Attribué">Attribué</option>
-                            <option value="Non attribué">Non Attribué</option>
+                            <option value="attribué">Attribué</option>
+                            <option value="disponible">disponible</option>
                         </select>
                     </div>
                 </div>

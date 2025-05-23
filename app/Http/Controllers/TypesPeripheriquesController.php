@@ -12,11 +12,36 @@ class TypesPeripheriquesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index(Request $request)
     {
-        $types = TypePeripherique::all();
-        return view('pages.types-peripheriques.index', compact('types'));
+        try {
+            $query = TypePeripherique::query();
+
+            // Filtre sur libellé du type de périphérique
+            if ($request->filled('libelle')) {
+                $query->where('libelle_type', 'like', '%' . $request->libelle . '%');
+            }
+
+            // Filtre sur la date de création
+            if ($request->filled('created_at')) {
+                $query->whereDate('created_at', $request->created_at);
+            }
+
+            // Filtre sur la date de mise à jour
+            if ($request->filled('updated_at')) {
+                $query->whereDate('updated_at', $request->updated_at);
+            }
+
+            $types = $query->paginate(2)->appends($request->query());
+
+            return view('pages.types-peripheriques.index', compact('types'));
+
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement des types de périphériques : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger les types de périphériques.');
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.

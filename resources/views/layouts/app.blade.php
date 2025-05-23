@@ -25,6 +25,8 @@
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
+    @yield('style')
+
 
 
     <!-- Template Main CSS File -->
@@ -50,6 +52,10 @@
 
 <body>
 
+    <div class="loader-overlay" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
   <!-- ======= Header ======= -->
 
   @include('layouts.partials.header')
@@ -62,17 +68,12 @@
 
   <main id="main" class="main">
 
-    {{-- <div class="pagetitle">
-      <h1>@yield('title-page')</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#"></a></li>
-          <li class="breadcrumb-item "></li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title --> --}}
+
 
     <section class="section">
+
+
+
 
 
 
@@ -83,12 +84,9 @@
 
         @include('layouts.partials.message')
 
-
-
+        @yield('voidgrubs')
 
         @yield('content')
-
-
 
 
     </section>
@@ -193,6 +191,21 @@
         });
 
     </script>
+
+    {{-- script pour mon loader --}}
+
+    <script>
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('loader');
+            if (loader) {
+            loader.style.display = 'none';
+            }
+        });
+    </script>
+
+
+
+
 
 </body>
 

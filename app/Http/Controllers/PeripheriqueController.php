@@ -15,15 +15,56 @@ class PeripheriqueController extends Controller
     /**
      * Afficher la liste des périphériques.
      */
-    public function index()
-    {
-        $peripheriques = Peripherique::with('typePeripherique')->get();
-        return view('pages.peripheriques.index', compact('peripheriques'));
-    }
+
+
 
     /**
      * Afficher le formulaire de création.
      */
+
+
+    public function index(Request $request)
+    {
+        try {
+            $query = Peripherique::with(['typePeripherique', 'agent']); // Préchargement pour éviter N+1
+
+            // Filtre combiné sur numéro de série ou d'inventaire
+            if ($request->filled('numero')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('num_serie_peripherique', 'like', '%' . $request->numero . '%')
+                    ->orWhere('num_inventaire_peripherique', 'like', '%' . $request->numero . '%');
+                });
+            }
+
+            // Filtre combiné sur état ou statut
+            if ($request->filled('etat_statut')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('etat_peripherique', 'like', '%' . $request->etat_statut . '%')
+                    ->orWhere('statut_peripherique', 'like', '%' . $request->etat_statut . '%');
+                });
+            }
+
+            // Filtre sur la direction via la relation agent
+            if ($request->filled('direction')) {
+                $query->whereHas('agent', function ($q) use ($request) {
+                    $q->where('direction_agent', 'like', '%' . $request->direction . '%');
+                });
+            }
+
+            // Pagination avec conservation des filtres
+            $peripheriques = $query->paginate(3)->appends($request->query());
+
+            // Récupération des types de périphériques pour le filtre
+            $types = TypePeripherique::all();
+
+            return view('pages.peripheriques.index', compact('peripheriques', 'types'));
+
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement des périphériques : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger les périphériques.');
+        }
+    }
+
     public function create()
     {
         $types = TypePeripherique::all();
@@ -76,8 +117,7 @@ class PeripheriqueController extends Controller
         try {
             DB::beginTransaction();
 
-            $peripherique = Peripherique::create($validatedData);
-            LogService::posteLog('Création périphérique', $peripherique->id);
+            Peripherique::create($validatedData);
 
             DB::commit();
             return redirect()->route('peripheriques.index')->with('success', 'Périphérique ajouté avec succès');
@@ -95,11 +135,10 @@ class PeripheriqueController extends Controller
      */
     public function show($id)
     {
-        $peripheriques = Peripherique::with('typePeripherique')->findOrFail($id);
+        $peripheriques = Peripherique::with('typePeripherique', 'agent')->findOrFail($id);
         $types = TypePeripherique::all();
         return view('pages.peripheriques.show', compact('peripheriques', 'types'));
     }
-
     /**
      * Afficher le formulaire d'édition.
      */
@@ -140,7 +179,6 @@ class PeripheriqueController extends Controller
 
             $peripherique = Peripherique::findOrFail($id);
             $peripherique->update($validatedData);
-            LogService::posteLog('Modification périphérique', $peripherique->id);
 
             DB::commit();
             return redirect()->route('peripheriques.index')->with('success', 'Périphérique mis à jour avec succès');
@@ -162,11 +200,9 @@ class PeripheriqueController extends Controller
             DB::beginTransaction();
 
             $peripherique = Peripherique::findOrFail($id);
-            $peripherique->etat_peripherique = 'Réformé';
-            $peripherique->statut_peripherique = 'Réformé';
+            $peripherique->statut_peripherique = 'réformé';
             $peripherique->save();
 
-            LogService::posteLog('Périphérique réformé', $peripherique->id);
 
             DB::commit();
             return redirect()->route('peripheriques.index')->with('success', 'Périphérique marqué comme réformé');

@@ -2,7 +2,16 @@
 
 
 @section('title', 'Gestion des périphériques')
-@section('module', 'Créer un périphérique')
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('peripheriques.index') }}">Peripherique</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Creation de peripherique</li>
+  </ol>
+</nav>
+@endsection
+
 
 @section('content')
 <div class="card">
@@ -47,8 +56,9 @@
                         <label for="EtatPeripherique" class="form-label">État</label>
                         <select name="etat_peripherique" id="EtatPeripherique" class="js-example-basic-single form-select">
                             <option value="">-- Choisir --</option>
-                            <option value="En panne">En panne</option>
-                            <option value="En service">En service</option>
+                            <option value="En service">Bon</option>
+                            <option value="En service">en service</option>
+                            <option value="En panne">en panne</option>
                         </select>
                     </div>
                 </div>
@@ -58,7 +68,9 @@
                         <select name="statut_peripherique" id="statutPeripherique" class="js-example-basic-single form-select">
                             <option value="">-- Choisir --</option>
                             <option value="Attribué">Attribué</option>
-                            <option value="Non Attribué">Non attribué</option>
+                            <option value="Non Attribué">Disponible</option>
+                            <option value="Non Attribué">reformé</option>
+
                         </select>
                     </div>
                 </div>

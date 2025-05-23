@@ -11,7 +11,6 @@
                 </a>
                 <ul id="donnée-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li><a href="{{ route('dashboard') }}" class="hover:bg-sky-500"><i class="bi bi-circle"></i><span>Dashboard</span></a></li>
-                    <li><a href="{{ route('logs.index') }}"><i class="bi bi-circle"></i><span>Historique</span></a></li>
                 </ul>
             </li>
 
@@ -49,12 +48,7 @@
                 <ul id="postes-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li><a href="{{ route('types-postes.index') }}"><i class="bi bi-circle"></i><span>Types de postes</span></a></li>
                     <li><a href="{{ route('postes.index') }}"><i class="bi bi-circle"></i><span>Poste de travail</span></a></li>
-                    <li>
-                        <a href="{{ route('postes.historique') }}">
-                            <i class="bi bi-clock-history"></i>
-                            <span>Historique d'action</span>
-                        </a>
-                    </li>                </ul>
+                </ul>
             </li>
             <!-- 📌 Gestion des Périphériques -->
             <li class="nav-item">

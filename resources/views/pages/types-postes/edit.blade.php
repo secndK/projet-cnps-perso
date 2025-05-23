@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des postes de travail')
-@section('module', 'Editer type de poste')
+@section('voidgrubs')
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('types-postes.index') }}">Type poste</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edition de type poste</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">

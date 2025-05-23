@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('title', 'Créer une permission')
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('permissions.index') }}">Permissions</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Creation de permission</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">

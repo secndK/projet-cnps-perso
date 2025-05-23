@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('title', 'Détails de l\'Utilisateur')
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Utilisateurs</a></li>
+    <li class="breadcrumb-item active" aria-current="page"> Détails d'utilisateur</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <div class="card">
@@ -12,10 +20,7 @@
         <form>
             <div class=" row">
 
-                  <div class="mt-3 col-6">
-                    <label for="matriculeAgent" class="form-label">Matricule de l'utilisateur</label>
-                    <input type="text" name="matricule_agent" class="form-control" id="matriculeAgent" readonly value="{{ $user->matricule_agent }}" disabled>
-                </div>
+
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
@@ -25,12 +30,15 @@
                 </div>
 
 
-                <div class="mt-3 col-6">
+                 <div class="mt-3 col-6">
                     <div class="form-group">
-                        <label for="usersName" class="form-label">Prenom de l'utilisateur</label>
-                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->prenom_agent}}" disabled>
+                        <label for="usersName" class="form-label">Matricule de l'utilisateur</label>
+                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->username}}" disabled>
                     </div>
                 </div>
+
+
+
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
@@ -38,19 +46,7 @@
                         <input type="email" class="form-control" id="usersEmail" readonly value="{{ $user->email}}" disabled>
                     </div>
                 </div>
-                <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="usersName" class="form-label">Direction de l'utilisateur</label>
-                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->direction_agent}}" disabled>
-                    </div>
-                </div>
 
-                 <div class="mt-3 col-6">
-                    <div class="form-group">
-                        <label for="usersName" class="form-label">Localisation de l'utilisateur</label>
-                        <input type="text" class="form-control" id="usersName" readonly value="{{ $user->localisation_agent}}" disabled>
-                    </div>
-                </div>
 
                 <div class="mt-3 col-6">
                     <div class="form-group">

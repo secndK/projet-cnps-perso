@@ -24,7 +24,7 @@ class AgentFactory extends Factory
     public function definition(): array
     {
 
-         $matricule = 'CNPS-' . str_pad((string) static::$counter, 4, '0', STR_PAD_LEFT);
+         $matricule = 'M-' . str_pad((string) static::$counter, 5, '0', STR_PAD_LEFT);
         static::$counter++; // incrémente le compteur à chaque utilisateur
 
 
@@ -33,8 +33,8 @@ class AgentFactory extends Factory
              'matricule_agent' => $matricule,
              'nom_agent' => $this->faker->lastName(),
              'prenom_agent' => $this->faker->firstName(),
-             'direction_agent' => $this->faker->randomElement(['DSI', 'RH', 'DPRESS', 'SECURITE & RESEAU']),
-             'localisation_agent' => $this->faker->randomElement(['1ER ETAGE', '2E ETAGES', '3E ETAGES']),
+             'direction_agent' => $this->faker->randomElement(['DSI', 'RH', 'DPRESS', 'COMPTABILITÉ', 'AUDIT',]),
+             'localisation_agent' => $this->faker->randomElement(['1ER ETAGE', '2E ETAGES', '3E ETAGES', '4E ETAGES']),
 
         ];
     }

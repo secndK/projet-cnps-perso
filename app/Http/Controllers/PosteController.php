@@ -27,18 +27,45 @@ class PosteController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-
         try {
-            $postes = Poste::with('TypePoste')->get();
-            return view('pages.postes.index', compact('postes'));
+            $query = Poste::with(['TypePoste', 'agent']); // pour éviter les requêtes N+1
+
+            // Filtre combiné sur numéro de série ou d'inventaire
+            if ($request->filled('numero')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('num_serie_poste', 'like', '%' . $request->numero . '%')
+                    ->orWhere('num_inventaire_poste', 'like', '%' . $request->numero . '%');
+                });
+            }
+
+            // Filtre sur état ou statut
+            if ($request->filled('etat_statut')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('etat_poste', 'like', '%' . $request->etat_statut . '%')
+                    ->orWhere('statut_poste', 'like', '%' . $request->etat_statut . '%');
+                });
+            }
+
+            // Filtre sur la direction via la relation agent
+            if ($request->filled('direction')) {
+                $query->whereHas('agent', function ($q) use ($request) {
+                    $q->where('direction_agent', 'like', '%' . $request->direction . '%');
+                });
+            }
+
+            $postes = $query->paginate(3)->appends($request->query());
+            $types = TypePoste::all();
+
+            return view('pages.postes.index', compact('postes', 'types'));
 
         } catch (\Throwable $e) {
             Log::error("Erreur lors du chargement des postes : " . $e->getMessage());
             return redirect()->back()->with('error', 'Impossible de charger les données pour le formulaire.');
         }
     }
+
 
     public function create()
     {
@@ -94,8 +121,8 @@ class PosteController extends Controller
                 'type_poste_id' => 'required|exists:types_postes,id',
             ]);
 
-            $poste = Poste::create($validatedData);
-            LogService::posteLog('Creation de poste', $poste->id);
+            Poste::create($validatedData);
+
 
             return redirect()->route('postes.index')->with('success', 'Poste créé avec succès.');
 
@@ -107,7 +134,7 @@ class PosteController extends Controller
 
     public function show($id)
     {
-        $poste = Poste::with('typePoste')->findOrFail($id);
+        $poste = Poste::with('typePoste', 'agent')->findOrFail($id);
         $types = TypePoste::all();
 
         return view('pages.postes.show', compact('poste', 'types'));
@@ -149,7 +176,7 @@ class PosteController extends Controller
 
         $poste = Poste::findOrFail($id);
         $poste->update($validatedData);
-        LogService::posteLog('Modification de poste', $poste->id);
+
 
         return redirect()->route('postes.index')->with('success', 'Poste mis à jour avec succès.');
 
@@ -164,11 +191,10 @@ class PosteController extends Controller
         try {
 
             $poste = Poste::findOrFail($id);
-            $poste->etat_poste = 'Réformé';
-            $poste->statut_poste = 'Réformé';
+            $poste->statut_poste = 'réformé';
             $poste->save();
 
-            LogService::posteLog('Poste réformé', $poste->id);
+
 
             return redirect()->route('postes.index')->with('success', 'Le poste a été marqué comme réformé.');
         } catch (\Throwable $e) {

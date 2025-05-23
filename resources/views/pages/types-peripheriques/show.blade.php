@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des Périphériques')
-@section('module', 'Détails type de périphériques')
+@section('voidgrubs')
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('types-peripheriques.index') }}">Type peripherique</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Détails de type peripherique</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 

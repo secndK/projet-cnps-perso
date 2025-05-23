@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Gestion des accès')
-@section('module', 'Attribution des équipements')
+
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('attributions.index') }}">Attribution</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edition d'attribution</li>
+  </ol>
+</nav>
+@endsection
 @section('content')
 
 <div class="card">
@@ -17,11 +25,13 @@
             <div class="mt-1 row">
                 <div class="mt-3 col-12">
                     <div class="form-group">
-                        <label for="agent_id">agent</label>
+                        <label for="agent_id">Agent Bénéficiaire</label>
                         <select name="agent_id" id="agent_id" class="js-example-basic-single form-control" >
                             <option value="">Sélectionner un utilisateur</option>
-                            @foreach ($agents as $agents)
-                                <option value="{{ $agents->id }}" {{ $attribution->agent_id == $agents->id ? 'selected' : '' }}>{{ $agents->name}}</option>
+                            @foreach ($agents as $agent)
+                                <option value="{{ $agent->id }}" {{ $attribution->agent_id == $agent->id ? 'selected' : '' }}>
+                                    {{ $agent->matricule_agent }} {{ $agent->prenom_agent }}
+                                </option>
                             @endforeach
                         </select>
                     </div>

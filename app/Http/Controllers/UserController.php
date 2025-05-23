@@ -14,17 +14,36 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(){
-
+    public function index(Request $request)
+    {
         try {
-            $users = User::with('roles')->get(); // Charge les utilisateurs ET leurs rôles
-            $roles = Role::all();
-            return view('pages.users.index', compact('users','roles'));
-        } catch (\Exception $e) {
-            Log::error('Erreur lors du chargement des rôles : ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Impossible de charger les rôles.');
+            $search = $request->input('search');
+            $role = $request->input('role');
+
+            $users = User::with('roles')
+                ->when($search, function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('username', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                    });
+                })
+                ->when($role, function ($query, $role) {
+                    $query->whereHas('roles', function ($q) use ($role) {
+                        $q->where('name', $role);
+                    });
+                })
+                ->paginate(4);
+
+            $roles = Role::all(); // pour remplir le select des rôles
+
+            return view('pages.users.index', compact('users', 'roles'));
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement des utilisateurs : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger la liste des utilisateurs.');
         }
     }
+
+
     /**
      * Show the form for creating a new resource.
      */

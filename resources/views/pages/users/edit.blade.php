@@ -2,6 +2,15 @@
 
 @section('title', 'Modifier un Utilisateur')
 
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Utilisateurs</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edition d'utilisateurs</li>
+  </ol>
+</nav>
+@endsection
+
 @section('content')
 
 @if ($errors->any())
@@ -24,10 +33,7 @@
             @method('PUT')
 
             <div class="row">
-                <div class="mt-3 col-6">
-                    <label class="form-label">Matricule</label>
-                    <input type="text" name="matricule_agent" class="form-control" value="{{ old('matricule_agent', $user->matricule_agent) }}" required>
-                </div>
+
 
                 <div class="mt-3 col-6">
                     <label class="form-label">Nom</label>
@@ -35,8 +41,8 @@
                 </div>
 
                 <div class="mt-3 col-6">
-                    <label class="form-label">Prénom</label>
-                    <input type="text" name="prenom_agent" class="form-control" value="{{ old('prenom_agent', $user->prenom_agent) }}" required>
+                    <label class="form-label">Matricule</label>
+                    <input type="text" name="prenom_agent" class="form-control" value="{{ old('username', $user->username) }}" required>
                 </div>
 
                 <div class="mt-3 col-6">
@@ -44,15 +50,6 @@
                     <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
                 </div>
 
-                <div class="mt-3 col-6">
-                    <label class="form-label">Direction</label>
-                    <input type="text" name="direction_agent" class="form-control" value="{{ old('direction_agent', $user->direction_agent) }}" required>
-                </div>
-
-                <div class="mt-3 col-6">
-                    <label class="form-label">Localisation</label>
-                    <input type="text" name="localisation_agent" class="form-control" value="{{ old('localisation_agent', $user->localisation_agent) }}" required>
-                </div>
 
                 <div class="mt-3 col-6">
                     <label class="form-label">Nouveau mot de passe</label>

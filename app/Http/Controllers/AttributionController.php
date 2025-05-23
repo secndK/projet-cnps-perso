@@ -82,16 +82,28 @@ class AttributionController extends Controller
 
 
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $attributions = Attribution::with(['agent', 'postes', 'peripheriques'])->get();
-            return view('pages.attributions.index', compact('attributions'));
+            $search = $request->input('search');
+
+            $attributions = Attribution::with(['agent', 'postes', 'peripheriques'])
+                ->when($search, function ($query, $search) {
+                    $query->whereHas('agent', function ($q) use ($search) {
+                        $q->where('nom_agent', 'like', "%$search%")
+                        ->orWhere('prenom_agent', 'like', "%$search%");
+                    });
+                })
+                ->paginate(4);
+
+            return view('pages.attributions.index', compact('attributions', 'search'));
         } catch (\Exception $e) {
             Log::error("Erreur lors du chargement des attributions : " . $e->getMessage());
             return redirect()->back()->with('error', 'Impossible de charger les attributions.');
         }
     }
+
+
 
 
     public function create()
@@ -100,8 +112,8 @@ class AttributionController extends Controller
             return view('pages.attributions.create', [
 
                 'agents' => Agent::all(), // Liste de tous les agents
-                'postes' => Poste::whereNull('agent_id')->get(), // Uniquement les postes non attribués
-                'peripheriques' => Peripherique::whereNull('agent_id')->get(), // Uniquement les périphériques non attribués
+                'postes' => Poste::whereNull('agent_id')->where('etat_poste', '!=', 'réformé')->get(), // Uniquement les postes non attribués
+                'peripheriques' => Peripherique::whereNull('agent_id')->where('etat_peripherique', '!=', 'réformé')->get(), // Uniquement les périphériques non attribués
 
             ]);
         } catch (\Exception $e) {
@@ -146,8 +158,8 @@ class AttributionController extends Controller
 
                 Poste::whereIn('id', $validatedData['postes'])
                     ->update([
-                        'statut_poste' => 'attribué',
                         'etat_poste' => 'en service',
+                        'statut_poste' => 'attribué',
                         'agent_id' => $validatedData['agent_id']
                     ]);
             }
@@ -158,8 +170,8 @@ class AttributionController extends Controller
 
                 Peripherique::whereIn('id', $validatedData['peripheriques'])
                     ->update([
-                        'statut_peripherique' => 'attribué',
                         'etat_peripherique' => 'en service',
+                        'statut_peripherique' => 'attribué',
                         'agent_id' => $validatedData['agent_id']
                     ]);
             }
@@ -262,13 +274,14 @@ class AttributionController extends Controller
             $attribution->postes()->sync($newPostes);
 
             Poste::whereIn('id', $postesRetires)->update([
-                'statut_poste' => 'non attribué',
+                'etat_poste' => 'Bon',
+                'statut_poste' => 'disponible',
                 'agent_id' => null
             ]);
 
             Poste::whereIn('id', $newPostes)->update([
+                'etat_poste' => 'En service',
                 'statut_poste' => 'attribué',
-                'etat_poste' => 'en service',
                 'agent_id' => $agentId
             ]);
 
@@ -281,13 +294,14 @@ class AttributionController extends Controller
             $attribution->peripheriques()->sync($newPeripheriques);
 
             Peripherique::whereIn('id', $peripheriquesRetires)->update([
-                'statut_peripherique' => 'non attribué',
+                'etat_peripherique' => 'Bon',
+                'statut_peripherique' => 'diponible',
                 'agent_id' => null
             ]);
 
             Peripherique::whereIn('id', $newPeripheriques)->update([
-                'statut_peripherique' => 'attribué',
                 'etat_peripherique' => 'en service',
+                'statut_peripherique' => 'attribué',
                 'agent_id' => $agentId
             ]);
 
@@ -343,12 +357,14 @@ class AttributionController extends Controller
 
             // Libération des équipements
             Poste::whereIn('id', $postes)->update([
-                'statut_poste' => 'non attribué',
+                'etat_poste'=> 'Bon',
+                'statut_poste' => 'disponible',
                 'agent_id' => null
             ]);
 
             Peripherique::whereIn('id', $peripheriques)->update([
-                'statut_peripherique' => 'non attribué',
+                'etat_peripherique'=> 'Bon',
+                'statut_peripherique' => 'disponible',
                 'agent_id' => null
             ]);
 

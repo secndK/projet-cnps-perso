@@ -21,8 +21,9 @@ class PeripheriqueFactory extends Factory
             'num_serie_peripherique' => 'PDT-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
             'num_inventaire_peripherique' =>  str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT) .'-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT) .'-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT) .'-' . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
             'nom_peripherique' => $this->faker->randomElement(['Souris Logitech', ' HP Clavier', 'HP Ecran', ' HP Imprimante', ' MTN BOX-WIFI']) . str_pad((string) fake()->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
-            'designation_peripherique' => $this->faker->randomElement(['Souris Logitech', ' HP Clavier', ' HP Ecran', ' HP Imprimante', 'MTN BOX-WIFI']),
-            'etat_peripherique' =>  $this->faker->randomElement(['En service', 'En panne', 'Non définis']),
+            'designation_peripherique' => 'N/A',
+            'etat_peripherique' =>  'Bon',
+            'statut_peripherique' =>  'disponible',
             'date_acq' => $this->faker->date('Y-m-d'),
             'type_peripherique_id' => TypePeripherique::factory(),
         ];
