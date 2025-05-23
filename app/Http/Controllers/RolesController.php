@@ -2,159 +2,200 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Services\LogService;
+use Illuminate\Support\Facades\Auth;
 
 class RolesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    function __construct() {}
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::with('permissions')->get(); // Charger les rôles et leurs permissions
-        $permissions = Permission::all(); // Charger toutes les permissions
-        return view('roles.index', compact('roles', 'permissions'));
+        try {
+            $search = $request->input('search'); // nom du rôle
+            $permission = $request->input('permission'); // nom de permission
+            $dateFrom = $request->input('created_from');
+            $dateTo = $request->input('created_to');
+
+            $roles = Role::with('permissions')
+                ->when($search, function ($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->when($permission, function ($query, $permission) {
+                    $query->whereHas('permissions', function ($q) use ($permission) {
+                        $q->where('name', 'like', "%{$permission}%");
+                    });
+                })
+                ->when($dateFrom, function ($query, $dateFrom) {
+                    $query->whereDate('created_at', '>=', $dateFrom);
+                })
+                ->when($dateTo, function ($query, $dateTo) {
+                    $query->whereDate('created_at', '<=', $dateTo);
+                })
+                ->paginate(4);
+
+            return view('pages.roles.index', compact('roles', 'search', 'permission', 'dateFrom', 'dateTo'));
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement des rôles : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger la liste des rôles.');
+        }
     }
 
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $permissions = Permission::get();
-        return view('roles.create', compact('permissions'));
+        try {
+            $permissions = Permission::get();
+            return view('pages.roles.create', compact('permissions'));
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement du formulaire de création : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger le formulaire de création.');
+        }
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:roles,name',
             'permissions' => 'nullable|array',
             'permissions.*' => 'exists:permissions,id',
         ]);
 
-        // Création du rôle
-        $role = Role::create(['name' => $validatedData['name']]);
+        try {
+            DB::beginTransaction();
 
-        // Association des permissions
-        if (!empty($validatedData['permissions'])) {
-            $role->permissions()->sync($validatedData['permissions']);
+            $role = Role::create(['name' => $validatedData['name']]);
+
+            if (!empty($validatedData['permissions'])) {
+                $role->permissions()->sync($validatedData['permissions']);
+            }
+
+            $user = Auth::user();
+            LogService::addLog(
+                'Création',
+                'Création du rôle ' . $validatedData['name'] . ' par ' . $user->matricule_agent,
+                $role->id
+            );
+
+            DB::commit();
+            return redirect()->route('roles.index')->with('success', 'Rôle créé avec succès.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la création du rôle : " . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de la création du rôle.');
         }
-
-        return redirect()->route('roles.index')->with('success', 'Rôle créé avec succès.');
     }
-
-
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    /**
- * Display the specified resource.
- *
- * @param  Role $role
- * @return \Illuminate\Http\Response
- */
     public function show(Role $role)
     {
-        $rolePermissions = $role->permissions; // Récupérer les permissions associées au rôle
-
-        return view('roles.show', compact('role', 'rolePermissions'));
+        try {
+            $rolePermissions = $role->permissions;
+            return view('pages.roles.show', compact('role', 'rolePermissions'));
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors de l'affichage du rôle {$role->id} : " . $e->getMessage());
+            return redirect()->route('roles.index')->with('error', 'Impossible d\'afficher ce rôle.');
+        }
     }
-
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    /**
- * Show the form for editing the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
-        $permissions = Permission::all(); // Récupérer toutes les permissions
-        $rolePermissions = $role->permissions->pluck('name')->toArray(); // Extraire les noms des permissions associées
+        try {
+            $role = Role::findOrFail($id);
+            $permissions = Permission::all();
+            $rolePermissions = $role->permissions->pluck('id')->toArray();
 
-        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
-}
-
-
+            return view('pages.roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement de l'édition du rôle {$id} : " . $e->getMessage());
+            return redirect()->route('roles.index')->with('error', 'Impossible de charger le formulaire d\'édition.');
+        }
+    }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        // Validation des données entrantes
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'permissions' => 'array|nullable', // Permet un tableau de permissions
-            'permissions.*' => 'exists:permissions,id', // Validation pour chaque permission
+            'name' => 'required|string|max:255|unique:roles,name,' . $id,
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
-        // Mise à jour du rôle
-        $role = Role::findOrFail($id);
-        $role->update(['name' => $validatedData['name']]);
+        try {
+            DB::beginTransaction();
 
-        // Association des permissions sélectionnées
-        if (!empty($validatedData['permissions'])) {
-            $role->permissions()->sync($validatedData['permissions']); // Synchronisation avec les permissions sélectionnées
-        } else {
-            $role->permissions()->detach(); // Si aucune permission n'est sélectionnée, on retire toutes les permissions
+            $role = Role::findOrFail($id);
+            $oldName = $role->name;
+            $role->update(['name' => $validatedData['name']]);
+
+            $role->permissions()->sync($validatedData['permissions'] ?? []);
+
+            $user = Auth::user();
+            LogService::addLog(
+                'Modification',
+                'Modification du rôle ' . $oldName . ' vers ' . $validatedData['name'] . ' par ' . $user->matricule_agent,
+                $role->id
+            );
+
+            DB::commit();
+            return redirect()->route('roles.index')->with('success', 'Rôle mis à jour avec succès.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la mise à jour du rôle {$id} : " . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de la mise à jour.');
         }
-
-        return redirect()->route('roles.index')->with('success', 'Rôle mis à jour avec succès.');
     }
-
-
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Role $role)
     {
-        $role->delete();
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Role deleted successfully');
+            $roleName = $role->name;
+            $roleId = $role->id;
+            $role->delete();
+
+            $user = Auth::user();
+            LogService::addLog(
+                'Suppression',
+                'Suppression du rôle ' . $roleName . ' par ' . $user->matricule_agent,
+                $roleId
+            );
+
+            DB::commit();
+            return redirect()->route('roles.index')
+                ->with('success', 'Rôle supprimé avec succès');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la suppression du rôle {$role->id} : " . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Une erreur est survenue lors de la suppression.');
+        }
     }
 }

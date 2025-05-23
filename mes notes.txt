@@ -46,4 +46,16 @@ Dans tes vues aux format blade, tu appel tes fichiers de la manière suivante : 
 
 
 
+* la méthode de création et de renvoie d'érreur *
+
+try{
+
+
+    } catch (\Throwable $e) {
+
+}
+
+
+
+
 

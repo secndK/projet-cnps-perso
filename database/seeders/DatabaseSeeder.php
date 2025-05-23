@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             DefaultUserSeeder::class,
+            AgentSeeder::class,
+            Type_posteSeeder::class,
+            Type_peripheriqueSeeder::class,
         ]);
     }
 }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
 class RoleSeeder extends Seeder
 {
     /**
@@ -27,7 +26,6 @@ class RoleSeeder extends Seeder
             'edit-user',
             'delete-user',
         ];
-
         // Create and assign permissions to roles
         foreach ($permissions as $permissionName) {
             $permission = Permission::firstOrCreate(['name' => $permissionName]);
@@ -39,8 +37,6 @@ class RoleSeeder extends Seeder
             if (in_array($permission->name, ['edit-role', 'view-user', 'edit-user'])) {
                 $admin->givePermissionTo($permission);
             }
-
-
              // Assign specific permissions to User
              if (in_array($permission->name, [ 'view-user'])) {
                 $user->givePermissionTo($permission);

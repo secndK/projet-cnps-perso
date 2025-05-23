@@ -1,24 +1,46 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(){
+    public function index(Request $request)
+    {
+        try {
+            $search = $request->input('search');
+            $role = $request->input('role');
 
-        $users = User::with('roles')->get();
-        $roles = Role::all();
+            $users = User::with('roles')
+                ->when($search, function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('username', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                    });
+                })
+                ->when($role, function ($query, $role) {
+                    $query->whereHas('roles', function ($q) use ($role) {
+                        $q->where('name', $role);
+                    });
+                })
+                ->paginate(4);
 
-        return view('users.index', compact('users','roles'));
+            $roles = Role::all(); // pour remplir le select des rôles
 
+            return view('pages.users.index', compact('users', 'roles'));
+        } catch (\Throwable $e) {
+            Log::error("Erreur lors du chargement des utilisateurs : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger la liste des utilisateurs.');
+        }
     }
 
 
@@ -28,38 +50,55 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-        return view('users.create', compact('roles'));
-
+        return view('pages.users.create', compact('roles'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        // Validation des données
-        $request->validate([
+        $validatedData = $request->validate([
+
+            'username' => 'required|string|max:255|unique:users,username' .$id,
             'name' => 'required|string|max:255',
+
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'role_id' => 'required|exists:roles,id',
+
+            'password' => 'required|string|min:8|confirmed',
+
+
         ]);
+        // dd($request->all());
 
-        // Création de l'utilisateur
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            DB::beginTransaction();
 
-        // Attribution du rôle à l'utilisateur
-        $user->roles()->attach($request->role_id);
+            $user = User::create([
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
+                'username' => $validatedData['username'],
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+
+                'password' => Hash::make($validatedData['password']),
+
+            ]);
+
+
+            $user->roles()->attach($validatedData['role_id']);
+
+            DB::commit();
+
+            return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la création de l\'utilisateur : ' . $e->getMessage());
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de la création de l\'utilisateur.');
+        }
     }
-
-
-
     /**
      * Display the specified resource.
      */
@@ -67,58 +106,92 @@ class UserController extends Controller
     {
         // Récupérer les rôles de l'utilisateur
         $userRoles = $user->roles;
-        return view('users.show', compact('user', 'userRoles'));
+        return view('pages.users.show', compact('user', 'userRoles'));
     }
-
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        // Récupérer tous les rôles pour la liste déroulante
-        $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        try {
+            $user = User::findOrFail($id);
+            $roles = Role::all();
+
+            return view('pages.users.edit', compact('user', 'roles'));
+        } catch (\Exception $e) {
+            Log::error("Erreur lors du chargement de l'édition de l'utilisateur : " . $e->getMessage());
+            return redirect()->route('users.index')->with('error', 'Utilisateur introuvable ou erreur lors du chargement.');
+        }
     }
-
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        // Validation des données
-        $request->validate([
+        $attiéké = [
+
+            'username' => 'required|string|max:255|unique:users,username' .$id,
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8', // Le mot de passe est optionnel
-            'role_id' => 'required|exists:roles,id',
-        ]);
+            'email' => 'required|email|unique:users,email,' . $id,
 
-        // Mise à jour de l'utilisateur
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-        ]);
 
-        // Mise à jour du rôle de l'utilisateur
-        $user->roles()->sync([$request->role_id]);
+        ];
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
+        // Ajoute la validation du mot de passe si présent
+        if ($request->filled('password')) {
+            $attiéké['password'] = 'required|string|confirmed|min:8';
+        }
+
+        $validatedData = $request->validate($attiéké);
+
+        try {
+            DB::beginTransaction();
+
+            $user = User::findOrFail($id);
+
+            $user->update([
+
+                'username'            => $validatedData['username'],
+                'name'                => $validatedData['name'],
+                'email'               => $validatedData['email'],
+
+            ]);
+
+            // Met à jour le mot de passe uniquement si fourni
+            if (!empty($validatedData['password'])) {
+                $user->update([
+                    'password' => bcrypt($validatedData['password']),
+                ]);
+            }
+            $user->roles()->sync([$validatedData['role_id']]);
+            DB::commit();
+
+            return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la mise à jour de l'utilisateur : " . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+        }
     }
-
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        // Supprimer l'utilisateur
-        $user->delete();
+        try {
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
+            DB::beginTransaction();
+            $user = User::findOrFail($id);
+            $user->roles()->detach();
+            $user->delete();
+            DB::commit();
+            return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la suppression de l'utilisateur : " . $e->getMessage());
+            return redirect()->route('users.index')->with('error', 'Erreur lors de la suppression de l\'utilisateur.');
+        }
     }
 
 }

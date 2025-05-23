@@ -9,24 +9,26 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Permission\Traits\HasRoles;
 
-
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasRoles;
     use HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
+        'username',
+        'name',
+
+        'email',
+
+        'password',
+
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -36,6 +38,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+
+    public function attributions()
+    {
+        return $this->hasMany(Attribution::class);
+    }
 
     /**
      * Get the attributes that should be cast.

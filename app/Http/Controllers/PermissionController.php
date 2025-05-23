@@ -4,61 +4,156 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
-
-
+use App\Services\LogService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 class PermissionController extends Controller
 {
-
     public function index(Request $request)
     {
-        $permissions = Permission::all();
-        // $permissions = Permission::paginate(2);
-        return view('permissions.index', compact('permissions'));
+        try {
+            $search = $request->input('search');
+            $guard = $request->input('guard');
+            $dateFrom = $request->input('created_from');
+            $dateTo = $request->input('created_to');
+
+            $permissions = Permission::query()
+                ->when($search, fn($q) => $q->where('name', 'like', "%{$search}%"))
+                ->when($guard, fn($q) => $q->where('guard_name', 'like', "%{$guard}%"))
+                ->when($dateFrom, fn($q) => $q->whereDate('created_at', '>=', $dateFrom))
+                ->when($dateTo, fn($q) => $q->whereDate('created_at', '<=', $dateTo))
+                ->paginate(4);
+
+            return view('pages.permissions.index', compact('permissions', 'search', 'guard', 'dateFrom', 'dateTo'));
+        } catch (\Exception $e) {
+            Log::error("Erreur lors du chargement des permissions : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger la liste des permissions.');
+        }
     }
+
 
     public function create()
     {
-        return view('permissions.create');
+        try {
+            return view('pages.permissions.create');
+        } catch (\Exception $e) {
+            Log::error("Erreur lors du chargement du formulaire de création : " . $e->getMessage());
+            return redirect()->back()->with('error', 'Impossible de charger le formulaire de création.');
+        }
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:permissions',
+            'name' => 'required|unique:permissions|string|max:255',
         ]);
 
-        Permission::create($validated);
-        return redirect()->route('permissions.index')->with('success', 'Permissions crée avec  succes');
+        try {
+            DB::beginTransaction();
+
+            $permission = Permission::create($validated);
+            $user = Auth::user();
+
+            LogService::addLog(
+                'Création',
+                'Création de permission ' . $validated['name'] . ' par ' . $user->matricule_agent,
+                $permission->id
+            );
+
+            DB::commit();
+            return redirect()->route('permissions.index')
+                ->with('success', 'Permission créée avec succès');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la création de permission : " . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de la création.');
+        }
     }
 
     public function show($id)
     {
-        $permission = Permission::findOrFail($id);
-        return view('permissions.show', compact('permission'));
+        try {
+            $permission = Permission::findOrFail($id);
+            return view('pages.permissions.show', compact('permission'));
+        } catch (\Exception $e) {
+            Log::error("Erreur lors de l'affichage de la permission {$id} : " . $e->getMessage());
+            return redirect()->route('permissions.index')
+                ->with('error', 'Permission non trouvée.');
+        }
     }
 
     public function edit($id)
     {
-        $permission = Permission::findOrFail($id);
-        return view('permissions.edit', compact('permission'));
+        try {
+            $permission = Permission::findOrFail($id);
+            return view('pages.permissions.edit', compact('permission'));
+        } catch (\Exception $e) {
+            Log::error("Erreur lors du chargement de l'édition de permission {$id} : " . $e->getMessage());
+            return redirect()->route('permissions.index')
+                ->with('error', 'Impossible de charger le formulaire d\'édition.');
+        }
     }
 
     public function update(Request $request, Permission $permission)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:permissions,name,' . $permission->id,
+            'name' => 'required|unique:permissions,name,' . $permission->id . '|string|max:255',
         ]);
 
-        $permission->update($validated);
-        return redirect()->route('permissions.index')->with('success', 'Permission mise à jour avec succès');
+        try {
+            DB::beginTransaction();
+
+            $oldName = $permission->name;
+            $permission->update($validated);
+            $user = Auth::user();
+
+            LogService::addLog(
+                'Modification',
+                'Modification de permission ' . $oldName . ' vers ' . $validated['name'] . ' par ' . $user->matricule_agent,
+                $permission->id
+            );
+
+            DB::commit();
+            return redirect()->route('permissions.index')
+                ->with('success', 'Permission mise à jour avec succès');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la mise à jour de permission {$permission->id} : " . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Une erreur est survenue lors de la mise à jour.');
+        }
     }
 
     public function destroy($id)
     {
-        $permission = Permission::findOrFail($id);
-        $permission->delete();
-        return redirect()->route('permissions.index')->with('success', 'Permission supprimée avec succès.');
-    }
+        try {
+            DB::beginTransaction();
 
+            $permission = Permission::findOrFail($id);
+            $permissionName = $permission->name;
+            $permission->delete();
+
+            $user = Auth::user();
+            LogService::addLog(
+                'Suppression',
+                'Suppression de permission ' . $permissionName . ' par ' . $user->matricule_agent,
+                $id
+            );
+
+            DB::commit();
+            return redirect()->route('permissions.index')
+                ->with('success', 'Permission supprimée avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Erreur lors de la suppression de permission {$id} : " . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Une erreur est survenue lors de la suppression.');
+        }
+    }
 }

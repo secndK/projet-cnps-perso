@@ -15,9 +15,28 @@
 
 body {
     font-family: "Open Sans", sans-serif;
-    background: #f6f9ff;
-    color: #444444;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    height: 9   0vh;
+    background: linear-gradient(-90deg, #E0E3F5FF, #EEFCF4FF, #E9E7F8FF, #FEEDFDFF);
+    background-size: 400% 400%;
+    animation: gradientBG 18s ease infinite;
 }
+
+/* Animation du fond */
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 a {
     color: #4154f1;
@@ -37,6 +56,34 @@ h5,
 h6 {
     font-family: "Nunito", sans-serif;
 }
+/* HTML: <div class="loader"></div> */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 /*--------------------------------------------------------------
 # Main
@@ -747,9 +794,12 @@ h6 {
     border-radius: 50%;
 }
 
-.sidebar-nav .nav-content a:hover {
+.sidebar-nav .nav-content a:hover,
+.sidebar-nav .nav-content a.active
+{
     color: #4154f1;
 }
+
 
 /*--------------------------------------------------------------
 # Dashboard
@@ -1233,3 +1283,33 @@ h6 {
 .text-dark {
     color: #ffffff !important; /* Forcer le texte blanc en cas de conflit */
 }
+
+/* Fond des liens normaux */
+.page-link {
+    background-color: #f8f9fa; /* fond clair */
+    color: #0d6efd;            /* texte bleu */
+    border: 1px solid #dee2e6;
+}
+
+/* Au survol */
+.page-link:hover {
+    background-color: #EDBA43FF; /* fond bleu */
+    color: #fff;               /* texte blanc */
+}
+
+/* Lien actif */
+.page-item.active .page-link {
+    background-color: #198754; /* vert Bootstrap */
+    border-color: #198754;
+    color: white;
+}
+
+/* Lien désactivé */
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+
+

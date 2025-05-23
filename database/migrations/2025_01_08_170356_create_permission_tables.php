@@ -50,7 +50,6 @@ return new class extends Migration
                 $table->unique(['name', 'guard_name']);
             }
         });
-
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $pivotPermission, $teams) {
             $table->unsignedBigInteger($pivotPermission);
 
@@ -74,7 +73,6 @@ return new class extends Migration
             }
 
         });
-
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $columnNames, $pivotRole, $teams) {
             $table->unsignedBigInteger($pivotRole);
 

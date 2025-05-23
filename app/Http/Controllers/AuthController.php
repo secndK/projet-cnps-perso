@@ -1,86 +1,87 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-
+use App\Services\LogService;
 class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('pages.auth.login');
     }
 
     public function login(Request $request)
     {
+        Log::info('Tentative de Connexion');
 
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        // Récupération des identifiants
-        $credentials = $request->only('email', 'password');
+        $user = User::where('username', $request->username)->first();
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+        if (!$user) {
+            LogService::addLog('Connexion échouée', 'Matricule invalide : ' . $request->username);
+            return back()->withInput()->with('error', 'Matricule incorrect.');
+        }
 
-            // voir ma doc.txt
-            $role = $user->getRoleNames();
-
-            // dd($role);
-
-            switch ($role) {
-                case 'Super Admin':
-                    return redirect()->intended('dashboard')->with('success', 'Connexion réussie en tant qu\'administrateur.');
-                case 'Admin':
-                    return redirect()->intended('dashboard')->with('success', 'Connexion réussie en tant que manager.');
-                default:
-                    return redirect()->intended('dashboard')->with('success', 'Connexion réussie.');
-            }
+        if (!Hash::check($request->password, $user->password)) {
+            LogService::addLog('Connexion échouée', 'Mot de passe incorrect pour : ' . $request->username);
+            return back()->withInput()->with('error', 'Mot de passe incorrect.');
         }
 
 
-        // En cas d'échec de connexion
-        return redirect()->route('login')->with('error', 'Identifiants invalides. Veuillez réessayer.');
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        LogService::addLog('Connexion', 'Connexion réussie pour ' . $user->username);
+
+        return redirect()->route('dashboard')->with('success', 'Connexion réussie.');
     }
 
 
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('pages.auth.register');
     }
 
     protected function create(array $data)
     {
         $user = User::create([
+            'username' => $data['username'],
+
             'name' => $data['name'],
+
             'email' => $data['email'],
+
             'password' => Hash::make($data['password']),
         ]);
-
         event(new Registered($user));
-
         return $user;
     }
-
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+
+            'name' => 'required|string|max:255|',
+
             'email' => 'required|string|email|max:255|unique:users',
+
             'password' => 'required|string|min:6|confirmed',
         ]);
          // Attribuer un rôle par défaut
 
 
         try {
-            $data = $request->only(['name', 'email', 'password']);
+            $data = $request->only(['username','name','email', 'password']);
             $user = $this->create($data);
             Auth::login($user);
 
@@ -93,9 +94,16 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
         Auth::logout();
+        if ($user) {
+            LogService::addLog('Tentative de Déconnexion', 'Déconnexion réussie pour ' . $user->username);
+        } else {
+            LogService::addLog('Déconnexion', 'Déconnexion réussie pour un utilisateur non authentifié');
+        }
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }
