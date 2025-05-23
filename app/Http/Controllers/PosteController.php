@@ -30,7 +30,8 @@ class PosteController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Poste::with(['TypePoste', 'agent']); // pour éviter les requêtes N+1
+            $query = Poste::with(['TypePoste', 'agent'])
+                ->orderByRaw("FIELD(statut_poste, 'disponible', 'attribué', 'réformé')");; // pour éviter les requêtes N+1
 
             // Filtre combiné sur numéro de série ou d'inventaire
             if ($request->filled('numero')) {
@@ -192,6 +193,7 @@ class PosteController extends Controller
 
             $poste = Poste::findOrFail($id);
             $poste->statut_poste = 'réformé';
+            $poste->etat_poste = 'N/A';
             $poste->save();
 
 

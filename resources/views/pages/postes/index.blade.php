@@ -77,7 +77,14 @@
                         <td>{{ $poste->designation_poste }}</td>
                         <td>{{ $poste->TypePoste->libelle_type ?? 'Non défini' }}</td>
                         <td>{{ $poste->etat_poste }}</td>
-                        <td>{{ $poste->statut_poste }}</td>
+                        <td>
+                            <span class="badge
+                                {{ $poste->statut_poste== 'réformé' ? 'bg-danger' :
+                                   ($poste->statut_poste === 'en service' ? 'bg-success' :
+                                   ($poste->statut_poste === 'disponible' ? 'bg-warning' : 'bg-secondary')) }}">
+                                {{ $poste->statut_poste }}
+                            </span>
+                        </td>
                         <td>{{ $poste->agent->direction_agent ?? 'N/A' }}</td>
                         <td>{{ $poste->agent->localisation_agent ?? 'N/A' }}</td>
                         <td>

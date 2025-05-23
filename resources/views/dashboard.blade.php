@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
+@section('voidgrubs')
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Page d'accueil</li>
+  </ol>
+</nav>
+@endsection
 
 @section('content')
 <section class="section dashboard">

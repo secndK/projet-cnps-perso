@@ -26,8 +26,8 @@ class PeripheriqueController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Peripherique::with(['typePeripherique', 'agent']); // Préchargement pour éviter N+1
-
+            $query = Peripherique::with(['typePeripherique', 'agent'])
+                ->orderByRaw("FIELD(statut_peripherique, 'disponible', 'attribué', 'réformé')");
             // Filtre combiné sur numéro de série ou d'inventaire
             if ($request->filled('numero')) {
                 $query->where(function ($q) use ($request) {
@@ -201,6 +201,7 @@ class PeripheriqueController extends Controller
 
             $peripherique = Peripherique::findOrFail($id);
             $peripherique->statut_peripherique = 'réformé';
+            $peripherique->etat_peripherique = 'N/A';
             $peripherique->save();
 
 
