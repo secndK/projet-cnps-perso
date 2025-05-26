@@ -19,18 +19,19 @@
                 @csrf
                 @method('PUT')
 
-            <div class="mb-3 col-12">
-                <label for="libelleType" class="form-label">Type de poste </label>
-                <input type="text" name="libelle_type" class="form-control" id="libelleType" value="{{ $types->libelle_type}}" required>
-            </div>
+                <div class="mb-3 col-12">
+                    <label for="libelleType" class="form-label">Type de poste</label>
+                    <input type="text" name="libelle_type" class="form-control @error('libelle_type') is-invalid @enderror"
+                           id="libelleType" value="{{ old('libelle_type', $types->libelle_type) }}" required>
+                    @error('libelle_type')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-              <!-- Boutons d'action -->
-              <div class="mt-3 d-flex justify-content-between">
-                <a href="{{ url()->previous()}}" class="btn btn-secondary">Retour</a>
-                <button type="submit" class="btn btn-primary">Mettre à jour</button>
-
-            </div>
-
+                <div class="mt-3 d-flex justify-content-between">
+                    <a href="{{ route('types-postes.index') }}" class="btn btn-secondary">Retour</a>
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                </div>
             </form>
         </div>
     </div>

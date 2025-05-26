@@ -17,8 +17,12 @@ class CheckSuperAdmin
 
      public function handle(Request $request, Closure $next): Response
     {
-        // Vérifie si l'utilisateur est authentifié
+        // Vérifie si l'utilisateur est authentifié et qu'il est super admin
         if (Auth::check() && Auth::user()->hasRole('Super Admin')) {
+            return $next($request);
+        }
+
+        if (Auth::check() && Auth::user()->hasRole('Admin')) {
             return $next($request);
         }
 

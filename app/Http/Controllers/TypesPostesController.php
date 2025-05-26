@@ -100,23 +100,66 @@ class TypesPostesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TypePoste $types)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'libelle_type' => 'required|unique:types_postes,libelle_type,' . $types->id,
-        ]);
-        $types->update($validated);
-        LogService::addLog('MAJ Type poste', ' Libellé : ' . $request->libelle_type);
-        return redirect()->route('types-postes.index')->with('success', 'Type de poste mis à jour avec succès');
+        try {
+            $types = TypePoste::findOrFail($id);
+
+            $validated = $request->validate([
+                'libelle_type' => 'required|unique:types_postes,libelle_type,' . $id,
+            ]);
+
+            $types->update($validated);
+
+            LogService::addLog('MAJ Type poste', 'Libellé : ' . $request->libelle_type);
+
+            return redirect()->route('types-postes.index')
+                ->with('success', 'Type de poste mis à jour avec succès');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+
+        } catch (\Exception $e) {
+            LogService::addLog('Erreur MAJ Type poste', 'Erreur : ' . $e->getMessage());
+
+            return redirect()->back()
+                ->with('error', 'Une erreur est survenue lors de la mise à jour')
+                ->withInput();
+        }
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-        $types = TypePoste::findOrFail($id);
-        $types->delete();
-        LogService::addLog('Suppression type postes', 'ID : ' . $id);
-        return redirect()->route('types-postes.index')->with('success', 'Type de poste supprimé avec succès');
+        try {
+            $types = TypePoste::findOrFail($id);
+            $libelle = $types->libelle_type; // Sauvegarde avant suppression
+
+            $types->delete();
+
+            LogService::addLog('Suppression type postes', 'ID : ' . $id . ' - Libellé : ' . $libelle);
+
+            return redirect()->route('types-postes.index')
+                ->with('success', 'Type de poste supprimé avec succès');
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            LogService::addLog('Erreur suppression type poste', 'Type introuvable - ID : ' . $id);
+
+            return redirect()->route('types-postes.index')
+                ->with('error', 'Type de poste introuvable');
+
+        } catch (\Exception $e) {
+            LogService::addLog('Erreur suppression type poste', 'Erreur : ' . $e->getMessage() . ' - ID : ' . $id);
+
+            return redirect()->back()
+                ->with('error', 'Une erreur est survenue lors de la suppression');
+        }
     }
 }

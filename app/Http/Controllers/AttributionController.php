@@ -16,10 +16,13 @@ class AttributionController extends Controller
 {
 
 
+    // cette fonction permettra d'afficher l'historique des postes dans la vue nommée 'log'
 
     public function Logs(Request $request)
     {
         try {
+
+
             $from = $request->input('from');
             $to = $request->input('to');
             $action = $request->input('action');

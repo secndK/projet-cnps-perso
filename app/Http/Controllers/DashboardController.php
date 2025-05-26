@@ -2,69 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Poste;
-use App\Models\Peripherique;
-use Spatie\Permission\Models\Role;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
+use App\Models\TypePoste;
+use App\Models\TypePeripherique;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Exemple de regroupement postes par statut (disponible, attribué, réformé)
-        $postesStats = \App\Models\Poste::select('statut_poste', DB::raw('count(*) as total'))
-            ->groupBy('statut_poste')
-            ->pluck('total', 'statut_poste')
-            ->toArray();
+        // Stats pour les postes
+        $postesStats = TypePoste::withCount([
+            'postes as total',
+            'postes as disponibles' => fn($q) => $q->where('statut_poste', 'disponible'),
+            'postes as attribues' => fn($q) => $q->where('statut_poste', 'attribué'),
+            'postes as reformes' => fn($q) => $q->where('statut_poste', 'réformé'),
 
-        $peripheriquesStats = \App\Models\Peripherique::select('statut_peripherique', DB::raw('count(*) as total'))
-            ->groupBy('statut_peripherique')
-            ->pluck('total', 'statut_peripherique')
-            ->toArray();
+           'postes as Bon' => fn($q) => $q->where('etat_poste', 'Bon'),
+            'postes as en_service' => fn($q) => $q->where('etat_poste', 'en service'),
+            'postes as en_panne' => fn($q) => $q->where('etat_poste', 'en panne'),
+            'postes as défectueux' => fn($q) => $q->where('etat_poste', 'défectueux'),
 
-        // Remplir à 0 les statuts absents pour éviter erreur JS
-        $statuts = ['disponible', 'attribué', 'réformé'];
+        ])->get();
 
-        $postes = [];
-        foreach ($statuts as $statut) {
-            $postes[$statut] = $postesStats[$statut] ?? 0;
-        }
+        // Stats pour les périphériques
+        $peripheriquesStats = TypePeripherique::withCount([
+            'peripheriques as total',
+            'peripheriques as disponibles' => fn($q) => $q->where('statut_peripherique', 'disponible'),
+            'peripheriques as attribues' => fn($q) => $q->where('statut_peripherique', 'attribué'),
+            'peripheriques as reformes' => fn($q) => $q->where('statut_peripherique', 'réformé'),
 
-        $peripheriques = [];
-        foreach ($statuts as $statut) {
-            $peripheriques[$statut] = $peripheriquesStats[$statut] ?? 0;
-        }
 
-        // Rôles utilisateurs
-        $roles = ['super admin', 'admin', 'user'];
-        $rolesCount = [];
-        foreach ($roles as $roleName) {
-            $role = Role::where('name', $roleName)->first();
-            $rolesCount[$roleName] = $role ? $role->users()->count() : 0;
-        }
+            'peripheriques as Bon' => fn($q) => $q->where('etat_peripherique', 'Bon'),
+            'peripheriques as en_service' => fn($q) => $q->where('etat_peripherique', 'en service'),
+            'peripheriques as en_panne' => fn($q) => $q->where('etat_peripherique', 'en panne'),
+            'peripheriques as défectueux' => fn($q) => $q->where('etat_peripherique', 'défectueux'),
+        ])->get();
 
-        $data = [
-            'postes_total' => array_sum($postes),
-            'postes_disponibles' => $postes['disponible'],
-            'postes_attribues' => $postes['attribué'],
-            'postes_reformes' => $postes['réformé'],
+        // dd($postesStats);
 
-            'peripheriques_total' => array_sum($peripheriques),
-            'peripheriques_disponibles' => $peripheriques['disponible'],
-            'peripheriques_attribues' => $peripheriques['attribué'],
-            'peripheriques_reformes' => $peripheriques['réformé'],
-
-            'utilisateurs_total' => \App\Models\User::count(),
-            'roles' => $rolesCount,
-        ];
-
-        return view('dashboard', compact('data'));
+        return view('dashboard', compact('postesStats', 'peripheriquesStats'));
     }
-
-
-
 }

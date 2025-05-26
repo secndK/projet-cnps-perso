@@ -15,7 +15,7 @@ class AgentSeeder extends Seeder
     {
 
         Agent::factory()
-            ->count(15)
+            ->count(30)
             ->create();
 
     }

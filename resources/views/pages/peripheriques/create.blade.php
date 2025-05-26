@@ -78,7 +78,7 @@
                      <div class="mt-3 col-6">
                         <div class="form-group">
                             <label for="TypePeripherique" class="form-label">Type</label>
-                                <select name="types_peripherique_id" id="TypePeripherique" class="js-example-basic-single form-select me-2">
+                                <select name="type_peripherique_id" id="TypePeripherique" class="js-example-basic-single form-select me-2">
                                     <option value="">-- Choisir --</option>
                                     @foreach($types as $type)
                                         <option value="{{ $type->id }}">{{ $type->libelle_type }}</option>

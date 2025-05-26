@@ -34,17 +34,13 @@
 
             <div class="row">
                 <div class="mt-3 col-6">
-                    <label for="matriculeAgent" class="form-label">Matricule de l'utilisateur</label>
-                    <input type="text" name="matricule_agent" class="form-control" id="matriculeAgent" value="{{ old('matricule_agent') }}" required>
+                    <label for="username" class="form-label">Identifiant     de l'utilisateur</label>
+                    <input type="text" name="username" class="form-control" id="username" value="{{ old('username') }}" required>
                 </div>
 
                 <div class="mt-3 col-6">
-                    <label for="usersName" class="form-label">Nom de l'utilisateur</label>
-                    <input type="text" name="name" class="form-control" id="usersName" value="{{ old('name') }}"   required>
-                </div>
-                <div class="mt-3 col-6 ">
-                    <label for="prenomAgent" class="form-label">Prenom de l'utilisateur</label>
-                    <input type="text" name="prenom_agent" class="form-control" id="prenomAgent" value="{{ old('prenom_agent') }}"  required>
+                    <label for="name" class="form-label">Nom de l'utilisateur</label>
+                    <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}"   required>
                 </div>
 
                 <div class="mt-3 col-6">
@@ -54,21 +50,24 @@
 
 
 
-                <div class="mt-3 col-6">
-                    <label for="directionAgent" class="form-label">Direction de l'utilisateur</label>
-                    <input type="text" name="direction_agent" class="form-control" id="directionAgent" value="{{ old('direction_agent') }}"  required>
-                </div>
-
-                <div class="mt-3 col-6">
-                    <label for="directionAgent" class="form-label">Localisation de l'utilisateur</label>
-                    <input type="text" name="localisation_agent" class="form-control" id="localisationAgent" value="{{ old('localisation_agent') }}"  required>
-                </div>
 
                 <div class="mt-3 col-6">
                     <label for="usersPassword" class="form-label">Mot de passe</label>
                     <input type="password" name="password" class="form-control" id="usersPassword">
                     <small class="form-text text-muted">Laissez vide pour ne pas modifier le mot de passe.</small>
                 </div>
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="StatutUser" class="form-label">statut utilisateur</label>
+                        <select name="statut_user" id="StatutUser" class="js-example-basic-single form-select" >
+                            <option value="">-- Choisir --</option>
+                            <option value="actif">Actif</option>
+                            <option value="inactif">Inactif</option>
+                        </select>
+                    </div>
+                </div>
+
+
 
                 <div class="mt-3 col-6">
                     <label for="usersRoles" class="form-label">Rôle</label>

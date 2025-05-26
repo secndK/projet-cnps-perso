@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -35,7 +36,6 @@ class UserController extends Controller
                 ->paginate(4);
 
             $roles = Role::all(); // pour remplir le select des rôles
-
             return view('pages.users.index', compact('users', 'roles'));
         } catch (\Throwable $e) {
             Log::error("Erreur lors du chargement des utilisateurs : " . $e->getMessage());
@@ -58,36 +58,27 @@ class UserController extends Controller
     public function store(Request $request, $id)
     {
         $validatedData = $request->validate([
-
             'username' => 'required|string|max:255|unique:users,username' .$id,
             'name' => 'required|string|max:255',
-
             'email' => 'required|email|unique:users,email',
-
             'password' => 'required|string|min:8|confirmed',
-
+            'statut_user' => 'nullable|string|max:8',
 
         ]);
         // dd($request->all());
 
         try {
             DB::beginTransaction();
-
             $user = User::create([
 
                 'username' => $validatedData['username'],
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
-
                 'password' => Hash::make($validatedData['password']),
-
+                'statut_user' => $validatedData['statut_user'],
             ]);
-
-
             $user->roles()->attach($validatedData['role_id']);
-
             DB::commit();
-
             return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
 
         } catch (\Exception $e) {
@@ -116,48 +107,52 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $roles = Role::all();
-
             return view('pages.users.edit', compact('user', 'roles'));
         } catch (\Exception $e) {
             Log::error("Erreur lors du chargement de l'édition de l'utilisateur : " . $e->getMessage());
             return redirect()->route('users.index')->with('error', 'Utilisateur introuvable ou erreur lors du chargement.');
         }
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
+
+
+        // Empêcher un utilisateur de se rendre lui-même inactif
+
+        $user = User::findOrFail($id);
+
+        if (Auth::id() === $user->id && $request->statut_user === 'inactif') {
+            return back()->with('error', 'Vous ne pouvez pas désactiver votre propre compte.');
+        }
         $attiéké = [
 
             'username' => 'required|string|max:255|unique:users,username' .$id,
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
+            'statut_user' => 'nullable|string|max:8',
 
 
         ];
-
         // Ajoute la validation du mot de passe si présent
         if ($request->filled('password')) {
             $attiéké['password'] = 'required|string|confirmed|min:8';
         }
-
         $validatedData = $request->validate($attiéké);
-
         try {
             DB::beginTransaction();
-
             $user = User::findOrFail($id);
 
             $user->update([
-
                 'username'            => $validatedData['username'],
                 'name'                => $validatedData['name'],
                 'email'               => $validatedData['email'],
+                'statut_user' => $validatedData['statut_user'],
+
 
             ]);
-
             // Met à jour le mot de passe uniquement si fourni
             if (!empty($validatedData['password'])) {
                 $user->update([

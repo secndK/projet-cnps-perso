@@ -16,7 +16,7 @@ class Type_peripheriqueSeeder extends Seeder
     {
 
         TypePeripherique::factory()
-        ->has(Peripherique::factory()->count(6))
+        ->has(Peripherique::factory()->count(30))
         ->create();
 
     }

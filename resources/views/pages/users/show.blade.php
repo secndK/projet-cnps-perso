@@ -50,6 +50,18 @@
 
                 <div class="mt-3 col-6">
                     <div class="form-group">
+                        <label for="StatuUser" class="form-label">Statut de l'utilisateur</label>
+                        <input type="text" class="form-control" id="StatutUser" readonly value="{{ $user->statut_user}}" disabled>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="mt-3 col-6">
+                    <div class="form-group">
                         <label for="usersCreatedAt" class="form-label">Créé le</label>
                         <input type="email" class="form-control" id="usersEmail" value="{{ $user->created_at}}" disabled>
                     </div>

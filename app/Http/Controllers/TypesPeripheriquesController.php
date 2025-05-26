@@ -96,27 +96,45 @@ class TypesPeripheriquesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+        public function edit($id)
     {
-        $types = TypePeripherique::findOrFail($id);
-        return view('pages.types-peripheriques.edit', compact('types'));
+        try {
+            $types = TypePeripherique::findOrFail($id);
+            return view('pages.types-peripheriques.edit', compact('types'));
+        } catch (\Exception $e) {
+            Log::error("Erreur lors de l'édition du type de périphérique ID {$id} : " . $e->getMessage());
+            return redirect()->route('types-peripheriques.index')->with('error', 'Impossible de trouver ce type de périphérique.');
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Mise à jour du type de périphérique.
      */
     public function update(Request $request, TypePeripherique $types)
     {
-        $validated = $request->validate([
-            'libelle_type' => 'required|unique:types_peripheriques,libelle_type,' . $types->id,
-        ]);
+        try {
+            $validated = $request->validate([
+                'libelle_type' => 'required|string|max:255|unique:types_peripheriques,libelle_type,' . $types->id,
+            ]);
 
-        $types->update($validated);
+            $types->update($validated);
 
-        LogService::addLog('MAJ Type périphérique', 'Libellé: ' . $request->libelle_type);
+            LogService::addLog('MAJ Type périphérique', 'Libellé: ' . $request->libelle_type);
 
-        return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique mis à jour avec succès');
+            return redirect()->route('types-peripheriques.index')->with('success', 'Type de périphérique mis à jour avec succès.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput()
+                ->with('error', 'Erreur de validation : veuillez vérifier les données saisies.');
+        } catch (\Exception $e) {
+            Log::error("Erreur mise à jour type périphérique ID {$types->id} : " . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Erreur lors de la mise à jour : ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

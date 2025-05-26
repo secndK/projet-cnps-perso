@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Modifier un Utilisateur')
-
 @section('voidgrubs')
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -34,7 +32,6 @@
 
             <div class="row">
 
-
                 <div class="mt-3 col-6">
                     <label class="form-label">Nom</label>
                     <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
@@ -55,6 +52,17 @@
                     <label class="form-label">Nouveau mot de passe</label>
                     <input type="password" name="password" class="form-control">
                     <small class="form-text text-muted">Laissez vide pour ne pas modifier le mot de passe.</small>
+                </div>
+
+                <div class="mt-3 col-6">
+                    <div class="form-group">
+                        <label for="StatutUser" class="form-label">statut utilisateur</label>
+                        <select name="statut_user" id="StatutUser" class="js-example-basic-single form-select" >
+                            <option value="{{ old('statut', $user->statut_user) }} "  required>-- Choisir --</option>
+                            <option value="actif">Actif</option>
+                            <option value="inactif">Inactif</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mt-3 col-6">

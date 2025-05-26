@@ -23,18 +23,22 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
+            'statut_user' => 'nullable|string'
         ]);
 
         $user = User::where('username', $request->username)->first();
 
         if (!$user) {
-            LogService::addLog('Connexion échouée', 'Matricule invalide : ' . $request->username);
             return back()->withInput()->with('error', 'Matricule incorrect.');
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            LogService::addLog('Connexion échouée', 'Mot de passe incorrect pour : ' . $request->username);
             return back()->withInput()->with('error', 'Mot de passe incorrect.');
+        }
+
+
+        if ($user->statut_user === 'inactive') {
+            return back()->withInput()->with('error', 'Votre compte est désactivé. Veuillez contacter l\'administrateur.');
         }
 
 

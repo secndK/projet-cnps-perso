@@ -15,7 +15,7 @@ class Type_posteSeeder extends Seeder
     public function run(): void
     {
         TypePoste::factory()
-        ->has(Poste::factory()->count(3))
+        ->has(Poste::factory()->count(30))
         ->create();
     }
 }

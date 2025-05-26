@@ -18,10 +18,16 @@ body {
     color: #000;
     margin: 0;
     padding: 0;
-    height: 9   0vh;
-    background: linear-gradient(-90deg, #E0E3F5FF, #EEFCF4FF, #E9E7F8FF, #FEEDFDFF);
+    height: 9 0vh;
+    background: linear-gradient(
+        -90deg,
+        #e0e3f5ff,
+        #eefcf4ff,
+        #e9e7f8ff,
+        #feedfdff
+    );
     background-size: 400% 400%;
-    animation: gradientBG 18s ease infinite;
+    animation: gradientBG 6s ease infinite;
 }
 
 /* Animation du fond */
@@ -36,7 +42,6 @@ body {
         background-position: 0% 50%;
     }
 }
-
 
 a {
     color: #4154f1;
@@ -58,32 +63,35 @@ h6 {
 }
 /* HTML: <div class="loader"></div> */
 .loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent */
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .loader-spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-
 
 /*--------------------------------------------------------------
 # Main
@@ -92,6 +100,19 @@ h6 {
     margin-top: 60px;
     padding: 20px 30px;
     transition: all 0.3s;
+}
+
+/* Style pour les icônes des sous-menus */
+#sidebar-nav .nav-content a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+}
+
+#sidebar-nav .nav-content .bi {
+    font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 @media (max-width: 1199px) {
@@ -795,11 +816,9 @@ h6 {
 }
 
 .sidebar-nav .nav-content a:hover,
-.sidebar-nav .nav-content a.active
-{
+.sidebar-nav .nav-content a.active {
     color: #4154f1;
 }
-
 
 /*--------------------------------------------------------------
 # Dashboard
@@ -1287,14 +1306,14 @@ h6 {
 /* Fond des liens normaux */
 .page-link {
     background-color: #f8f9fa; /* fond clair */
-    color: #0d6efd;            /* texte bleu */
+    color: #0d6efd; /* texte bleu */
     border: 1px solid #dee2e6;
 }
 
 /* Au survol */
 .page-link:hover {
-    background-color: #EDBA43FF; /* fond bleu */
-    color: #fff;               /* texte blanc */
+    background-color: #edba43ff; /* fond bleu */
+    color: #fff; /* texte blanc */
 }
 
 /* Lien actif */
@@ -1310,6 +1329,3 @@ h6 {
     background-color: #e9ecef;
     border-color: #dee2e6;
 }
-
-
-

@@ -42,8 +42,8 @@
     font-family: "Ubuntu", serif;
     font-weight: 700;
     font-style: normal;
-    background: linear-gradient(rgba(255, 165, 0, 0.5), rgba(255, 165, 0, 0.5)),
-        url("{{ asset("img/ciel.jpg") }}");
+    background: linear-gradient(rgba(100, 148, 237, 0.5), rgba(0, 51, 255, 0.5)),
+        url("{{ asset('img/tuli.jpg') }}");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -116,14 +116,9 @@
 
                       </div>
 
+
                       <div class="col-12">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                          <label class="form-check-label" for="rememberMe">se souvenir de moi</label>
-                        </div>
-                      </div>
-                      <div class="col-12">
-                        <button class="bg-orange-600 hover:bg-orange-400 btn btn-sm w-100 text-cyan-50 hover:text-cyan-100" type="submit">connexion</button>
+                        <button class="bg-orange-600 hover:bg-blue-400 btn btn-sm w-100  focus:outline-none focus:ring-2 focus:bg-blue-600 text-cyan-50 hover:text-cyan-100" type="submit">connexion</button>
                       </div>
                       {{-- <div class="col-12">
                         <p class="m-0 text-center text-secondary">pas de compte ? &#x1F605; <a href="{{ route('register') }}" class="link-primary text-decoration-none">S'inscrire</a></p>
