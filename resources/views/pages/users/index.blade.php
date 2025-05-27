@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des Utilisateurs')
-@section('module', 'Utilisateurs')
+@section('title', 'Gestion des accès et rôles')
+
 @section('voidgrubs')
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">

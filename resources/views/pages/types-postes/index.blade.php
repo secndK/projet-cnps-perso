@@ -43,7 +43,11 @@
         </div>
 
         <div class="gap-2 col-md-4 d-flex">
-            <a href="{{ route('types-postes.create') }}" class="btn btn-secondary">Nouveau type</a>
+
+            @can('create-type-poste')
+                <a href="{{ route('types-postes.create') }}" class="btn btn-secondary">Nouveau type</a>
+            @endcan
+
             <a href="{{ route('postes.index') }}" class="btn btn-light"><i class="bi bi-arrow-left"></i> poste de travail</a>
         </div>
     </form>
@@ -68,33 +72,45 @@
                         <td>{{ $type->created_at->format('d/m/Y H:i') }}</td>
                         <td>{{ $type->updated_at->format('d/m/Y H:i') }}</td>
                         <td class="text-nowrap">
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-1">
                                 <!-- Bouton Voir -->
-                                <a href="{{ route('types-postes.show', $type->id) }}"
-                                   class="btn btn-outline-success btn-sm"
-                                   title="Voir détails">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+
+                                @can('view-type-poste')
+
+                                    <a href="{{ route('types-postes.show', $type->id) }}"
+                                        class="btn btn-outline-success btn-sm"
+                                        title="Voir détails">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                @endcan
 
                                 <!-- Bouton Modifier -->
-                                <a href="{{ route('types-postes.edit', $type->id) }}"
-                                   class="btn btn-outline-primary btn-sm"
-                                   title="Modifier">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
+
+                                @can('edit-type-poste')
+                                    <a href="{{ route('types-postes.edit', $type->id) }}"
+                                        class="btn btn-outline-primary btn-sm"
+                                        title="Modifier">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                @endcan
 
                                 <!-- Bouton Supprimer avec confirmation -->
-                                <form action="{{ route('types-postes.destroy', $type->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                            class="btn btn-outline-danger btn-sm delete-btn"
-                                            title="Supprimer"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteTypePosteModal{{ $type->id }}">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
-                                </form>
+
+                                @can('delete-type-poste')
+                                    <form action="{{ route('types-postes.destroy', $type->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button"
+                                                class="btn btn-outline-danger btn-sm delete-btn"
+                                                title="Supprimer"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteTypePosteModal{{ $type->id }}">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                @endcan
+
                             </div>
                         </td>
                     </tr>

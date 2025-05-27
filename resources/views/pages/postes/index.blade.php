@@ -12,7 +12,6 @@
 
 @section('content')
 <div class="container">
-
     <form method="GET" class="mb-4 row g-4 align-items-end">
         <div class="col-md-2">
             <label for="numero" class="form-label">N° Série ou Inventaire</label>
@@ -21,10 +20,11 @@
                    value="{{ request('numero') }}">
         </div>
 
+
         <div class="col-md-2">
             <label for="etat_statut" class="form-label">État ou Statut</label>
             <input type="text" name="etat_statut" id="etat_statut" class="form-control"
-                   placeholder="En service, Affecté, etc."
+                   placeholder=" Ex: En service, Attribué, etc."
                    value="{{ request('etat_statut') }}">
         </div>
 
@@ -45,7 +45,9 @@
         </div>
 
         <div class="col-md-2">
-            <a href="{{ route('postes.create') }}" class="btn btn-secondary">Créer un poste</a>
+            @can('create-poste')
+                <a href="{{ route('postes.create') }}" class="btn btn-secondary">Créer un poste</a>
+            @endcan
         </div>
     </form>
 
@@ -61,6 +63,8 @@
                     <th>Désignation</th>
                     <th>Type</th>
                     <th>État</th>
+                    <th>Matricule propriétaire</th>
+                    <th>Nom propriétaire</th>
                     <th>Statut</th>
                     <th>Direction</th>
                     <th>Localisation</th>
@@ -70,14 +74,14 @@
             <tbody>
                 @forelse ($postes as $poste)
                     <tr>
-                        <td>{{ $loop->iteration + ($postes->currentPage() - 1) * $postes->perPage() }}</td>
-                        <td>{{ $poste->num_serie_poste }}</td>
-                        <td>{{ $poste->num_inventaire_poste }}</td>
-                        <td>{{ $poste->nom_poste }}</td>
-                        <td>{{ $poste->designation_poste }}</td>
-                        <td>{{ $poste->TypePoste->libelle_type ?? 'Non défini' }}</td>
-                        <td>{{ $poste->etat_poste }}</td>
-                        <td>
+                        <td >{{ $loop->iteration + ($postes->currentPage() - 1) * $postes->perPage() }}</td>
+                        <td class="text-nowrap">{{ $poste->num_serie_poste }}</td>
+                        <td class="text-nowrap">{{ $poste->num_inventaire_poste }}</td>
+                        <td class="text-nowrap">{{ $poste->nom_poste }}</td>
+                        <td class="text-nowrap">{{ $poste->designation_poste }}</td>
+                        <td class="text-nowrap">{{ $poste->TypePoste->libelle_type ?? 'Non défini' }}</td>
+                        <td class="text-nowrap">{{ $poste->etat_poste }}</td>
+                        <td class="text-nowrap">
                             <span class="badge
                                 {{ $poste->statut_poste== 'réformé' ? 'bg-danger' :
                                    ($poste->statut_poste === 'en service' ? 'bg-success' :
@@ -85,18 +89,40 @@
                                 {{ $poste->statut_poste }}
                             </span>
                         </td>
-                        <td>{{ $poste->agent->direction_agent ?? 'N/A' }}</td>
-                        <td>{{ $poste->agent->localisation_agent ?? 'N/A' }}</td>
-                        <td>
-                            <a href="{{ route('postes.show', $poste->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
+                        <td class="text-nowrap">{{ $poste->agent->matricule_agent ?? 'N/A' }}</td>
+                        <td class="text-nowrap">{{ $poste->agent->nom_agent ?? 'N/A' }}</td>
+                        <td class="text-nowrap">{{ $poste->agent->direction_agent ?? 'N/A' }}</td>
+                        <td class="text-nowrap">{{ $poste->agent->localisation_agent ?? 'N/A' }}</td>
+                        <td class="text-nowrap">
+
+                            @can('view-poste')
+                                <a href="{{ route('postes.show', $poste->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
+                            @endcan
+
                             @if($poste->etat_poste !== 'Réformé')
+
+                            @can('edit-poste')
+
                                 <a href="{{ route('postes.edit', $poste->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                            @endcan
+
+                            @can('delete-poste')
                                 <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePosteModal{{ $poste->id }}">
                                     <i class="bi bi-trash3"></i>
                                 </button>
+
+                            @endcan
+
                             @else
+
+                            @can('edit-poste')
                                 <button class="btn btn-primary btn-sm disabled" aria-disabled="true"><i class="bi bi-pencil"></i></button>
+                            @endcan
+
+                            @can('delete-poste')
                                 <button class="btn btn-danger btn-sm" disabled> <i class="bi bi-trash3"></i></button>
+                            @endcan
+
                             @endif
                         </td>
                     </tr>

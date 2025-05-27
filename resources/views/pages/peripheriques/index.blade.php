@@ -25,7 +25,7 @@
         <div class="col-md-2">
             <label for="etat_statut" class="form-label">État ou Statut</label>
             <input type="text" name="etat_statut" id="etat_statut" class="form-control"
-                   placeholder="En service, Réformé, etc."
+                   placeholder=" Ex: En service, Réformé, etc."
                    value="{{ request('etat_statut') }}">
         </div>
 
@@ -58,7 +58,9 @@
         </div>
 
         <div class="col-md-2">
-            <a href="{{ route('peripheriques.create') }}" class="btn btn-secondary">Créer un périphérique</a>
+            @can('create-peripherique')
+                <a href="{{ route('peripheriques.create') }}" class="btn btn-secondary">Créer un périphérique</a>
+            @endcan
         </div>
     </form>
 
@@ -75,6 +77,9 @@
                     <th>Type</th>
                     <th>État</th>
                     <th>Statut</th>
+                    <th>Matricule proprietaire</th>
+                    <th>Nom proprietaire</th>
+
                     <th>Direction</th>
                     <th>Localisation</th>
                     <th>Action</th>
@@ -83,14 +88,14 @@
             <tbody>
                 @forelse ($peripheriques as $peripherique)
                 <tr>
-                    <td>{{ $loop->iteration + ($peripheriques->currentPage() - 1) * $peripheriques->perPage() }}</td>
-                    <td>{{ $peripherique->num_serie_peripherique }}</td>
-                    <td>{{ $peripherique->num_inventaire_peripherique }}</td>
-                    <td>{{ $peripherique->nom_peripherique }}</td>
-                    <td>{{ $peripherique->designation_peripherique ?? 'N/A' }}</td>
-                    <td>{{ $peripherique->typePeripherique->libelle_type ?? 'Non défini' }}</td>
-                    <td>{{ $peripherique->etat_peripherique ?? 'N/A' }}</td>
-                    <td>
+                    <td class="text-nowrap">{{ $loop->iteration + ($peripheriques->currentPage() - 1) * $peripheriques->perPage() }}</td>
+                    <td class="text-nowrap">{{ $peripherique->num_serie_peripherique }}</td>
+                    <td class="text-nowrap">{{ $peripherique->num_inventaire_peripherique }}</td>
+                    <td class="text-nowrap">{{ $peripherique->nom_peripherique }}</td>
+                    <td class="text-nowrap">{{ $peripherique->designation_peripherique ?? 'N/A' }}</td>
+                    <td class="text-nowrap">{{ $peripherique->typePeripherique->libelle_type ?? 'Non défini' }}</td>
+                    <td class="text-nowrap">{{ $peripherique->etat_peripherique ?? 'N/A' }}</td>
+                    <td class="text-nowrap">
                         <span class="badge
                             {{ $peripherique->statut_peripherique === 'réformé' ? 'bg-danger' :
                                ($peripherique->statut_peripherique === 'en service' ? 'bg-success' :
@@ -99,18 +104,40 @@
                         </span>
                     </td>
 
-                    <td>{{ $peripherique->agent->direction_agent ?? 'N/A' }}</td>
-                    <td>{{ $peripherique->agent->localisation_agent ?? 'N/A' }}</td>
-                    <td>
-                        <a href="{{ route('peripheriques.show', $peripherique->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
+                    <td class="text-nowrap">{{ $peripherique->agent->matricule_agent ?? 'N/A' }}</td>
+                    <td>{{ $peripherique->agent->nom_agent ?? 'N/A' }}</td>
+
+                    <td class="text-nowrap"> {{ $peripherique->agent->direction_agent ?? 'N/A' }}</td>
+                    <td class="text-nowrap">{{ $peripherique->agent->localisation_agent ?? 'N/A' }}</td>
+                    <td class="text-nowrap">
+
+                        @can('view-peripherique')
+
+                            <a href="{{ route('peripheriques.show', $peripherique->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
+
+                        @endcan
+
                         @if($peripherique->statut_peripherique !== 'réformé')
-                            <a href="{{ route('peripheriques.edit', $peripherique->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePeripheriqueModal{{ $peripherique->id }}">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        @else
-                            <button class="btn btn-primary btn-sm disabled" aria-disabled="true"><i class="bi bi-pencil"></i></button>
+
+                            @can('edit-peripherique')
+                                <a href="{{ route('peripheriques.edit', $peripherique->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                            @endcan
+
+                            @can('delete-peripherique')
+                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePeripheriqueModal{{ $peripherique->id }}">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            @endcan
+
+                            @else
+
+                            @can('edit-peripherique')
+                                <button class="btn btn-primary btn-sm disabled" aria-disabled="true"><i class="bi bi-pencil"></i></button>
+                            @endcan
+
+                            @can('delete-peripherique')
                             <button class="btn btn-danger btn-sm" disabled> <i class="bi bi-trash3"></i></button>
+                            @endcan
                         @endif
                     </td>
                 </tr>

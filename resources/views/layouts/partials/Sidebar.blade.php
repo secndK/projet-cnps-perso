@@ -1,7 +1,6 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         @if (Auth::user()->hasRole('Super Admin'))
-
             <!-- 📊 Données et Statistiques -->
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#donnée-nav" aria-expanded="false">

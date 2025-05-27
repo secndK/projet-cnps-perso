@@ -20,7 +20,7 @@
         <div class="col-md-2">
             <label for="libelle" class="form-label">Libellé Type</label>
             <input type="text" name="libelle" id="libelle" class="form-control"
-                   placeholder="Ex: USB, Réseau" value="{{ request('libelle') }}">
+                   placeholder="Ex: Clavier, Souris" value="{{ request('libelle') }}">
         </div>
 
         <div class="col-md-2">
@@ -45,7 +45,9 @@
         </div>
 
         <div class="gap-2 col-md-4 d-flex">
-            <a href="{{ route('types-peripheriques.create') }}" class="btn btn-secondary">Nouveau type</a>
+            @can('create-type-peripherique')
+                <a href="{{ route('types-peripheriques.create') }}" class="btn btn-secondary">Nouveau type</a>
+            @endcan
             <a href="{{ route('peripheriques.index') }}" class="btn btn-light"><i class="bi bi-arrow-left"></i> Périphériques</a>
         </div>
     </form>
@@ -70,11 +72,23 @@
                         <td>{{ $type->created_at->format('d/m/Y H:i') }}</td>
                         <td>{{ $type->updated_at->format('d/m/Y H:i') }}</td>
                         <td>
-                            <a href="{{ route('types-peripheriques.show', $type->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
-                            <a href="{{ route('types-peripheriques.edit', $type->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTypePeripheriqueModal{{ $type->id }}">
-                                <i class="bi bi-trash3"></i>
-                            </button>
+
+                            @can('view-type-peripherique')
+                                <a href="{{ route('types-peripheriques.show', $type->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
+                            @endcan
+
+
+                            @can('edit-type-peripherique')
+                                <a href="{{ route('types-peripheriques.edit', $type->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
+                            @endcan
+
+
+                            @can('delete-type-peripherique')
+                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteTypePeripheriqueModal{{ $type->id }}">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            @endcan
+
                         </td>
                     </tr>
                     @include('pages.types-peripheriques.modals.delete', ['type' => $type])

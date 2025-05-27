@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des rôles')
-@section('module', 'Rôles')
+@section('title', 'Gestion des accès et rôles')
+
 
 @section('voidgrubs')
 <nav aria-label="breadcrumb">
@@ -58,7 +58,7 @@
             <tr>
                 <th scope="col">N°</th>
                 <th>Nom du rôle</th>
-                <th>Permissions</th>
+                <th style="min-width: 550px;">Permissions</th>
                 <th>Créé le</th>
                 <th>Mis à jour le</th>
                 <th>Action</th>
@@ -68,17 +68,17 @@
             @forelse ($roles as $role)
                 <tr>
                     <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
-                    <td>{{ $role->name }}</td>
-                    <td>
+                    <td class="text-nowrap">{{ $role->name }}</td>
+                    <td >
                         @forelse ($role->permissions as $permission)
                             <span class="badge bg-warning me-1"><i class="bi bi-shield-lock"></i> {{ $permission->name }}</span>
                         @empty
                             <span class="text-muted">Aucune permission</span>
                         @endforelse
                     </td>
-                    <td>{{ $role->created_at->format('d/m/Y H:i') }}</td>
-                    <td>{{ $role->updated_at->format('d/m/Y H:i') }}</td>
-                    <td>
+                    <td class="text-nowrap">{{ $role->created_at->format('d/m/Y H:i') }}</td>
+                    <td class="text-nowrap">{{ $role->updated_at->format('d/m/Y H:i') }}</td>
+                    <td class="text-nowrap">
                         <a href="{{ route('roles.show', $role->id) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-eye"></i></a>
                         <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></a>
                         <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteRoleModal{{ $role->id }}">

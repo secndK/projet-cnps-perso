@@ -14,9 +14,11 @@
 <div class="container py-4">
     <!-- Carrousel Postes -->
     <div class="mb-5">
-        <h3 class="mb-4 text-primary">
-            <i class="bi bi-pc-display-horizontal me-2"></i>Statut des Postes
-        </h3>
+        <h2 class="mb-4 ">
+
+            Actifs postes
+
+        </h2>
 
         <div id="postesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -27,20 +29,23 @@
                         <div class="col-md-4">
                             <div class="card h-100">
                                 <div class="card-body text-center">
+                                    @php
+                                        $libelle = strtolower($type->libelle_type);
+                                    @endphp
                                     <div class="mt-2">
 
-                                        @if($type->libelle_type === 'PC Bureau')
+                                        @if($libelle === 'pc bureau')
 
                                             <i class="bi bi-pc-display text-primary fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'PC PORTABLE')
+                                        @elseif ($libelle === 'pc portable')
 
                                             <i class="bi bi-laptop text-primary fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'Téléphone ip')
+                                        @elseif ($libelle === 'téléphone ip')
                                             <i class="bi bi-telephone-fill text-primary fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'Téléphone portable')
+                                        @elseif ($libelle === 'téléphone portable')
 
                                             <i class="bi bi-phone text-primary fs-1"></i>
 
@@ -94,9 +99,9 @@
 
     <!-- Carrousel Périphériques -->
     <div class="mb-5">
-        <h3 class="mb-4 text-success">
-            <i class="bi bi-usb-symbol me-2"></i>Statut des Périphériques
-        </h3>
+        <h2 class="mb-4 ">
+            Actifs périphériques
+        </h2>
 
         <div id="peripheriquesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -107,35 +112,37 @@
                         <div class="col-md-4">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <div class="mt-">
 
-                                        @if ($type->libelle_type === 'Souris')
+                                    @php
+                                        $libelle = strtolower($type->libelle_type);
+                                    @endphp
+
+                                    <div class="mt-1">
+
+                                        @if ($libelle === 'souris')
 
                                             <i class="bi bi-mouse3-fill text-success fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'clavier')
+                                        @elseif ($libelle === 'clavier')
                                             <i class="bi bi-keyboard text-success fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'ecran')
+                                        @elseif ($libelle === 'ecran')
 
                                             <i class="bi bi-display text-success fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'box wifi')
+                                        @elseif ($libelle === 'box wi-fi')
 
                                             <i class="bi bi-router-fill text-success fs-1"></i>
 
-                                        @elseif ($type->libelle_type === 'projecteur')
+                                        @elseif ($libelle === 'projecteur')
 
                                             <i class="bi bi-projector text-success fs-1"></i>
 
 
-                                        @elseif ($type->libelle_type === 'Domino wi-fi')
+                                        @elseif ($libelle === 'domino wi-fi')
 
 
                                             <i class="bi bi-wifi text-success fs-1"></i>
-
-
-
                                         @endif
 
                                     </div>
@@ -187,10 +194,15 @@
 
 <div class="row">
     <!-- État des postes par type -->
+    <h2 class="mb-4 ">
+        Statistiques des états
+    </h2>
     <div class="col-lg-6">
+
+
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">État des postes par type</h5>
+                {{-- <h5 class="card-title">État des postes par type</h5> --}}
                 <canvas id="postesEtatChart" width="600" height="400"></canvas>
             </div>
         </div>
@@ -200,7 +212,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">État des périphériques par type</h5>
+                {{-- <h5 class="card-title">État des périphériques par type</h5> --}}
                 <canvas id="peripheriquesEtatChart" width="600" height="400"></canvas>
             </div>
         </div>

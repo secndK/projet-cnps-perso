@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des permissions')
+@section('title', 'Gestion des accès et rôles')
+
 
 
 @section('voidgrubs')
